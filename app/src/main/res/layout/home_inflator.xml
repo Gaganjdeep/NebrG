@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="#7bebebeb"
+    >
+
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginBottom="10dp"
+                                        android:layout_marginTop="10dp"
+                                        android:background="@color/white"
+                                        app:cardElevation="1dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical"
+            >
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#c7c7c7"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+
+                <TextView
+                    android:id="@+id/tvLocationGenre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/ic_location"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:singleLine="true"
+                    android:text="Chennai"
+                    android:textColor="@color/greydefault"
+                    android:textSize="11sp"
+                    android:maxLength="15"
+                    android:textStyle="bold"/>
+
+                <View
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/circle_grey"/>
+
+                <TextView
+                    android:id="@+id/tvGenre"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Social"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydefault"
+                    android:textSize="11sp"/>
+
+
+              <!--  <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>-->
+
+                <TextView
+                    android:id="@+id/tvTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/ic_time"
+                    android:gravity="center"
+                    android:paddingRight="10dp"
+                    android:text="15min ago"
+                    android:textSize="11sp"
+                    />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:text="Dog Problem"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                >
+
+
+                <gagan.com.communities.utills.RoundedCornersGaganImg
+                    android:id="@+id/imgUserPic"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@mipmap/user_img"
+                    android:scaleType="fitXY"/>
+
+                <TextView
+                    android:id="@+id/tvUsername"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="UserName"
+                    android:textSize="11sp"
+                    android:textStyle="bold"/>
+
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/tvMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#7bebebeb"
+                android:padding="6dp"
+                android:text="Android, Inc. was founded in Palo Alto, California in October 2003 by Andy Rubin (co-founder of Danger),[27] Rich Miner (co-founder of Wildfire Communications, Inc.),[28] Nick Sears[29] (once VP at T-Mobile),[30] and Chris White (headed design and interface development at WebTV)[13] to develop, in Rubin's words smarter mobile devices that are more aware of its owner's location and preferences"
+                android:textColor="@color/black"
+                android:textSize="11sp"
+                />
+
+            <gagan.com.communities.utills.RoundedCornersGaganImg
+                android:id="@+id/imgMessage"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="2dp"
+                android:background="#7bebebeb"
+                android:scaleType="centerCrop"
+                android:visibility="gone"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+
+                <TextView
+                    android:id="@+id/tvLikes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@mipmap/ic_like"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:text="123 useful"
+                    android:textSize="9sp"
+                    />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+
+                    android:layout_marginRight="5dp"
+                    android:background="@color/lt_grey"
+                    />
+
+
+                <TextView
+                    android:id="@+id/tvDislikes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@mipmap/ic_dislike"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:text="122 not useful"
+                    android:textSize="9sp"
+                    />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@color/lt_grey"
+                    />
+
+
+                <TextView
+                    android:id="@+id/tvComments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@mipmap/ic_cmnt"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:text="115 Comment"
+                    android:textSize="9sp"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@color/lt_grey"
+                    />
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_share"/>
+
+
+                <ImageView
+                    android:id="@+id/imgOptions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="30dp"
+                    android:padding="7dp"
+                    android:src="@mipmap/ic_more"/>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

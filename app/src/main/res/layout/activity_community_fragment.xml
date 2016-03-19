@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:gagan="http://schemas.android.com/apk/res-auto"
+    >
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/button_pink"
+        android:elevation="4dp"
+
+        gagan:popupTheme="@style/MyMaterialTheme.G">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                android:id="@+id/txtvAddPost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/add_community_btn"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:onClick="addCummunity"
+                />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Community"
+                android:layout_centerInParent="true"
+                android:textColor="@color/white"
+                style="@style/headingtext_style"
+                />
+
+
+            <ImageView
+                android:id="@+id/txtvMapview"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@mipmap/ic_map"
+                android:layout_marginRight="10dp"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/white"
+                android:onClick="showMap"
+                />
+
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.Toolbar>
+
+
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/button_pink"
+        android:theme="@style/tab_style_notification"
+        gagan:tabSelectedTextColor="@color/black"
+        gagan:tabTextColor="@color/white"
+        />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+
+
+
+</LinearLayout>

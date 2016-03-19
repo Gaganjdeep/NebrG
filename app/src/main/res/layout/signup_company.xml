@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_background"
+
+    android:gravity="center"
+    >
+
+    <ScrollView
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="150dp"
+                        android:layout_gravity="center"
+                        android:src="@mipmap/add_photo_img"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/grey_stroke"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@mipmap/ic_usrname"/>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_margin="5dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/blue_grey"/>
+
+
+                        <EditText
+                            android:background="@android:color/transparent"
+                            android:id="@+id/edFullNameS"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ _"
+                            android:hint="Company Name"
+                            android:inputType="textCapSentences"
+                            android:maxLength="20"
+                            android:padding="10dp"
+                            android:singleLine="true"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/lt_grey"
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/grey_stroke"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@mipmap/ic_email"
+                            />
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_margin="5dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/blue_grey"/>
+
+                        <EditText
+                            android:background="@android:color/transparent"
+                            android:id="@+id/edEmailS"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="E-mail"
+                            android:inputType="textEmailAddress"
+                            android:padding="10dp"
+                            android:singleLine="true"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/lt_grey"
+                            />
+                    </LinearLayout>
+
+
+
+
+
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/grey_stroke"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <TextView
+                            android:id="@+id/tvLocation"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:padding="10dp"
+                            android:singleLine="true"
+                            android:text="Location"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white"
+                            android:textSize="18sp"
+                            />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@mipmap/ic_location"
+                            />
+
+                    </LinearLayout>
+
+
+
+                    <EditText
+                        android:textColorHint="@color/lt_grey"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/grey_stroke"
+                        android:gravity="left"
+                        android:maxLines="5"
+                        android:padding="10dp"
+                        android:minLines="3"
+                        android:hint="Description"
+                        android:textColor="@color/white"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/grey_stroke"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@mipmap/ic_paswd"
+                            />
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_margin="5dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/blue_grey"/>
+
+                        <EditText
+                            android:background="@android:color/transparent"
+                            android:id="@+id/edPswd"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="Password"
+                            android:inputType="textEmailAddress"
+                            android:padding="10dp"
+                            android:singleLine="true"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/lt_grey"
+                            />
+                    </LinearLayout>
+
+
+
+
+
+                    <Button
+                        android:id="@+id/btnSignUp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/btn_selector"
+                        android:text="Sign Up"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:onClick="addBuisness"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Already have a account? "
+                            android:textColor="@color/white"
+                            />
+
+                        <TextView
+                            android:id="@+id/tvloginBack"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:text="Login Now "
+                            android:textColor="@color/button_pink"
+                            android:textSize="15sp"
+                            android:onClick="gotoLogin"
+
+                            />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

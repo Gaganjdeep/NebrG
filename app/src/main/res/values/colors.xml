@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="blue">#2A4FD2</color>
+    <color name="darkblue">#121d59</color>
+    <color name="app_background">#142028</color>
+    <color name="button_pink">#FD5A54</color>
+    <color name="button_pink_dark">#892924</color>
+
+    <color name="blue_grey">#545E6A</color>
+    <color name="greydefault">#7F7F80</color>
+
+
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="black">#000</color>
+    <color name="white">#ffff</color>
+
+
+    <color name="dk_grey">#ee2e2e2e</color>
+    <color name="lt_grey">#ebebeb</color>
+    <color name="grey">#2c2c2c</color>
+    <color name="red">#ed0000</color>
+    <color name="green">#309f00</color>
+    <color name="orange">#e94600</color>
+
+
+</resources>

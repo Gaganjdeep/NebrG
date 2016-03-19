@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:padding="5dp"
+    >
+
+
+    <gagan.com.communities.utills.RoundedCornersGaganImg
+        android:id="@+id/backimg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/cars_icon_"
+        android:scaleType="fitXY"/>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/ic_launcher"/>
+
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:textColor="@color/white"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/tvSubTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sub Title"
+            android:textSize="11sp"
+            android:textColor="@color/white"/>
+
+    </LinearLayout>
+
+
+</FrameLayout>

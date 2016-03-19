@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center"
+              android:layout_margin="10dp"
+              android:background="@drawable/abc_popup_background_mtrl_mult"
+              android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Rate Neibr"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:textSize="21sp"
+            android:layout_marginBottom="15dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="If you enjoy using Neibr , would you mind taking a moment to rate it ?"
+                android:gravity="center"
+                android:textSize="17sp"
+                />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lt_grey"/>
+
+        <Button
+            android:id="@+id/now"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="10dp"
+            android:textAllCaps="false"
+            android:text="Rate it Now"
+            android:textColor="@color/button_pink"
+            android:textSize="17sp"
+            android:textStyle="bold"/>
+
+<View
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@color/lt_grey"/>
+        <Button
+            android:id="@+id/later"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="10dp"
+            android:textAllCaps="false"
+            android:text="Remind Me Later"
+            android:textColor="@color/button_pink"
+            android:textSize="17sp"
+            android:textStyle="bold"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lt_grey"/>
+        <Button
+            android:id="@+id/no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="10dp"
+            android:textAllCaps="false"
+            android:text="No , Thanks"
+            android:textColor="@color/button_pink"
+            android:textSize="17sp"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+
+</LinearLayout>

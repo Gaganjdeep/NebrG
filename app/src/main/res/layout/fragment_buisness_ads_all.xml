@@ -1,0 +1,51 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="gagan.com.communities.activites.fragment.BuisnessAdsAllFragment">
+
+    <LinearLayout
+        android:focusableInTouchMode="true"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="7dp"
+        android:background="@drawable/search_back"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="2dp">
+
+
+        <EditText
+
+            android:textSize="12sp"
+            android:id="@+id/edSearch"
+            android:hint="Search.."
+            android:paddingLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/search_btn"/>
+
+    </LinearLayout>
+
+<View
+    android:layout_width="match_parent"
+    android:layout_height="2dp"
+    android:background="@drawable/search_back"/>
+    <GridView
+        android:id="@+id/grid"
+        android:layout_width="match_parent"
+
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:numColumns="3"/>
+
+
+</LinearLayout>

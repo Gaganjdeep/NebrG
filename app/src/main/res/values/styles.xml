@@ -1,0 +1,71 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <!-- Base application theme. -->
+    <style name="MyMaterialTheme.G" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <item name="android:windowNoTitle">true</item>
+
+        <item name="android:windowActionBar">false</item>
+
+        <item name="android:colorPrimary">@color/button_pink</item>
+
+        <item name="android:colorPrimaryDark">@color/button_pink</item>
+
+        <item name="android:colorAccent">@color/white</item>
+
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+
+    </style>
+
+    <style name="over_flow" parent="Base.Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:src">@mipmap/menu_img</item>
+
+    </style>
+
+    <style name="tab_style_notification" parent="Widget.Design.TabLayout">
+        <item name="android:colorPrimary">@color/black</item>
+        <item name="android:colorAccent">@color/white</item>
+        <item name="android:textSize">9sp</item>
+        <item name="android:textColorPrimary">@color/white</item>
+
+
+    </style>
+    <style name="tab_heading" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="headingtext_style">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/white</item>
+
+    </style>
+
+    <style name="Theme_Dialog" parent="android:Theme.Light">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/DialogAnimation</item>
+    </style>
+
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+    </style>
+
+    <style name="MyMaterialTheme.G.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="MyMaterialTheme.G.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+
+
+
+
+
+
+</resources>

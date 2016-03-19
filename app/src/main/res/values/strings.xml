@@ -1,0 +1,44 @@
+<resources>
+    <string name="app_name">Neibr</string>
+
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
+    <string name="hello_world">Hello world!</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_sign_up">Sign Up</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_add_post">Add Post</string>
+    <string name="title_activity_my_buisness">MyBuisness</string>
+
+
+    <string name="app_id">162357230814856</string>
+
+
+    <string-array name="add_post">
+        <item>Select genre</item>
+        <item>Social</item>
+        <item>Politics</item>
+        <item>Sports</item>
+        <item>Entertainment</item>
+        <item>Education</item>
+        <item>General Discussion</item>
+        <item>Ask a Question</item>
+    </string-array>
+
+
+    <string-array name="community_category">
+        <item>Residential Area</item>
+        <item>Recreation Center</item>
+        <item>Educational Institute</item>
+        <item>Work Place</item>
+        <item>Business Center</item>
+        <item>Religious Place</item>
+        <item>General</item>
+    </string-array>
+
+</resources>

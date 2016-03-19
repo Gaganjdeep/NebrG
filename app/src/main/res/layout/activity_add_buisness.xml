@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              xmlns:gagan="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/button_pink"
+        android:elevation="4dp"
+        gagan:popupTheme="@style/MyMaterialTheme.G">
+
+
+        <TextView
+            style="@style/headingtext_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Add Buisness"/>
+
+
+    </android.support.v7.widget.Toolbar>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/lt_grey"
+                android:gravity="center"
+                android:orientation="vertical"
+                >
+
+
+                <gagan.com.communities.utills.RoundedCornersGaganImg
+                    android:id="@+id/imgBuisnessimg"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:scaleType="center"
+                    android:src="@mipmap/add_photo_img"/>
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Company Name"
+                    android:textStyle="bold"
+                    android:textColor="@color/button_pink"/>
+
+
+                <EditText
+                    android:textColor="@color/black"
+                    android:id="@+id/edCompanyName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/grey_stroke"
+                    android:padding="10dp"
+                    android:maxLines="1"/>
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="E-mail"
+                    android:textStyle="bold"
+                    android:textColor="@color/button_pink"/>
+
+
+                <EditText
+                    android:textColor="@color/black"
+                    android:id="@+id/edEmailC"
+                    android:maxLines="1"
+                    android:background="@drawable/grey_stroke"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:inputType="textEmailAddress"
+                    />
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Location"
+                    android:textStyle="bold"
+                    android:textColor="@color/button_pink"/>
+
+
+                <EditText
+                    android:textColor="@color/black"
+                    android:id="@+id/edLocation"
+                    android:maxLines="1"
+                    android:background="@drawable/grey_stroke"
+                    android:layout_width="match_parent"
+                    android:padding="10dp"
+                    android:layout_height="wrap_content"/>
+
+
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Description"
+                    android:textStyle="bold"
+                    android:textColor="@color/button_pink"/>
+
+
+                <EditText
+                    android:textColor="@color/black"
+                    android:id="@+id/edDescription"
+                    android:gravity="top"
+                    android:hint="Type your text.."
+                    android:background="@drawable/grey_stroke"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:minLines="2"/>
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Category"
+                    android:textStyle="bold"
+                    android:textColor="@color/button_pink"/>
+
+                <LinearLayout
+                    android:onClick="openSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:orientation="horizontal"
+                    android:background="@drawable/grey_stroke">
+                    <TextView
+                        android:id="@+id/tvcategory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Electronics"/>
+                    <android.support.v7.widget.AppCompatSpinner
+                        android:id="@+id/spinner"
+                        android:layout_width="0.5dp"
+                        android:layout_height="0.5dp"
+                        android:entries="@array/add_post"/>
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/blue_grey"/>
+                    <ImageView
+                        android:layout_marginLeft="7dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/drop_btn"/>
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_selector"
+                android:textColor="@color/white"
+                android:text="Submit"
+                android:onClick="subMitt"/>
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

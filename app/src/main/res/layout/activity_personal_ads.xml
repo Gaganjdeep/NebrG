@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/button_pink"
+        android:elevation="4dp"
+
+        app:popupTheme="@style/MyMaterialTheme.G">
+
+        <LinearLayout
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txtvAddPost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/create_btn"
+                    android:gravity="right|center"
+                    android:paddingRight="10dp"
+                    android:onClick="createNewAd"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+
+                    />
+            </LinearLayout>
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Personal Ads"
+                android:textColor="@color/white"
+                style="@style/headingtext_style"
+                />
+            <LinearLayout
+                android:gravity="right"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+
+                <ImageView
+                    android:id="@+id/txtvMapview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@mipmap/ic_map"
+                    android:gravity="end"
+                    android:textColor="@color/white"
+                    android:onClick="showMap"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </android.support.v7.widget.Toolbar>
+
+
+
+
+    <FrameLayout
+        android:id="@+id/layoutContainer"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
