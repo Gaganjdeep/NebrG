@@ -40,6 +40,14 @@ public class BitmapDecoderG {
 
 
     //    ========================================================
+    
+        //   Bitmap bmp = Glide.with(con)
+        //             .load(url)
+        //             .asBitmap()
+        //             .into(200,200)
+        //             .get();
+    
+    
     public static String getBytesImage(Context context,Uri imageUri) {
         try {
             Bitmap bm = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
