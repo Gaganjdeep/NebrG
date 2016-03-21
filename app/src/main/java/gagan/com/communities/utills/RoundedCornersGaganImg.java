@@ -198,6 +198,8 @@ public class RoundedCornersGaganImg extends ImageView
 
 
     }
+    
+    //compile 'com.github.bumptech.glide:glide:3.7.0'
      public void setThumbnail(Context con, String URL)
     {
 
