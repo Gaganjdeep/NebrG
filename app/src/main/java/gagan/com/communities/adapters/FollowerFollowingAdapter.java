@@ -11,8 +11,10 @@ import android.widget.TextView;
 import java.util.List;
 
 import gagan.com.communities.R;
+import gagan.com.communities.activites.ChatActivity;
 import gagan.com.communities.activites.OtherProfileActivity;
 import gagan.com.communities.activites.ProfileActivity;
+import gagan.com.communities.activites.ShowFragmentActivity;
 import gagan.com.communities.models.UserDataModel;
 import gagan.com.communities.utills.RoundedCornersGaganImg;
 
@@ -29,8 +31,7 @@ public class FollowerFollowingAdapter extends RecyclerView.Adapter<FollowerFollo
     private List<UserDataModel> dataList;
 
 
-    public FollowerFollowingAdapter(Context context, List<UserDataModel> dList)
-    {
+    public FollowerFollowingAdapter(Context context, List<UserDataModel> dList) {
 
         this.dataList = dList;
         con = context;
@@ -38,15 +39,13 @@ public class FollowerFollowingAdapter extends RecyclerView.Adapter<FollowerFollo
     }
 
     @Override
-    public FollowerFollowingAdapter.MyViewHolderG onCreateViewHolder(ViewGroup parent, int viewType)
-    {
+    public FollowerFollowingAdapter.MyViewHolderG onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.followers_inflator, parent, false);
         return new MyViewHolderG(view);
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolderG holder, int position)
-    {
+    public void onBindViewHolder(MyViewHolderG holder, int position) {
 
         final UserDataModel currentData = dataList.get(position);
 
@@ -54,47 +53,72 @@ public class FollowerFollowingAdapter extends RecyclerView.Adapter<FollowerFollo
         holder.tvText.setText(currentData.getProfession());
 
         holder.imgUserPic.setRadius(170);
-        if (!currentData.getProfile_pic().equals(""))
-        {
+        if (!currentData.getProfile_pic().equals("")) {
 
             holder.imgUserPic.setImageUrl(con, currentData.getProfile_pic());
         }
 
 
-        if (con instanceof ProfileActivity)
-        {
+        if (con instanceof ProfileActivity) {
             holder.view.setTag(currentData.getuId());
-            holder.view.setOnClickListener(new View.OnClickListener()
+            holder.view.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intnt = new Intent(con, OtherProfileActivity.class);
+                            intnt.putExtra("user_id", v.getTag().toString());
+                            con.startActivity(intnt);
+                        }
+                    }
+            );
+        }
+        else
+        {
+            if (setOnClickListener)
             {
-                @Override
-                public void onClick(View v)
-                {
-                    Intent intnt= new Intent(con, OtherProfileActivity.class);
-                    intnt.putExtra("user_id",v.getTag().toString());
-                    con.startActivity(intnt);
-                }
-            });
+                holder.view.setTag(currentData);
+                holder.view.setOnClickListener(
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v)
+                            {
+                               UserDataModel data=(UserDataModel)v.getTag();
+
+                                Intent intnt = new Intent(con, ChatActivity
+                                        .class);
+                                intnt.putExtra("id", data.getuId());
+                                intnt.putExtra("pic", data.getProfile_pic());
+                                con.startActivity(intnt);
+                            }
+                        }
+                );
+            }
         }
 
 
+
+
+    }
+
+    boolean setOnClickListener=false;
+
+    public void setOnclickOnView(boolean onclickOnView) {
+        setOnClickListener = onclickOnView;
     }
 
 
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return dataList.size();
     }
 
 
-    class MyViewHolderG extends RecyclerView.ViewHolder
-    {
+    class MyViewHolderG extends RecyclerView.ViewHolder {
         TextView tvName, tvText;
-        View                   view;
+        View view;
         RoundedCornersGaganImg imgUserPic;
 
-        public MyViewHolderG(View itemView)
-        {
+        public MyViewHolderG(View itemView) {
             super(itemView);
             tvText = (TextView) itemView.findViewById(R.id.tvText);
             tvName = (TextView) itemView.findViewById(R.id.tvName);

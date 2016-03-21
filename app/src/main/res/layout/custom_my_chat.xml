@@ -56,7 +56,7 @@
 
 
                 <TextView
-                    android:id = "@+id/txtV_otherChatmsg"
+                    android:id = "@+id/tvChatmsg"
                     android:layout_width = "wrap_content"
                     android:layout_height = "wrap_content"
                     android:autoLink = "all"
@@ -70,7 +70,7 @@
                     android:textSize = "14sp"/>
 
                 <TextView
-                    android:id = "@+id/txtV_otherChatDate"
+                    android:id = "@+id/tvChatDate"
                     android:layout_width = "wrap_content"
                     android:layout_height = "wrap_content"
                     android:layout_gravity = "right"
@@ -89,13 +89,13 @@
             android:layout_gravity = "right|bottom"
             android:orientation = "vertical">
 
-            <ImageView
-                android:id = "@+id/fb_otherChat"
+            <gagan.com.communities.utills.RoundedCornersGaganImg
+                android:id = "@+id/imgChat"
                 android:layout_width = "35dp"
                 android:layout_height = "35dp"
                 android:layout_gravity = "center_horizontal"
                 android:scaleType = "fitXY">
-            </ImageView>
+            </gagan.com.communities.utills.RoundedCornersGaganImg>
 
         </LinearLayout>
 

@@ -1,4 +1,4 @@
-package com.support.android.designlibdemo.chat;
+package gagan.com.communities.utills;
 
 import android.content.ContentValues;
 import android.content.Context;

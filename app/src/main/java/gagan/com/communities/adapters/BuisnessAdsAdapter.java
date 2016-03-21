@@ -1,24 +1,17 @@
 package gagan.com.communities.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
-import java.util.Objects;
 
 import gagan.com.communities.R;
 import gagan.com.communities.models.GridModel;
-import gagan.com.communities.models.HomeModel;
-import gagan.com.communities.utills.RoundedCornersGaganImg;
 
 /**
  * Created by sony on 23-01-2016.

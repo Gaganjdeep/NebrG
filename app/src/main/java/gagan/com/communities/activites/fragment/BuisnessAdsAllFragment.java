@@ -7,14 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import gagan.com.communities.R;
 import gagan.com.communities.adapters.BuisnessAdsAdapter;
-import gagan.com.communities.adapters.MessageAdapter;
 import gagan.com.communities.models.GridModel;
 
 /**

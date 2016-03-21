@@ -9,9 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import gagan.com.communities.R;
-import gagan.com.communities.activites.fragment.MessageFragment;
 import gagan.com.communities.activites.fragment.MyCommunityFragment;
-import gagan.com.communities.activites.fragment.NotificationFragment;
 
 public class CommunityTabActivity extends AppCompatActivity {
 
@@ -85,7 +83,7 @@ public class CommunityTabActivity extends AppCompatActivity {
 
     public void showMap(View view) {
 
-        Intent intnt = new Intent(CommunityTabActivity.this, ShowMapActivity
+        Intent intnt = new Intent(CommunityTabActivity.this, ShowFragmentActivity
                 .class);
         intnt.putExtra("title", "Communities");
         startActivity(intnt);

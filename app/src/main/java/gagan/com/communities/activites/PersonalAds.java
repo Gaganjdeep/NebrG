@@ -3,13 +3,10 @@ package gagan.com.communities.activites;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 
 import gagan.com.communities.R;
-import gagan.com.communities.activites.fragment.BuisnessAdsAllFragment;
 import gagan.com.communities.activites.fragment.PersonalAdsGridFragment;
 
 public class PersonalAds extends AppCompatActivity {
@@ -48,7 +45,7 @@ public class PersonalAds extends AppCompatActivity {
     }
 
     public void showMap(View view) {
-        Intent intnt = new Intent(PersonalAds.this, ShowMapActivity
+        Intent intnt = new Intent(PersonalAds.this, ShowFragmentActivity
                 .class);
         intnt.putExtra("title", "Personal Ads");
         startActivity(intnt);

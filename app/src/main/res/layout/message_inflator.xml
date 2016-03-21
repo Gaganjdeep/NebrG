@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
+              android:layout_height="wrap_content"
               android:gravity="center"
               android:padding="5dp"
               android:orientation="horizontal">
@@ -10,7 +10,9 @@
     <gagan.com.communities.utills.RoundedCornersGaganImg
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="@mipmap/user_img"/>
+        android:scaleType="fitXY"
+        android:id="@+id/imgUserPic"
+        android:background="@drawable/circle_grey"/>
 
 
     <LinearLayout
@@ -18,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="5dp">
 
 
         <LinearLayout
@@ -31,6 +33,7 @@
 
 
             <TextView
+                android:id="@+id/tvUserName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -40,6 +43,7 @@
                 android:textStyle="bold"/>
 
             <TextView
+                android:id="@+id/tvTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
@@ -60,6 +64,7 @@
 
 
             <TextView
+                android:id="@+id/tvMessage"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

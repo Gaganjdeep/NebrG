@@ -18,7 +18,7 @@
         android:padding="5dp">
 
         <ImageView
-            android:id="@+id/fb_MyChat"
+            android:id="@+id/imgChat"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_gravity="bottom"
@@ -52,7 +52,7 @@
             </FrameLayout>-->
 
             <TextView
-                android:id="@+id/txtV_MyChatmsg"
+                android:id="@+id/tvChatmsg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:autoLink="all"
@@ -66,7 +66,7 @@
                 android:textSize="14sp"/>
 
             <TextView
-                android:id="@+id/txtV_MyChatDate"
+                android:id="@+id/tvChatDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"

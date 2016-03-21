@@ -7,13 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import gagan.com.communities.R;
 import gagan.com.communities.activites.fragment.BuisnessAdsAllFragment;
-import gagan.com.communities.activites.fragment.MessageFragment;
-import gagan.com.communities.activites.fragment.NotificationFragment;
 
 public class BuisnessAdsActivity extends AppCompatActivity {
 
@@ -71,7 +67,7 @@ public class BuisnessAdsActivity extends AppCompatActivity {
     }
 
     public void showMap(View view) {
-        Intent intnt = new Intent(BuisnessAdsActivity.this, ShowMapActivity
+        Intent intnt = new Intent(BuisnessAdsActivity.this, ShowFragmentActivity
                 .class);
         intnt.putExtra("title", "Business Center");
         startActivity(intnt);

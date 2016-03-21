@@ -1,28 +1,20 @@
 package gagan.com.communities.activites.fragment;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import gagan.com.communities.R;
 import gagan.com.communities.activites.MyAdvertisements;
-import gagan.com.communities.activites.PersonalAds;
 import gagan.com.communities.adapters.BuisnessAdsAdapter;
 import gagan.com.communities.models.GridModel;
 

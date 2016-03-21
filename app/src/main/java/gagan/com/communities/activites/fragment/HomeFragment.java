@@ -338,13 +338,13 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
         switch (item.getItemId())
         {
 
-            case R.id.navigate_home:
+           /* case R.id.navigate_home:
 
                 Intent intnt = new Intent(getActivity(), CurrentLocationPostActivity
                         .class);
                 startActivity(intnt);
 
-                break;
+                break;*/
 
 
         }

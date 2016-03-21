@@ -40,5 +40,6 @@
         <item>Religious Place</item>
         <item>General</item>
     </string-array>
+    <string name="title_activity_chat">ChatActivity</string>
 
 </resources>

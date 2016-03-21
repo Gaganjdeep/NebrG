@@ -1,11 +1,11 @@
 [
     {
-        "merged": "F:\\PROJECTS\\Communities\\facebook\\build\\intermediates\\res\\merged\\debug\\drawable\\com_facebook_button_login_silver_background.xml",
-        "source": "F:\\PROJECTS\\Communities\\facebook\\res\\drawable\\com_facebook_button_login_silver_background.xml"
-    },
-    {
         "merged": "F:\\PROJECTS\\Communities\\facebook\\build\\intermediates\\res\\merged\\debug\\drawable\\com_facebook_button_send_background.xml",
         "source": "F:\\PROJECTS\\Communities\\facebook\\res\\drawable\\com_facebook_button_send_background.xml"
+    },
+    {
+        "merged": "F:\\PROJECTS\\Communities\\facebook\\build\\intermediates\\res\\merged\\debug\\drawable\\com_facebook_button_login_silver_background.xml",
+        "source": "F:\\PROJECTS\\Communities\\facebook\\res\\drawable\\com_facebook_button_login_silver_background.xml"
     },
     {
         "merged": "F:\\PROJECTS\\Communities\\facebook\\build\\intermediates\\res\\merged\\debug\\drawable\\messenger_button_blue_bg_selector.xml",

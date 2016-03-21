@@ -1,19 +1,15 @@
 package gagan.com.communities.activites.fragment;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import gagan.com.communities.R;
-import gagan.com.communities.activites.MainTabActivity;
-import gagan.com.communities.activites.OtherProfileActivity;
-import gagan.com.communities.adapters.MessageAdapter;
 import gagan.com.communities.adapters.NotificationAdapter;
 
 
@@ -31,13 +27,13 @@ public class NotificationFragment extends Fragment {
             Bundle savedInstanceState
     ) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_notification_message, container, false);
+        View v = inflater.inflate(R.layout.recycler_list_layout, container, false);
 
-        ListView listViewNotiMsg = (ListView) v.findViewById(R.id.listViewNotiMsg);
-
+        RecyclerView recyclerList = (RecyclerView) v.findViewById(R.id.recyclerList);
+        recyclerList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         NotificationAdapter msgAdapter = new NotificationAdapter(getActivity(), null);
-        listViewNotiMsg.setAdapter(msgAdapter);
+        recyclerList.setAdapter(msgAdapter);
 
 
         return v;

@@ -1,4 +1,4 @@
-package com.support.android.designlibdemo.chat;
+package gagan.com.communities.activites.fragment;
 
 
 
@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gagan.com.communities.R;
+import gagan.com.communities.activites.fragment.BaseFragmentG;
 import gagan.com.communities.adapters.FollowerFollowingAdapter;
 import gagan.com.communities.models.HomeModel;
 import gagan.com.communities.models.UserDataModel;
@@ -70,14 +71,10 @@ public class AddChatFragment extends BaseFragmentG
             progressBar.setVisibility(View.VISIBLE);
 
             JSONObject data = new JSONObject();
-            data.put("user_id", "1");
-
-//            data.put("user_id", "1");
-
-            data.put("f_status", getArguments().getString("follower"));  // 1 for followers 2 for following.
+            data.put("userid", sharedPrefHelper.getUserId());
 
 
-            new SuperWebServiceG(GlobalConstants.URL + "getfollowerList", data, new CallBackWebService()
+            new SuperWebServiceG(GlobalConstants.URL + "getuserlist", data, new CallBackWebService()
             {
                 @Override
                 public void webOnFinish(String output)
@@ -109,7 +106,7 @@ public class AddChatFragment extends BaseFragmentG
 
                 JSONArray jsonarrayData;
 
-                    jsonarrayData= jsonMainResult.getJSONArray("following");
+                    jsonarrayData= jsonMainResult.getJSONArray("userlist");
 
 
 
@@ -133,13 +130,10 @@ public class AddChatFragment extends BaseFragmentG
                 }
 
                 FollowerFollowingAdapter msgAdapter = new FollowerFollowingAdapter(getActivity(), list);
+                msgAdapter.setOnclickOnView(true);
                 recyclerList.setAdapter(msgAdapter);
+            }
 
-            }
-            else
-            {
-//                Utills.showToast("No users available", getActivity(), true);
-            }
 
         }
         catch (Exception e)

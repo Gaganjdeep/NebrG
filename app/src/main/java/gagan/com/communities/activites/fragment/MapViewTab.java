@@ -89,15 +89,15 @@ public class MapViewTab extends Fragment {
         MainTabActivity.Adapter adapter = new MainTabActivity.Adapter(getChildFragmentManager());
         adapter.addFragment(new Communitiesfragment(), "Communities");
         adapter.addFragment(new PostsFragment(), "Posts");
-        adapter.addFragment(new BuisnessCenterMapFragment(), "Business Center");
-        adapter.addFragment(new PersonalAdsMapFragment(), "Personal Ads");
+//        adapter.addFragment(new BuisnessCenterMapFragment(), "Business Center");
+//        adapter.addFragment(new PersonalAdsMapFragment(), "Personal Ads");
         viewPager.setAdapter(adapter);
 
         viewPager.setOffscreenPageLimit(0);
     }
 
     public void setupTabLayout(TabLayout tabLayout, final ViewPager mViewpager) {
-        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(mViewpager);
 
     }
