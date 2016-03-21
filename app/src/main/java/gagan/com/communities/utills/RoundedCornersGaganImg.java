@@ -198,6 +198,24 @@ public class RoundedCornersGaganImg extends ImageView
 
 
     }
+     public void setThumbnail(Context con, String URL)
+    {
+
+
+        if (!URL.isEmpty())
+        {
+           Glide  
+    .with( con )
+    .load(URL )
+    .thumbnail( 0.1f )
+    .into( this );
+
+        }
+
+
+    }
+    
+ 
 
 
 }
