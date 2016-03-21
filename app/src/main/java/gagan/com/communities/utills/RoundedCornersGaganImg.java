@@ -200,6 +200,7 @@ public class RoundedCornersGaganImg extends ImageView
     }
     
     //compile 'com.github.bumptech.glide:glide:3.7.0'
+    // https://futurestud.io/blog/glide-custom-transformation
      public void setThumbnail(Context con, String URL)
     {
 
