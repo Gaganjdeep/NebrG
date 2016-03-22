@@ -41,6 +41,28 @@ public class Utills {
     }
 
 
+
+
+   public static void animate(View view)
+        {
+            view.setPivotX(view.getX());
+            view.setAlpha(0.5f);
+            view.setScaleX(0.1f);
+            view.setScaleY(0.1f);
+            view.animate()
+                    .scaleX(1f)
+                    .scaleY(1f)
+                    .setDuration(500)
+                    .alpha(1f)
+                    .setInterpolator(new AccelerateDecelerateInterpolator())
+                    .start();
+        }
+
+
+
+
+
+
     public static void transitionToActivity(Activity activity, Class target, View logo, String transitionName) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Intent i = new Intent(activity, target);
