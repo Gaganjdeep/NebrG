@@ -165,12 +165,7 @@ public class RoundedCornersGaganImg extends ImageView {
 
 
         if (!URL.isEmpty()) {
-//            Glide
-//                    .with(con)
-//                    .load(URL)
-//                    .crossFade()
-//                    .centerCrop()
-//                    .into(this);
+
             options = new DisplayImageOptions.Builder().cacheInMemory(true)
                     .cacheOnDisc(true).resetViewBeforeLoading(true)
                     .showImageForEmptyUri(drawable)
@@ -181,7 +176,39 @@ public class RoundedCornersGaganImg extends ImageView {
             imageLoader.init(ImageLoaderConfiguration.createDefault(((ContextWrapper) con).getBaseContext()));
 
 
-            imageLoader.displayImage(URL, this, options);
+            // imageLoader.displayImage(URL, this, options);
+              imageLoader.displayImage(URL, this, options, new ImageLoadingListener()
+        {
+
+            @Override
+            public void onLoadingStarted(String s, View view)
+            {
+
+            }
+
+            @Override
+            public void onLoadingFailed(String s, View view, FailReason failReason)
+            {
+
+            }
+
+            @Override
+            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+            {
+
+                AlphaAnimation scale = new AlphaAnimation(0.1f, 1f);
+                scale.setDuration(500);
+                scale.setInterpolator(new OvershootInterpolator());
+                view.startAnimation(scale);
+
+            }
+
+            @Override
+            public void onLoadingCancelled(String imageUri, View view)
+            {
+
+            }
+        });
         }
 
 
@@ -193,6 +220,10 @@ public class RoundedCornersGaganImg extends ImageView {
 
 
         if (!URL.isEmpty()) {
+            setImageUrl(con, URL);
+            this.setAlpha(40f);
+            
+            
 //            Glide
 //                    .with(con)
 //                    .load(URL)
