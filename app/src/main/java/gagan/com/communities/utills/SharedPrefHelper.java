@@ -171,6 +171,31 @@ public class SharedPrefHelper
 //    ======================================
 
 
+
+
+
+// set distance
+
+  public void setDistanceParam(int km)
+    {
+        SharedPreferences.Editor ed = sharedPreferences.edit();
+        ed.putInt("distanceParam", login);
+        ed.apply();
+    }
+    
+    
+    public int getDistanceParam()
+    {
+        return sharedPreferences.getInt("distanceParam",50);
+    }
+
+// distance end
+
+
+
+
+
+
     //    ============================
     public void logInWith(String login)
     {
