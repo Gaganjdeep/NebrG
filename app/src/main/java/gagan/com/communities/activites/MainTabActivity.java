@@ -22,16 +22,19 @@ import gagan.com.communities.activites.fragment.MoreFragment;
 import gagan.com.communities.activites.fragment.NotificationTabFragment;
 
 
-public class MainTabActivity extends AppCompatActivity {
+public class MainTabActivity extends AppCompatActivity
+{
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_tab);
 
         viewPagerG = (ViewPager) findViewById(R.id.viewpager);
-        if (viewPagerG != null) {
+        if (viewPagerG != null)
+        {
             setupViewPager(viewPagerG);
         }
 
@@ -50,7 +53,8 @@ public class MainTabActivity extends AppCompatActivity {
     TabLayout tabLayoutG;
     ViewPager viewPagerG;
 
-    private void setupViewPager(ViewPager viewPager) {
+    private void setupViewPager(ViewPager viewPager)
+    {
         Adapter adapter = new Adapter(getSupportFragmentManager());
         adapter.addFragment(new HomeFragment(), "Home");
         adapter.addFragment(new MapViewTab(), "Map View");
@@ -58,20 +62,41 @@ public class MainTabActivity extends AppCompatActivity {
         adapter.addFragment(new MoreFragment(), "More");
         viewPager.setAdapter(adapter);
 
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener()
+        {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
+            {
 
+            }
+
+            @Override
+            public void onPageSelected(int position)
+            {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state)
+            {
+                supportInvalidateOptionsMenu();
+            }
+        });
     }
 
-    public void setupTabLayout(TabLayout tabLayout, final ViewPager mViewpager) {
+    public void setupTabLayout(TabLayout tabLayout, final ViewPager mViewpager)
+    {
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
         tabLayout.setupWithViewPager(mViewpager);
 
 
-        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+        for (int i = 0; i < tabLayout.getTabCount(); i++)
+        {
             LinearLayout tab = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
 
-            ImageView icon = (ImageView) tab.findViewById(R.id.icon);
-            TextView title = (TextView) tab.findViewById(R.id.title);
+            ImageView icon  = (ImageView) tab.findViewById(R.id.icon);
+            TextView  title = (TextView) tab.findViewById(R.id.title);
 
             icon.setBackgroundResource(selectedIcons[i]);
             title.setText(selectedTitle[i]);
@@ -80,7 +105,7 @@ public class MainTabActivity extends AppCompatActivity {
             tabLayout.getTabAt(i).setIcon(selectedIcons[i]);
 
 
-            tab.setSelected(i==0);
+            tab.setSelected(i == 0);
         }
 
 
@@ -92,31 +117,37 @@ public class MainTabActivity extends AppCompatActivity {
 
     final private String selectedTitle[] = {"Home", "Map View", "Notification", "More"};
 
-    public static class Adapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragments = new ArrayList<>();
-        private final List<String> mFragmentTitles = new ArrayList<>();
+    public static class Adapter extends FragmentPagerAdapter
+    {
+        private final List<Fragment> mFragments      = new ArrayList<>();
+        private final List<String>   mFragmentTitles = new ArrayList<>();
 
-        public Adapter(FragmentManager fm) {
+        public Adapter(FragmentManager fm)
+        {
             super(fm);
         }
 
-        public void addFragment(Fragment fragment, String title) {
+        public void addFragment(Fragment fragment, String title)
+        {
             mFragments.add(fragment);
             mFragmentTitles.add(title);
         }
 
         @Override
-        public Fragment getItem(int position) {
+        public Fragment getItem(int position)
+        {
             return mFragments.get(position);
         }
 
         @Override
-        public int getCount() {
+        public int getCount()
+        {
             return mFragments.size();
         }
 
         @Override
-        public CharSequence getPageTitle(int position) {
+        public CharSequence getPageTitle(int position)
+        {
             return mFragmentTitles.get(position);
         }
     }

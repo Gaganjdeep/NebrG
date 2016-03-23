@@ -1,4 +1,4 @@
-package com.support.android.designlibdemo.chat;
+package gagan.com.communities;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -11,9 +11,10 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.ameba.everywherecars_driver.utills.GlobalContstants;
 import com.google.android.gcm.GCMBaseIntentService;
-import com.support.android.designlibdemo.R;
+
+import gagan.com.communities.R;
+import gagan.com.communities.activites.SplashActivity;
 
 public class GCMIntentService extends GCMBaseIntentService
 {
@@ -24,20 +25,20 @@ public class GCMIntentService extends GCMBaseIntentService
 
     public GCMIntentService()
     {
-        super(GlobalContstants.SENDER_ID);
+//        super(GlobalContstants.SENDER_ID);
     }
 
 
 
     private void showNotification(Context context, String message)
     {
-        Intent notificationIntent = new Intent(context, MainActivity.class);
+        Intent notificationIntent = new Intent(context, SplashActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 
-        builder.setSmallIcon(R.drawable.ic_top_notification);
+        builder.setSmallIcon(R.mipmap.apparel_icon);
 
         builder.setContentIntent(pendingIntent);
 
@@ -61,10 +62,10 @@ public class GCMIntentService extends GCMBaseIntentService
 //        }
 //        else
 //        {
-            builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.no_img));
+            builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.grey_bg));
 //        }
 
-        builder.setContentTitle("Reminder");
+        builder.setContentTitle("Neibr");
         builder.setContentText(message);
 //        builder.setSubText("Tap to open EasyBeezee and set reminders..!");
 

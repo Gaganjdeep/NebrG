@@ -4,9 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
 
     tools:context="gagan.com.communities.activites.CommentsListActivity">
+
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/button_pink"
+        android:elevation="4dp"
+        app:popupTheme="@style/MyMaterialTheme.G">
+
+
+        <TextView
+            style="@style/headingtext_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:text="Chat"/>
+
+
+    </android.support.v7.widget.Toolbar>
+
+
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -18,7 +43,8 @@
             android:id="@+id/recyclerList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:elevation="2dp"/>
+            android:elevation="2dp"
+            app:stackFromEnd="true"/>
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -35,15 +61,18 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
+        android:background="@color/greydefault"
         android:padding="7dp">
 
 
         <EditText
+            android:padding="7dp"
+            android:background="@color/white"
             android:id="@+id/edComment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Type your comment here.."
+            android:hint="Type message here.."
             android:maxLines="5"
             android:textColor="@color/black"/>
 

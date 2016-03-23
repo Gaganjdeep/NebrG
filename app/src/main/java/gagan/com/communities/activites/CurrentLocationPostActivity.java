@@ -86,11 +86,12 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
             JSONObject data = new JSONObject();
             data.put("userid", sharedPrefHelper.getUserId());
             data.put("limit", limit + "");
-            data.put("start", startId + "");
+            data.put("startId", startId + "");
             data.put("lat", location.getLatitude() + "");
             data.put("long", location.getLongitude() + "");
+            data.put("distance", "50");
 
-            new SuperWebServiceG(GlobalConstants.URL + "mynearpost", data, new CallBackWebService() {
+            new SuperWebServiceG(GlobalConstants.URL + "nerbyPost", data, new CallBackWebService() {
                 @Override
                 public void webOnFinish(String output) {
                     startId = limit;
@@ -124,9 +125,9 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
 
             JSONObject jsonMainResult = jsonMain.getJSONObject("result");
 
-            if (jsonMainResult.getString("code").contains("20") && !jsonMainResult.getString("code").equals("201")) {
+            if (jsonMainResult.getString("code").contains("200")) {
 
-                JSONArray jsonarrayData = jsonMainResult.getJSONArray("post");
+                JSONArray jsonarrayData = jsonMainResult.getJSONArray("feedData");
 
                 for (int g = 0; g < jsonarrayData.length(); g++) {
                     JSONObject jobj = jsonarrayData.optJSONObject(g);

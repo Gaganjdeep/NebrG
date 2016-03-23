@@ -1,6 +1,7 @@
 package gagan.com.communities.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +12,10 @@ import android.widget.TextView;
 import java.util.List;
 
 import gagan.com.communities.R;
+import gagan.com.communities.activites.ChatActivity;
 import gagan.com.communities.models.MsgDataModel;
 import gagan.com.communities.models.NotificationModel;
+import gagan.com.communities.models.UserDataModel;
 import gagan.com.communities.utills.RoundedCornersGaganImg;
 
 /**
@@ -56,6 +59,23 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
         holder.imgUserPic.setRadius(170);
         holder.imgUserPic.setImageUrl(con, currentData.getProfile_pic());
 
+
+
+        holder.view.setTag(currentData);
+        holder.view.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                MsgDataModel data =(MsgDataModel)v.getTag();
+
+                Intent intnt = new Intent(con, ChatActivity
+                        .class);
+                intnt.putExtra("id", data.getRecipient_userid());
+                intnt.putExtra("pic", data.getProfile_pic());
+                con.startActivity(intnt);
+            }
+        });
 
     }
 

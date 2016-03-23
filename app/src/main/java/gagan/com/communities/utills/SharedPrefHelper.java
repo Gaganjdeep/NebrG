@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+import java.util.HashMap;
 
 import gagan.com.communities.models.UserDataModel;
 
@@ -141,6 +142,35 @@ public class SharedPrefHelper
     }
 
 
+//    =======================================
+
+    public void setHomeLocation(String address, String lat, String lng)
+    {
+        SharedPreferences.Editor ed = sharedPreferences.edit();
+        ed.putString("homeLocation", address);
+        ed.putString("homelat", lat);
+        ed.putString("homelng", lng);
+        ed.apply();
+
+    }
+
+
+    public HashMap<String, String> getHomeLocation()
+    {
+        HashMap<String, String> data = new HashMap<>();
+
+
+        data.put("homeLocation", sharedPreferences.getString("homeLocation", ""));
+        data.put("homelat", sharedPreferences.getString("homelat", ""));
+        data.put("homelat", sharedPreferences.getString("homelat", ""));
+
+        return data;
+    }
+
+
+//    ======================================
+
+
     //    ============================
     public void logInWith(String login)
     {
@@ -155,7 +185,7 @@ public class SharedPrefHelper
     }
 
 
-    public static enum  loginWith
+    public static enum loginWith
     {
         manual,
         google,

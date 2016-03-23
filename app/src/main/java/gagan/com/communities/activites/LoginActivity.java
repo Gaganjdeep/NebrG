@@ -1,13 +1,11 @@
 package gagan.com.communities.activites;
 
-import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -24,7 +22,6 @@ import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.google.android.gms.location.places.UserDataType;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 
@@ -36,6 +33,7 @@ import java.util.HashMap;
 
 import gagan.com.communities.R;
 import gagan.com.communities.models.UserDataModel;
+import gagan.com.communities.utills.CurrentLocActivityG;
 import gagan.com.communities.utills.GlobalConstants;
 import gagan.com.communities.utills.SharedPrefHelper;
 import gagan.com.communities.utills.Utills;
@@ -45,34 +43,42 @@ import gagan.com.communities.webserviceG.SuperWebServiceG;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends BaseActivityG implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
+public class LoginActivity extends CurrentLocActivityG implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
 
 {
 
 
     EditText edEmail, edPswd;
     CallbackManager callbackManager;
-    String FirstName;
-    LoginButton loginButton;
+    String          FirstName;
+    LoginButton     loginButton;
 
 
     //    =====google +
     private GoogleApiClient mGoogleApiClient;
-    private int mSignInProgress;
-    private PendingIntent mSignInIntent;
-    private int mSignInError;
-    private boolean mServerHasToken = true;
-    private static final int STATE_DEFAULT = 0;
-    private static final int STATE_SIGN_IN = 1;
-    private static final int STATE_IN_PROGRESS = 2;
-    private static final int RC_SIGN_IN = 0;
-    private static final String SAVED_PROGRESS = "sign_in_progress";
+    private int             mSignInProgress;
+    private PendingIntent   mSignInIntent;
+    private int             mSignInError;
+    private              boolean mServerHasToken   = true;
+    private static final int     STATE_DEFAULT     = 0;
+    private static final int     STATE_SIGN_IN     = 1;
+    private static final int     STATE_IN_PROGRESS = 2;
+    private static final int     RC_SIGN_IN        = 0;
+    private static final String  SAVED_PROGRESS    = "sign_in_progress";
 
 
-//======================
+    //======================
+    Location locationCurrent = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void getCurrentLocationG(Location currentLocation)
+    {
+        locationCurrent = currentLocation;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
@@ -84,29 +90,43 @@ public class LoginActivity extends BaseActivityG implements GoogleApiClient.Conn
 
 
         //******************************************Facebook*******************************************
-        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>()
+        {
             @Override
-            public void onSuccess(LoginResult loginResult) {
-                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+            public void onSuccess(LoginResult loginResult)
+            {
+                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback()
+                {
                     @Override
-                    public void onCompleted(JSONObject object, GraphResponse response) {
+                    public void onCompleted(JSONObject object, GraphResponse response)
+                    {
                         // Application code
-                        try {
+                        try
+                        {
 
-                             String fb_profile_image="http://graph.facebook.com/" + object.optString("id") + "/picture";
+                            String fb_profile_image = "http://graph.facebook.com/" + object.optString("id") + "/picture";
 //                                editor.commit();
                             HashMap<String, String> loginData = new HashMap<String, String>();
                             loginData.put("full_name", object.getString("name"));
-                            try {
+                            try
+                            {
                                 loginData.put("email", object.getString("email"));
                             }
-                            catch (Exception e) {
+                            catch (Exception e)
+                            {
                                 loginData.put("email", object.getString("id"));
 
                                 Log.e("CANNOT GET EMAIL", "----------------------------- REGISTERING WITH FB ID -------------------------------");
                             }
 
                             loginData.put("fb_id", object.getString("id"));
+
+
+                            if (locationCurrent == null)
+                            {
+                                displayLocation();
+                                return;
+                            }
 
 
                             JSONObject data = new JSONObject();
@@ -118,12 +138,19 @@ public class LoginActivity extends BaseActivityG implements GoogleApiClient.Conn
                             data.put("profile_pic", fb_profile_image);
                             data.put("name", loginData.get("full_name"));
 
+
+                            data.put("home_lat", locationCurrent.getLatitude() + "");
+                            data.put("home_long", locationCurrent.getLongitude() + "");
+
+
                             sharedPrefHelper.logInWith(SharedPrefHelper.loginWith.facebook.toString());
 
                             showProgressDialog();
-                            new SuperWebServiceG(GlobalConstants.URL + "fblogin", data, new CallBackWebService() {
+                            new SuperWebServiceG(GlobalConstants.URL + "fblogin", data, new CallBackWebService()
+                            {
                                 @Override
-                                public void webOnFinish(String output) {
+                                public void webOnFinish(String output)
+                                {
                                     cancelDialog();
 
                                     processOutput(output);
@@ -134,7 +161,8 @@ public class LoginActivity extends BaseActivityG implements GoogleApiClient.Conn
 
 
                         }
-                        catch (Exception e) {
+                        catch (Exception e)
+                        {
                             //                            stop_fb();
                             e.printStackTrace();
                         }
@@ -147,12 +175,14 @@ public class LoginActivity extends BaseActivityG implements GoogleApiClient.Conn
             }
 
             @Override
-            public void onCancel() {
+            public void onCancel()
+            {
                 Log.e("onCancel", "Hello");
             }
 
             @Override
-            public void onError(FacebookException error) {
+            public void onError(FacebookException error)
+            {
 
             }
 
@@ -160,11 +190,13 @@ public class LoginActivity extends BaseActivityG implements GoogleApiClient.Conn
         });
 
 
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null)
+        {
             mSignInProgress = savedInstanceState.getInt(SAVED_PROGRESS, STATE_DEFAULT);
         }
-        mGoogleApiClient = buildGoogleApiClient();
-        if (mGoogleApiClient.isConnected()) {
+        mGoogleApiClient = buildGoogleApiClientG();
+        if (mGoogleApiClient.isConnected())
+        {
             Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
             mGoogleApiClient.disconnect();
             Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
@@ -176,46 +208,58 @@ public class LoginActivity extends BaseActivityG implements GoogleApiClient.Conn
 
 
     @Override
-    protected void onStop() {
+    protected void onStop()
+    {
         super.onStop();
-        if (mGoogleApiClient.isConnected()) {
+        if (mGoogleApiClient.isConnected())
+        {
             mGoogleApiClient.disconnect();
         }
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(Bundle outState)
+    {
         super.onSaveInstanceState(outState);
         outState.putInt(SAVED_PROGRESS, mSignInProgress);
     }
 
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
+        switch (requestCode)
+        {
             case RC_SIGN_IN:
-                if (resultCode == RESULT_OK) {
+                if (resultCode == RESULT_OK)
+                {
                     mSignInProgress = STATE_SIGN_IN;
                 }
-                else {
+                else
+                {
                     mSignInProgress = STATE_DEFAULT;
                 }
-                if (!mGoogleApiClient.isConnecting()) {
+                if (!mGoogleApiClient.isConnecting())
+                {
                     mGoogleApiClient.connect();
                 }
                 break;
         }
     }
 
-    private void resolveSignInError() {
-        if (mSignInIntent != null) {
-            try {
+    private void resolveSignInError()
+    {
+        if (mSignInIntent != null)
+        {
+            try
+            {
                 mSignInProgress = STATE_IN_PROGRESS;
                 startIntentSenderForResult(mSignInIntent.getIntentSender(), RC_SIGN_IN, null, 0, 0, 0);
             }
-            catch (IntentSender.SendIntentException e) {
+            catch (IntentSender.SendIntentException e)
+            {
                 Log.e("====gPlus signIn Ex===", "Sign in intent could" +
                         " not be " +
                         "sent: " +
@@ -227,20 +271,23 @@ public class LoginActivity extends BaseActivityG implements GoogleApiClient.Conn
 
     }
 
-    private GoogleApiClient buildGoogleApiClient() {
+    private GoogleApiClient buildGoogleApiClientG()
+    {
         GoogleApiClient.Builder builder = new GoogleApiClient.Builder(this).addConnectionCallbacks(this).addOnConnectionFailedListener(this).addApi(Plus.API, Plus.PlusOptions.builder().build()).addScope(Plus.SCOPE_PLUS_LOGIN);
         return builder.build();
     }
 
 
     @Override
-    protected void onStart() {
+    protected void onStart()
+    {
         super.onStart();
         getRegisterationID();
     }
 
-    @Override
-    void findViewByID() {
+
+    void findViewByID()
+    {
 
         edEmail = (EditText) findViewById(R.id.edEmail);
         edPswd = (EditText) findViewById(R.id.edPswd);
@@ -252,9 +299,11 @@ public class LoginActivity extends BaseActivityG implements GoogleApiClient.Conn
 
     }
 
-    @Override
-    void hitWebserviceG() {
-        try {
+
+    void hitWebserviceG()
+    {
+        try
+        {
 
 
             showProgressDialog();
@@ -269,9 +318,11 @@ public class LoginActivity extends BaseActivityG implements GoogleApiClient.Conn
             sharedPrefHelper.logInWith(SharedPrefHelper.loginWith.manual.toString());
 
 
-            new SuperWebServiceG(GlobalConstants.URL + "login", data, new CallBackWebService() {
+            new SuperWebServiceG(GlobalConstants.URL + "login", data, new CallBackWebService()
+            {
                 @Override
-                public void webOnFinish(String output) {
+                public void webOnFinish(String output)
+                {
                     cancelDialog();
 
                     processOutput(output);
@@ -282,21 +333,25 @@ public class LoginActivity extends BaseActivityG implements GoogleApiClient.Conn
 
 
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
 
-    private void processOutput(String response) {
+    private void processOutput(String response)
+    {
 
-        try {
+        try
+        {
 
             JSONObject jsonMain = new JSONObject(response);
 
             JSONObject jsonMainResult = jsonMain.getJSONObject("result");
 
-            if (jsonMainResult.getString("code").contains("20") && !jsonMainResult.getString("code").equals("201")) {
+            if (jsonMainResult.getString("code").contains("20") && !jsonMainResult.getString("code").equals("201"))
+            {
 
                 JSONArray jsonarrayData = jsonMainResult.getJSONArray("userdata");
 
@@ -325,22 +380,24 @@ public class LoginActivity extends BaseActivityG implements GoogleApiClient.Conn
             }
 
 
-
-
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
 
     }
 
 
-    private boolean validation() {
-        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(edEmail.getText().toString().trim()).matches()) {
+    private boolean validation()
+    {
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(edEmail.getText().toString().trim()).matches())
+        {
             edEmail.setError("Enter a valid email");
             return false;
         }
-        else if (edPswd.getText().toString().trim().length() < 5) {
+        else if (edPswd.getText().toString().trim().length() < 5)
+        {
             edPswd.setError("Password length should more than 5");
             return false;
         }
@@ -350,15 +407,18 @@ public class LoginActivity extends BaseActivityG implements GoogleApiClient.Conn
     }
 
 
-    public void logIn(View view) {
+    public void logIn(View view)
+    {
 
-        if (validation()) {
+        if (validation())
+        {
             hitWebserviceG();
         }
 
     }
 
-    public void gotoSignup(View view) {
+    public void gotoSignup(View view)
+    {
         startActivity(new Intent(LoginActivity.this, SignUp.class));
         finish();
     }
@@ -368,15 +428,20 @@ public class LoginActivity extends BaseActivityG implements GoogleApiClient.Conn
 
     String DeviceID = "";
 
-    public void getRegisterationID() {
+    public void getRegisterationID()
+    {
 
-        new AsyncTask<Object, Object, Object>() {
+        new AsyncTask<Object, Object, Object>()
+        {
             @Override
-            protected Object doInBackground(Object... params) {
+            protected Object doInBackground(Object... params)
+            {
 
                 String msg = "";
-                try {
-                    if (gcm == null) {
+                try
+                {
+                    if (gcm == null)
+                    {
                         gcm = GoogleCloudMessaging.getInstance(LoginActivity.this);
                     }
                     DeviceID = gcm.register(GlobalConstants.SENDER_ID);
@@ -386,14 +451,16 @@ public class LoginActivity extends BaseActivityG implements GoogleApiClient.Conn
                     msg = "Device registered, registration ID=" + DeviceID;
 
                 }
-                catch (IOException ex) {
+                catch (IOException ex)
+                {
                     msg = "Error :" + ex.getMessage();
 
                 }
                 return msg;
             }
 
-            protected void onPostExecute(Object result) {
+            protected void onPostExecute(Object result)
+            {
 
 
 //                Utills.showToast(result.toString(), LoginActivity.this, true);
@@ -407,20 +474,24 @@ public class LoginActivity extends BaseActivityG implements GoogleApiClient.Conn
     }
 
 
-    public void forgetPswd(View view) {
+    public void forgetPswd(View view)
+    {
         startActivity(new Intent(LoginActivity.this, ForgetPasswordActivity.class));
 //        finish();
     }
 
-    public void fbLogIn(View view) {
+    public void fbLogIn(View view)
+    {
         loginButton.performClick();
     }
 
     @Override
-    public void onConnected(Bundle bundle) {
+    public void onConnected(Bundle bundle)
+    {
 
 
-        try {
+        try
+        {
 
 
             Log.e("google integration====", "onConnected");
@@ -447,6 +518,11 @@ public class LoginActivity extends BaseActivityG implements GoogleApiClient.Conn
 //            registerInBackground();
 //            GlobalUtils.show_ToastCenter("Please " + "check network", con);
 //        }
+            if (locationCurrent == null)
+            {
+                displayLocation();
+                return;
+            }
 
 
             JSONObject data = new JSONObject();
@@ -458,14 +534,20 @@ public class LoginActivity extends BaseActivityG implements GoogleApiClient.Conn
             data.put("profile_pic", currentUser.getImage().getUrl());
             data.put("name", currentUser.getDisplayName());
 
+
+            data.put("home_lat", locationCurrent.getLatitude() + "");
+            data.put("home_long", locationCurrent.getLongitude() + "");
+
+
             sharedPrefHelper.logInWith(SharedPrefHelper.loginWith.google.toString());
 
 
-
             showProgressDialog();
-            new SuperWebServiceG(GlobalConstants.URL + "gpluslogin", data, new CallBackWebService() {
+            new SuperWebServiceG(GlobalConstants.URL + "gpluslogin", data, new CallBackWebService()
+            {
                 @Override
-                public void webOnFinish(String output) {
+                public void webOnFinish(String output)
+                {
                     cancelDialog();
 
                     processOutput(output);
@@ -474,41 +556,49 @@ public class LoginActivity extends BaseActivityG implements GoogleApiClient.Conn
                 }
             }).execute();
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
         mSignInProgress = STATE_DEFAULT;
     }
 
     @Override
-    public void onConnectionSuspended(int i) {
+    public void onConnectionSuspended(int i)
+    {
         Log.e("==gPlus conn ===", "connection " + "suspended");
         mGoogleApiClient.connect();
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult result) {
+    public void onConnectionFailed(ConnectionResult result)
+    {
         Log.e("====gPlus FAILED===", "onConnectionFailed: " +
                 "ConnectionResult" +
                 ".getErrorCode() = " +
                 "" + result.getErrorCode());
-        if (result.getErrorCode() == ConnectionResult.API_UNAVAILABLE) {
+        if (result.getErrorCode() == ConnectionResult.API_UNAVAILABLE)
+        {
             Log.w("google", "API Unavailable.");
         }
-        else if (mSignInProgress != STATE_IN_PROGRESS) {
+        else if (mSignInProgress != STATE_IN_PROGRESS)
+        {
             mSignInIntent = result.getResolution();
             mSignInError = result.getErrorCode();
-            if (mSignInProgress == STATE_SIGN_IN) {
+            if (mSignInProgress == STATE_SIGN_IN)
+            {
                 resolveSignInError();
             }
         }
     }
 
 
-    public void googleLogIn(View view) {
+    public void googleLogIn(View view)
+    {
 //        resolveSignInError();
 
-        if (!mGoogleApiClient.isConnecting()) {
+        if (!mGoogleApiClient.isConnecting())
+        {
             mSignInProgress = STATE_SIGN_IN;
             mGoogleApiClient.connect();
         }

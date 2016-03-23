@@ -17,7 +17,7 @@
         android:orientation="horizontal"
         android:padding="5dp">
 
-        <ImageView
+        <gagan.com.communities.utills.RoundedCornersGaganImg
             android:id="@+id/imgChat"
             android:layout_width="35dp"
             android:layout_height="35dp"
@@ -25,12 +25,13 @@
             android:scaleType="fitXY"/>
 
         <LinearLayout
+            android:layout_marginBottom="7dp"
             android:id="@+id/FrameLayoutMyChat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_marginLeft="1dp"
-            android:background="@color/accent_material_dark"
+            android:background="@drawable/left_bubble"
             android:orientation="vertical"
             android:padding="1dp">
 

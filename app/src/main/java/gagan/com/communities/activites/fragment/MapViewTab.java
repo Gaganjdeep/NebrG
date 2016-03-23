@@ -7,8 +7,12 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -57,12 +61,24 @@ public class MapViewTab extends Fragment {
 
         settingActionBar(v);
 
+
+
+        setHasOptionsMenu(false);
+
         return v;
+    }
+
+
+    @Override
+    public void onResume()
+    {
+        setHasOptionsMenu(false);
+        super.onResume();
     }
 
     private void settingActionBar(View view) {
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+//        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
 
         final Class[] classes = {CreateCommunity.class, AddPostActivity.class, AddBuisness.class, CreateClassified.class};

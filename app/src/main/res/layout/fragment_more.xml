@@ -159,6 +159,7 @@
 
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:id="@+id/layoutBuisnessAds"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -193,10 +194,12 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:visibility="gone"
                     />
 
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:id="@+id/layoutPersonalAds"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -230,6 +233,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:visibility="gone"
                 android:id="@+id/layoutMyBuisness"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -265,7 +269,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:layout_marginTop="4dp"
-                android:elevation="4dp"
                 android:orientation="vertical">
 
 
