@@ -145,6 +145,67 @@ public class MessageFragment extends BaseFragmentG
 
 
     }
+    
+    
+    
+    
+      @Override
+    public void onResume()
+    {
+        super.onResume();
+//		mapFragment.onResume();
+        if (!mIsReceiverRegistered)
+        {
+            if (mReceiver == null)
+                mReceiver = new UpdateMessageListReceiver();
+            getActivity().registerReceiver(mReceiver, new IntentFilter(GlobalContstants.BROADCAST_UPDATE_KMAWAY));
+            mIsReceiverRegistered = true;
+        }
+    }
+    
+    
+    
+    
+       @Override
+    public void onPause()
+    {
+        super.onPause();
+        if (mIsReceiverRegistered)
+        {
+            getActivity().unregisterReceiver(mReceiver);
+            mReceiver = null;
+            mIsReceiverRegistered = false;
+        }
+    }
+    
+    
+    
+    
+    // BROADCAST RECEIVER TO UPDATE MSG LIST.
+    UpdateMessageListReceiver mReceiver;
+    private boolean mIsReceiverRegistered = false;
+     private class UpdateMessageListReceiver extends BroadcastReceiver
+    {
+
+        @Override
+        public void onReceive(Context context, Intent intent)
+        {
+
+            hitWebserviceG();
+        }
+    }
+    
+    
+    // BROADCAST RECEIVER TO UPDATE MSG LIST.END
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 
 }
