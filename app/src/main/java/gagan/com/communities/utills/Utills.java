@@ -209,6 +209,9 @@ public class Utills
         final AlertDialog.Builder popDialog = new AlertDialog.Builder(con);
 
 
+        SharedPrefHelper shrdHeler=new SharedPrefHelper(con);
+        int progress=0;
+
         LinearLayout layout = new LinearLayout(con);
         layout.setOrientation(LinearLayout.VERTICAL);
 
@@ -228,6 +231,7 @@ public class Utills
             {
 
                 tvKm.setText(i + " km");
+                progress=i;
             }
 
             @Override
@@ -245,7 +249,7 @@ public class Utills
 
         layout.addView(seek);
         layout.addView(tvKm);
-        seek.setProgress(20);
+        seek.setProgress(shrdHeler.getDistanceParam());
 
         popDialog.setTitle("Please Select distance");
         popDialog.setView(layout);
@@ -255,7 +259,9 @@ public class Utills
             @Override
             public void onClick(DialogInterface dialogInterface, int i)
             {
+                shrdHeler.setDistanceParam(progress);
                 dialogInterface.dismiss();
+                
             }
         });
         popDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
