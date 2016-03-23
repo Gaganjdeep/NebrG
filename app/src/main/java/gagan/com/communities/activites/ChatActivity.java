@@ -114,7 +114,9 @@ public class ChatActivity extends BaseActivityG
 
         edComment = (EditText) findViewById(R.id.edComment);
         recyclerList = (RecyclerView) findViewById(R.id.recyclerList);
-        recyclerList.setLayoutManager(new LinearLayoutManager(ChatActivity.this));
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ChatActivity.this);
+        linearLayoutManager.setReverseLayout(true);
+        recyclerList.setLayoutManager(linearLayoutManager);
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.button_pink), PorterDuff.Mode.MULTIPLY);
