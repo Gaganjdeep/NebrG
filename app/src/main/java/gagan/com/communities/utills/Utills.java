@@ -199,6 +199,82 @@ public class Utills
         no.setOnClickListener(onclick);
 
     }
+    
+    
+    
+    
+    // seekbar dialog for home
+       public void ShowDialogProgress(Context con)
+    {
+        final AlertDialog.Builder popDialog = new AlertDialog.Builder(con);
+
+
+        LinearLayout layout = new LinearLayout(con);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+
+        final TextView tvKm = new TextView(con);
+        tvKm.setGravity(Gravity.RIGHT);
+        tvKm.setPadding(0, 0, 20, 0);
+
+        final SeekBar seek = new SeekBar(con);
+        seek.setMax(255);
+        seek.setKeyProgressIncrement(1);
+
+        seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+        {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b)
+            {
+
+                tvKm.setText(i + " km");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar)
+            {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar)
+            {
+
+            }
+        });
+
+        layout.addView(seek);
+        layout.addView(tvKm);
+        seek.setProgress(20);
+
+        popDialog.setTitle("Please Select distance");
+        popDialog.setView(layout);
+
+        popDialog.setPositiveButton("OK", new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i)
+            {
+                dialogInterface.dismiss();
+            }
+        });
+        popDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i)
+            {
+                dialogInterface.dismiss();
+            }
+        });
+
+
+        popDialog.show();
+    }
+    // seekbar dialog end
+    
+    
+    
+    
 
 
 }
