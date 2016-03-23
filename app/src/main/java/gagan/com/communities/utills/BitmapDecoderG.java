@@ -41,11 +41,8 @@ public class BitmapDecoderG {
 
     //    ========================================================
     
-        //   Bitmap bmp = Glide.with(con)
-        //             .load(url)
-        //             .asBitmap()
-        //             .into(200,200)
-        //             .get();
+//       ImageSize targetSize = new ImageSize(80, 50); // result Bitmap will be fit to this size
+// Bitmap bmp = imageLoader.loadImageSync(imageUri, targetSize, options);
     
     
     public static String getBytesImage(Context context,Uri imageUri) {
