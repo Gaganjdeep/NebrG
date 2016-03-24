@@ -43,8 +43,7 @@
             android:id="@+id/recyclerList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:elevation="2dp"
-            app:stackFromEnd="true"/>
+            android:elevation="2dp"/>
 
         <ProgressBar
             android:id="@+id/progressBar"

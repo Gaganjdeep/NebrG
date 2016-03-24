@@ -70,12 +70,6 @@ public class ChatActivity extends BaseActivityG
     }
 
 
-
-
-
-
-
-
     private void settingActionBar()
     {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -96,14 +90,6 @@ public class ChatActivity extends BaseActivityG
 
         return super.onOptionsItemSelected(item);
     }
-
-
-
-
-
-
-
-
 
 
     @Override
@@ -182,7 +168,7 @@ public class ChatActivity extends BaseActivityG
                             }
 
 
-                            Collections.reverse(listData);
+//                            Collections.reverse(listData);
 
                             chatMsgAdapter.notifyDataSetChanged();
 
@@ -256,7 +242,7 @@ public class ChatActivity extends BaseActivityG
 
                             String profile_pic = userData.getProfile_pic();
 
-                            listData.add(new MsgDataModel(id, sender_userid, recipient_userid, message, created_at, username, profile_pic));
+                            listData.add(0,new MsgDataModel(id, sender_userid, recipient_userid, message, created_at, username, profile_pic));
 
 
                             edComment.setText("");
@@ -272,6 +258,10 @@ public class ChatActivity extends BaseActivityG
                         {
 //                Utills.showToast("No users available", getActivity(), true);
                         }
+
+
+                        Intent intent = new Intent(GlobalConstants.UPDATE_MSG_FRAGMENT);
+                        sendBroadcast(intent);
 
                     }
                     catch (Exception e)

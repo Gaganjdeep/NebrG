@@ -1,10 +1,12 @@
 package gagan.com.communities.activites;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Location;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.costum.android.widget.PullAndLoadListView;
@@ -17,19 +19,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gagan.com.communities.R;
-import gagan.com.communities.activites.fragment.HomeFragment;
-import gagan.com.communities.activites.fragment.PersonalAdsGridFragment;
-import gagan.com.communities.activites.fragment.PostProfileFragment;
 import gagan.com.communities.adapters.HomeAdapter;
 import gagan.com.communities.models.HomeModel;
 import gagan.com.communities.utills.CurrentLocActivityG;
 import gagan.com.communities.utills.GlobalConstants;
-import gagan.com.communities.utills.SharedPrefHelper;
 import gagan.com.communities.utills.Utills;
 import gagan.com.communities.webserviceG.CallBackWebService;
 import gagan.com.communities.webserviceG.SuperWebServiceG;
 
-public class CurrentLocationPostActivity extends CurrentLocActivityG implements PullAndLoadListView.OnLoadMoreListener, PullToRefreshListView.OnRefreshListener {
+public class CurrentLocationPostActivity extends CurrentLocActivityG implements PullAndLoadListView.OnLoadMoreListener, PullToRefreshListView.OnRefreshListener
+{
+
+
+//    SharedPreferences pref;
 
     @Override
     public void getCurrentLocationG(Location currentLocation)
@@ -38,18 +40,22 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
     }
 
     PullAndLoadListView listViewNotiMsg;
-    HomeAdapter homeadapter;
+    HomeAdapter         homeadapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_location_post);
         settingActionBar();
 
 
+//        pref = getSharedPreferences("Neibr", Context.MODE_PRIVATE);
+
         listViewNotiMsg = (PullAndLoadListView) findViewById(R.id.listViewHomeList);
 
-        if (listHome != null) {
+        if (listHome != null)
+        {
             homeadapter = new HomeAdapter(CurrentLocationPostActivity.this, listHome);
             listViewNotiMsg.setAdapter(homeadapter);
         }
@@ -66,7 +72,40 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
     }
 
 
-    private void settingActionBar() {
+    boolean firstStart = true;
+
+    @Override
+    protected void onResume()
+    {
+
+        if (!firstStart)
+        {
+
+
+            if (!listHome.isEmpty())
+            {
+                listHome.clear();
+            }
+
+
+            displayLocation();
+        }
+        else
+        {
+            firstStart = false;
+        }
+        super.onResume();
+    }
+//
+//    @Override
+//    protected void onPause()
+//    {
+//        pref.unregisterOnSharedPreferenceChangeListener(listener);
+//        super.onPause();
+//    }
+
+    private void settingActionBar()
+    {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -76,24 +115,26 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
     }
 
 
-
-
     int limit = 10, startId = 0;
 
-    private void fetchHomeData(Location location) {
+    private void fetchHomeData(Location location)
+    {
 
-        try {
+        try
+        {
             JSONObject data = new JSONObject();
             data.put("userid", sharedPrefHelper.getUserId());
             data.put("limit", limit + "");
             data.put("startId", startId + "");
             data.put("lat", location.getLatitude() + "");
             data.put("long", location.getLongitude() + "");
-            data.put("distance", "50");
+            data.put("distance", sharedPrefHelper.getDistanceParam());
 
-            new SuperWebServiceG(GlobalConstants.URL + "nerbyPost", data, new CallBackWebService() {
+            new SuperWebServiceG(GlobalConstants.URL + "nerbyPost", data, new CallBackWebService()
+            {
                 @Override
-                public void webOnFinish(String output) {
+                public void webOnFinish(String output)
+                {
                     startId = limit;
                     limit = limit + 10;
 
@@ -107,7 +148,8 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
                 }
             }).execute();
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
 
@@ -117,19 +159,34 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
     List<HomeModel> listHome;
 
     //   ==============process output++++
-    private void processOutput(String response) {
+    private void processOutput(String response)
+    {
 
-        try {
+        try
+        {
 
             JSONObject jsonMain = new JSONObject(response);
 
             JSONObject jsonMainResult = jsonMain.getJSONObject("result");
 
-            if (jsonMainResult.getString("code").contains("200")) {
+            if (jsonMainResult.getString("code").contains("200"))
+            {
 
                 JSONArray jsonarrayData = jsonMainResult.getJSONArray("feedData");
 
-                for (int g = 0; g < jsonarrayData.length(); g++) {
+
+                if (jsonarrayData.length() > 9)
+                {
+                    listViewNotiMsg.setOnLoadMoreListener(this);
+                }
+                else
+                {
+                    listViewNotiMsg.setOnLoadMoreListener(null);
+                }
+
+
+                for (int g = 0; g < jsonarrayData.length(); g++)
+                {
                     JSONObject jobj = jsonarrayData.optJSONObject(g);
 
                     HomeModel homemodel = new HomeModel();
@@ -173,14 +230,16 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
                     return;
                 }
 
-                if (homeadapter == null) {
+                if (homeadapter == null)
+                {
                     homeadapter = new HomeAdapter(CurrentLocationPostActivity.this, listHome);
                     listViewNotiMsg.setAdapter(homeadapter);
                 }
-                else {
+                else
+                {
 //                    listViewNotiMsg.invalidateViews();
 
-                    if(jsonarrayData.length()>0)
+                    if (jsonarrayData.length() > 0)
                     {
                         homeadapter.notifyDataSetChanged();
 
@@ -190,12 +249,14 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
                 }
 
             }
-            else {
+            else
+            {
                 Utills.showToast("No post available", CurrentLocationPostActivity.this, true);
             }
 
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             e.printStackTrace();
 //            fetchHomeData(startId, limit);
         }
@@ -203,11 +264,14 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
     }
 //   =============================
 
-    private void scrollToLastKnownTop() {
+    private void scrollToLastKnownTop()
+    {
 
-        new Handler().post(new Runnable() {
+        new Handler().post(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
 
                 listViewNotiMsg.setSelection(index);
 
@@ -217,7 +281,8 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
 
     int index = 0, top = 0;
 
-    private void saveVisibleItemPosiotion() {
+    private void saveVisibleItemPosiotion()
+    {
         // save index and top position
         index = listViewNotiMsg.getFirstVisiblePosition();
 
@@ -225,34 +290,76 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
     }
 
 
-
-
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.set_distance, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+
+        switch (item.getItemId())
+        {
+
+            case R.id.set_distance:
+
+                Utills.ShowDialogProgress(CurrentLocationPostActivity.this);
 
 
-        finish();
+                break;
+            case android.R.id.home:
+                finish();
+                break;
 
+
+        }
 
         return super.onOptionsItemSelected(item);
+//        return true;
     }
 
+
     @Override
-    public void onLoadMore() {
+    public void onLoadMore()
+    {
         saveVisibleItemPosiotion();
-      displayLocation();
+        displayLocation();
     }
 
     @Override
-    public void onRefresh() {
-        if (listHome != null) {
+    public void onRefresh()
+    {
+        if (listHome != null)
+        {
             listHome.clear();
         }
         index = 0;
         limit = 10;
         startId = 0;
-      displayLocation();
+        displayLocation();
     }
+
+
+   /* SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener()
+    {
+        public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
+        {
+            if (key.equals("distanceParam"))
+            {
+                if (!listHome.isEmpty())
+                {
+                    listHome.clear();
+                }
+
+
+                displayLocation();
+
+            }
+        }
+    };*/
+
+
 }

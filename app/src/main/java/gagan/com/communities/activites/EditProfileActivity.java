@@ -67,7 +67,7 @@ public class EditProfileActivity extends BaseActivityG
     @Override
     protected void onResume()
     {
-        setData();
+
         super.onResume();
     }
 
@@ -84,7 +84,7 @@ public class EditProfileActivity extends BaseActivityG
         edName = (EditText) findViewById(R.id.edName);
         edGender = (EditText) findViewById(R.id.edGender);
 
-
+        setData();
     }
 
 
@@ -159,7 +159,14 @@ public class EditProfileActivity extends BaseActivityG
             data.put("profession", edprofession.getText().toString().trim());
             data.put("home_society", edHomeSociety.getText().toString().trim());
             data.put("device_type", "android");
-            data.put("image", Base64Image);
+
+            if(!Base64Image.contains("."))
+            {
+                data.put("image", Base64Image);
+            }
+
+
+
             data.put("gender", edGender.getText().toString().trim());
 //        {"userid":"1","company_name":"comany name","email":"email","image":"base64 codeed mage","image_name":"testimage.jpg",
 //                "location":"chandigarh","description":"description","category":"category"}
@@ -260,8 +267,8 @@ public class EditProfileActivity extends BaseActivityG
 
             Uri uri = BitmapDecoderG.getFromData(requestCode, resultCode, data);
 
-            Base64Image = BitmapDecoderG.getBytesImage(EditProfileActivity.this, uri);
             imgvProfilePic.setImageUrl(EditProfileActivity.this, uri.toString());
+            Base64Image = BitmapDecoderG.getBytesImage(EditProfileActivity.this, uri);
         }
         catch (Exception |Error e)
         {

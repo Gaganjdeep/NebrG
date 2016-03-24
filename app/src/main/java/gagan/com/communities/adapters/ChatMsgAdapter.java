@@ -133,9 +133,9 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MyViewHo
             }
         });
 
-        if (animate)
+        if (animate && dataList.size()==position)
         {
-            Utills.animate(holder.tvMSG);
+            Utills.animate(holder.view);
             animate=false;
         }
 

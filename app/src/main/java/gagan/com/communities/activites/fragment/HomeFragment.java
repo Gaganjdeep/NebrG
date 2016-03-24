@@ -299,6 +299,11 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
 
 
         ImageView txtvAddPost = (ImageView) toolbar.findViewById(R.id.txtvAddPost);
+
+        if(!sharedPrefHelper.getPincodeStatus())
+        {
+            txtvAddPost.setVisibility(View.GONE);
+        }
         txtvAddPost.setOnClickListener(new View.OnClickListener()
         {
             @Override

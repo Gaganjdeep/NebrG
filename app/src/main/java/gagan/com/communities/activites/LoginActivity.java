@@ -325,6 +325,8 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
                 {
                     cancelDialog();
 
+                    sharedPrefHelper.setPswd(edPswd.getText().toString());
+
                     processOutput(output);
 
 
@@ -368,6 +370,9 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
 
                 sharedPrefHelper.setUserId(jsonMainResult.optString("userId"));
                 sharedPrefHelper.setUserName(jsonarrayData.getJSONObject(0).optString("name"));
+
+                sharedPrefHelper.setPincodeStatus(jsonMainResult.optString("pincode_status").equals("1"));
+
 
                 SharedPrefHelper.write(LoginActivity.this, userDataModel);
 
@@ -492,6 +497,12 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
 
         try
         {
+
+
+            if(!mGoogleApiClient.isConnected())
+            {
+                return;
+            }
 
 
             Log.e("google integration====", "onConnected");

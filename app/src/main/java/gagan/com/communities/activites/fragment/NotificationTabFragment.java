@@ -67,7 +67,7 @@ public class NotificationTabFragment extends android.support.v4.app.Fragment {
 
         setupTabLayout(tabLayoutG, viewPagerG);
 
-        setHasOptionsMenu(true);
+//        setHasOptionsMenu(true);
 
         return v;
     }
@@ -77,7 +77,7 @@ public class NotificationTabFragment extends android.support.v4.app.Fragment {
     private void settingActionBar(View view)
     {
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+//        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
         tvTitle = (TextView) view.findViewById(R.id.tvTitle);
 
@@ -132,7 +132,7 @@ public class NotificationTabFragment extends android.support.v4.app.Fragment {
 
 
 
-    @Override
+   /* @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
         inflater.inflate(R.menu.add_chat, menu);
@@ -161,7 +161,7 @@ public class NotificationTabFragment extends android.support.v4.app.Fragment {
 
         return super.onOptionsItemSelected(item);
 //        return true;
-    }
+    }*/
 
 
 

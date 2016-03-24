@@ -182,6 +182,10 @@ public class SignUp extends CurrentLocActivityG
                 sharedPrefHelper.setUserId(jsonMainResult.optString("userId"));
                 sharedPrefHelper.setUserName(edFullNameS.getText().toString().trim());
 
+                sharedPrefHelper.setPincodeStatus(jsonMainResult.optString("pincode_status").equals("1"));
+                sharedPrefHelper.setPswd(edPasswordS.getText().toString());
+
+
                 SharedPrefHelper.write(SignUp.this, userDataModel);
 
                 startActivity(new Intent(SignUp.this, MainTabActivity.class));
@@ -271,7 +275,7 @@ public class SignUp extends CurrentLocActivityG
             final CharSequence name    = place.getName();
             final CharSequence address = place.getAddress();
 
-            tvLocation.setText(address);
+            tvLocation.setText(name);
 
         }
         else
@@ -307,11 +311,11 @@ public class SignUp extends CurrentLocActivityG
             edPasswordS.setError("Password length should more than 5");
             return false;
         }
-        else if (edHomeSociety.getText().toString().trim().isEmpty())
+       /* else if (edHomeSociety.getText().toString().trim().isEmpty())
         {
             edHomeSociety.setError("Please select a home society");
             return false;
-        }
+        }*/
         else if (tvLocation.getText().toString().trim().isEmpty())
         {
             Utills.showToast("Please select a location", SignUp.this, true);

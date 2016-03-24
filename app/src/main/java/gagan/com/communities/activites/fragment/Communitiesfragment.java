@@ -61,6 +61,7 @@ public class Communitiesfragment extends SupportMapFragment implements GoogleMap
                 googleMapCommunity = googleMap;
 
                 googleMapCommunity.setMyLocationEnabled(true);
+                googleMapCommunity.getUiSettings().setMapToolbarEnabled(false);
 
                 googleMapCommunity.setOnMyLocationChangeListener(Communitiesfragment.this);
 

@@ -147,12 +147,15 @@ public class SharedPrefHelper
     public void setHomeLocation(String address, String lat, String lng)
     {
         SharedPreferences.Editor ed = sharedPreferences.edit();
-        ed.putString("homeLocation", address);
-        ed.putString("homelat", lat);
-        ed.putString("homelng", lng);
+        ed.putString(HOMELOC_NAME, address);
+        ed.putString(HOME_LAT, lat);
+        ed.putString(HOME_LNG, lng);
         ed.apply();
 
     }
+
+
+    public static final String HOMELOC_NAME = "homeLocation", HOME_LAT = "homelat", HOME_LNG = "homelng";
 
 
     public HashMap<String, String> getHomeLocation()
@@ -160,9 +163,9 @@ public class SharedPrefHelper
         HashMap<String, String> data = new HashMap<>();
 
 
-        data.put("homeLocation", sharedPreferences.getString("homeLocation", ""));
-        data.put("homelat", sharedPreferences.getString("homelat", ""));
-        data.put("homelat", sharedPreferences.getString("homelat", ""));
+        data.put(HOMELOC_NAME, sharedPreferences.getString(HOMELOC_NAME, ""));
+        data.put(HOME_LAT, sharedPreferences.getString(HOME_LAT, ""));
+        data.put(HOME_LNG, sharedPreferences.getString(HOME_LNG, ""));
 
         return data;
     }
@@ -171,29 +174,40 @@ public class SharedPrefHelper
 //    ======================================
 
 
-
-
-
 // set distance
 
-  public void setDistanceParam(int km)
+    public void setDistanceParam(int km)
     {
         SharedPreferences.Editor ed = sharedPreferences.edit();
-        ed.putInt("distanceParam", login);
+        ed.putInt("distanceParam", km);
         ed.apply();
     }
-    
-    
+
+
     public int getDistanceParam()
     {
-        return sharedPreferences.getInt("distanceParam",50);
+        return sharedPreferences.getInt("distanceParam", 5);
     }
 
 // distance end
 
 
+    // set distance
+
+    public void setPincodeStatus(boolean status)
+    {
+        SharedPreferences.Editor ed = sharedPreferences.edit();
+        ed.putBoolean("PincodeStatus", status);
+        ed.apply();
+    }
 
 
+    public boolean getPincodeStatus()
+    {
+        return sharedPreferences.getBoolean("PincodeStatus", true);
+    }
+
+// distance end
 
 
     //    ============================
@@ -207,6 +221,20 @@ public class SharedPrefHelper
     public String getlogInFrom()
     {
         return sharedPreferences.getString("loginWith", loginWith.facebook.toString());
+    }
+
+
+
+    public void setPswd(String login)
+    {
+        SharedPreferences.Editor ed = sharedPreferences.edit();
+        ed.putString("pswd", login);
+        ed.apply();
+    }
+
+    public String getPswd()
+    {
+        return sharedPreferences.getString("pswd", "");
     }
 
 

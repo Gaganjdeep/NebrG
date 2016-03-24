@@ -121,6 +121,11 @@ public class FollowersFragment extends BaseFragmentG
                 }
 
 
+                if (jsonarrayData==null)
+                {
+                    return;
+                }
+
 //                {"uId":"5","name":"Gagan","email":"gagan2@gmail.com","password":"e10adc3949ba59abbe56e057f20f883e","gender":"male","home_society":"bdbdbdbd","session_key":"","create_date":"2016-02-25 18:02:51","role_id":"2","profession":"sharp shooter","location":"Jagadhari Road, Sarsehri, Haryana 133004, India","delete_status":"0","device_type":"0","device_token":"0","update_date":"2016-02-25 11:02:51","profile_pic":"","path":"","is_fb":"0","facebook_id":"","is_gp":"0","gplus_id":"","login_status":"0"},
 
                 List<UserDataModel> list = new ArrayList<>();

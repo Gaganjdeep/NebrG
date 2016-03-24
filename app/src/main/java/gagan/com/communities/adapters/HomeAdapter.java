@@ -43,7 +43,6 @@ public class HomeAdapter extends BaseAdapter
     List<HomeModel> DataList;
 
 
-
     @Override
     public void notifyDataSetChanged()
     {
@@ -131,10 +130,16 @@ public class HomeAdapter extends BaseAdapter
             }
 
 
+            StringBuilder sb = new StringBuilder(data.getLocation());
+            sb.setCharAt(0, Character.toUpperCase(sb.charAt(0)));
+            String loc = sb.toString();
+
             tvTitle.setText(data.getTitle());
             tvTime.setText(data.getCreate_date().substring(data.getCreate_date().indexOf(" ")));
-            tvLocationGenre.setText(data.getLocation());
+
+            tvLocationGenre.setText(loc);
             tvLocationGenre.setSelected(true);
+
             tvGenre.setText(data.getType());
             tvUsername.setText(data.getUsername());
             tvMessage.setText(data.getMessage());
@@ -142,12 +147,6 @@ public class HomeAdapter extends BaseAdapter
 
             tvLikes.setText(data.getLike_count() + " useful");
             tvDislikes.setText(data.getDislike_count() + " not useful");
-
-
-
-
-
-
 
 
             tvComments.setTag(i);
@@ -159,16 +158,11 @@ public class HomeAdapter extends BaseAdapter
 
                     Intent intnt = new Intent(con, CommentsListActivity
                             .class);
-                    intnt.putExtra("postID",DataList.get((Integer) v.getTag()).getId());
-                    intnt.putExtra("index",(Integer) v.getTag());
+                    intnt.putExtra("postID", DataList.get((Integer) v.getTag()).getId());
+                    intnt.putExtra("index", (Integer) v.getTag());
                     con.startActivity(intnt);
                 }
             });
-
-
-
-
-
 
 
             if (data.is_liked())
@@ -254,9 +248,7 @@ public class HomeAdapter extends BaseAdapter
                     final HomeModel homeModel = (HomeModel) v.getTag();
 
 
-                    final String title =(new SharedPrefHelper(con).getUserId()).equals(homeModel.getUserid()) ? "Delete post" : "Report Abuse";
-
-
+                    final String title = (new SharedPrefHelper(con).getUserId()).equals(homeModel.getUserid()) ? "Delete post" : "Report Abuse";
 
 
                     PopupMenu popup = new PopupMenu(con, v);
@@ -274,11 +266,11 @@ public class HomeAdapter extends BaseAdapter
 
                             if (title.equals("Report Abuse"))
                             {
-                                reportAbuse(homeModel.getId(), homeModel,false);
+                                reportAbuse(homeModel.getId(), homeModel, false);
                             }
                             else
                             {
-                                reportAbuse(homeModel.getId(), homeModel,true);
+                                reportAbuse(homeModel.getId(), homeModel, true);
                             }
 
 
@@ -301,7 +293,7 @@ public class HomeAdapter extends BaseAdapter
     }
 
 
-    private void reportAbuse(String postID, final HomeModel homeModel,boolean delete)
+    private void reportAbuse(String postID, final HomeModel homeModel, boolean delete)
     {
         try
         {
@@ -312,12 +304,12 @@ public class HomeAdapter extends BaseAdapter
             JSONObject data = new JSONObject();
             if (delete)
             {
-                serviceName="deletePost";
+                serviceName = "deletePost";
                 data.put("postid", postID);
             }
             else
             {
-                serviceName="reportAbuse";
+                serviceName = "reportAbuse";
 
                 data.put("user_id", new SharedPrefHelper(con).getUserId());
                 data.put("post_id", postID);

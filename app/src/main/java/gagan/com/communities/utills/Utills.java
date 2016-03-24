@@ -4,13 +4,18 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatSeekBar;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -199,18 +204,79 @@ public class Utills
         no.setOnClickListener(onclick);
 
     }
-    
-    
-    
-    
+
+
     // seekbar dialog for home
-       public void ShowDialogProgress(Context con)
+    static int  progress = 0;
+
+    public static void ShowDialogProgress(Context con)
     {
-        final AlertDialog.Builder popDialog = new AlertDialog.Builder(con);
+
+        progress=0;
+        final SharedPrefHelper shrdHeler = new SharedPrefHelper(con);
+        Dialog dialog = new Dialog(con, R.style.Theme_Dialog);
+        dialog.setContentView(R.layout.set_distance_dialog);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.setCancelable(true);
 
 
-        SharedPrefHelper shrdHeler=new SharedPrefHelper(con);
-        int progress=0;
+        final AppCompatSeekBar seek = (AppCompatSeekBar) dialog.findViewById(R.id.seekbar);
+        seek.setMax(255);
+        seek.setKeyProgressIncrement(1);
+
+
+        final TextView tvKm =(TextView)dialog.findViewById(R.id.tvKm);
+
+
+        seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+        {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b)
+            {
+
+                tvKm.setText(i + " km");
+                progress = i;
+
+                shrdHeler.setDistanceParam(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar)
+            {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar)
+            {
+
+            }
+        });
+
+        seek.setProgress(shrdHeler.getDistanceParam());
+
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        dialog.getWindow().setAttributes(lp);
+        dialog.show();
+
+
+
+
+
+
+
+
+
+
+       /* final AlertDialog.Builder popDialog = new AlertDialog.Builder(con);
+
+
+        final SharedPrefHelper shrdHeler = new SharedPrefHelper(con);
+        progress = 0;
 
         LinearLayout layout = new LinearLayout(con);
         layout.setOrientation(LinearLayout.VERTICAL);
@@ -231,7 +297,7 @@ public class Utills
             {
 
                 tvKm.setText(i + " km");
-                progress=i;
+                progress = i;
             }
 
             @Override
@@ -261,7 +327,7 @@ public class Utills
             {
                 shrdHeler.setDistanceParam(progress);
                 dialogInterface.dismiss();
-                
+
             }
         });
         popDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
@@ -274,13 +340,9 @@ public class Utills
         });
 
 
-        popDialog.show();
+        popDialog.show();*/
     }
     // seekbar dialog end
-    
-    
-    
-    
 
 
 }

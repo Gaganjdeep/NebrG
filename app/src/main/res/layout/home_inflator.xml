@@ -43,37 +43,37 @@
                     android:focusable="true"
                     android:gravity="center_vertical"
                     android:marqueeRepeatLimit="marquee_forever"
+                    android:maxLength="20"
                     android:singleLine="true"
                     android:text="Chennai"
                     android:textColor="@color/greydefault"
                     android:textSize="11sp"
-                    android:maxLength="15"
                     android:textStyle="bold"/>
 
                 <View
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginRight="2dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_width="6dp"
                     android:layout_height="6dp"
                     android:layout_gravity="bottom"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
                     android:background="@drawable/circle_grey"/>
 
                 <TextView
                     android:id="@+id/tvGenre"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="Social"
                     android:textAllCaps="true"
                     android:textColor="@color/greydefault"
                     android:textSize="11sp"/>
 
 
-              <!--  <View
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"/>-->
+                <!--  <View
+                      android:layout_width="0dp"
+                      android:layout_height="match_parent"
+                      android:layout_weight="1"/>-->
 
                 <TextView
                     android:id="@+id/tvTime"
@@ -153,8 +153,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="10dp">
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                >
 
 
                 <TextView

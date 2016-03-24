@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/facebook" />
             <option value="$PROJECT_DIR$/pulltorefresh-and-loadmore" />
+            <option value="$PROJECT_DIR$/simple-crop-image-lib" />
           </set>
         </option>
         <option name="myModules">
@@ -21,6 +22,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/facebook" />
             <option value="$PROJECT_DIR$/pulltorefresh-and-loadmore" />
+            <option value="$PROJECT_DIR$/simple-crop-image-lib" />
           </set>
         </option>
       </GradleProjectSettings>

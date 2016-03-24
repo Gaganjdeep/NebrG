@@ -81,7 +81,11 @@ public class CommentsListActivity extends Activity
 
         edComment = (EditText) findViewById(R.id.edComment);
         recyclerList = (RecyclerView) findViewById(R.id.recyclerList);
-        recyclerList.setLayoutManager(new LinearLayoutManager(CommentsListActivity.this));
+
+
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(CommentsListActivity.this);
+        linearLayoutManager.setReverseLayout(true);
+        recyclerList.setLayoutManager(linearLayoutManager);
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.button_pink), PorterDuff.Mode.MULTIPLY);
@@ -161,7 +165,7 @@ public class CommentsListActivity extends Activity
                             }
 
 
-                            Collections.reverse(listData);
+//                            Collections.reverse(listData);
 
                             commentsAdapter.notifyDataSetChanged();
 
@@ -230,7 +234,7 @@ public class CommentsListActivity extends Activity
 
                             CommentsModel data = new CommentsModel(name, cmntmsg, comntId, true);
 
-                            listData.add(data);
+                            listData.add(0,data);
 
 
                             commentsAdapter.notifyDataSetChanged();

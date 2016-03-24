@@ -60,14 +60,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
         holder.imgUserPic.setImageUrl(con, currentData.getProfile_pic());
 
 
-
         holder.view.setTag(currentData);
         holder.view.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                MsgDataModel data =(MsgDataModel)v.getTag();
+                MsgDataModel data = (MsgDataModel) v.getTag();
 
                 Intent intnt = new Intent(con, ChatActivity
                         .class);

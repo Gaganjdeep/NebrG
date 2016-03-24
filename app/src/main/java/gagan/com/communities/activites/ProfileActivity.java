@@ -1,14 +1,21 @@
 package gagan.com.communities.activites;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import gagan.com.communities.R;
@@ -19,6 +26,7 @@ import gagan.com.communities.activites.fragment.MyCommunityFragment;
 import gagan.com.communities.activites.fragment.NotificationFragment;
 import gagan.com.communities.activites.fragment.PostProfileFragment;
 import gagan.com.communities.models.UserDataModel;
+import gagan.com.communities.utills.CallBackG;
 import gagan.com.communities.utills.RoundedCornersGaganImg;
 import gagan.com.communities.utills.SharedPrefHelper;
 import gagan.com.communities.utills.Utills;
@@ -32,6 +40,9 @@ public class ProfileActivity extends BaseActivityG
     RoundedCornersGaganImg imgvProfilePic;
 
     TextView tvUserName, tvProfession, tvLocation;
+
+
+    AppBarLayout appbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -58,6 +69,7 @@ public class ProfileActivity extends BaseActivityG
 
         setupTabLayout(tabLayoutG, viewPagerG);
 
+
     }
 
     @Override
@@ -68,14 +80,56 @@ public class ProfileActivity extends BaseActivityG
         tvUserName = (TextView) findViewById(R.id.tvUserName);
         tvProfession = (TextView) findViewById(R.id.tvProfession);
 
+        appbar = (AppBarLayout) findViewById(R.id.appbar);
+    }
+
+    @Override
+    protected void onResume()
+    {
+        setData();
+        super.onResume();
+    }
+
+    private void setData()
+    {
         UserDataModel userData = SharedPrefHelper.read(ProfileActivity.this);
-        imgvProfilePic.setRadius(200);
-        imgvProfilePic.setImageUrl(ProfileActivity.this, userData.getProfile_pic());
+        imgvProfilePic.setRadius(270);
+
         tvUserName.setText(userData.getName());
         tvProfession.setText(userData.getProfession());
         tvLocation.setText(userData.getLocation());
 
+
+        imgvProfilePic.setImageWithCallBack(ProfileActivity.this, userData.getProfile_pic(), new CallBackG<Bitmap>()
+        {
+            @Override
+            public void OnFinishG(Bitmap output)
+            {
+                try
+                {
+
+//                    Drawable g = imgvProfilePic.getDrawable();
+//
+//                    appbar.setBackground(g);
+//                    imgvProfilePic.setScaleType(ImageView.ScaleType.FIT_XY);
+//                    imgvProfilePic.setRadius(200);
+//                    imgvProfilePic.setBackground(g);
+
+                    Bitmap bmp = output;
+                    BitmapDrawable bitmapDrawable = new BitmapDrawable(bmp);
+                    bitmapDrawable.setGravity(Gravity.CENTER| Gravity.FILL);
+                    appbar.setBackground(bitmapDrawable);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
     }
+
 
     @Override
     void hitWebserviceG()
@@ -133,12 +187,10 @@ public class ProfileActivity extends BaseActivityG
         myFollowings.setArguments(bundleOther);
 
 
-        PostProfileFragment myPost = new PostProfileFragment();
-        Bundle            bundlePost  = new Bundle();
+        PostProfileFragment myPost     = new PostProfileFragment();
+        Bundle              bundlePost = new Bundle();
         bundlePost.putString("userid", sharedPrefHelper.getUserId());
         myPost.setArguments(bundleOther);
-
-
 
 
         MainTabActivity.Adapter adapter = new MainTabActivity.Adapter(getSupportFragmentManager());

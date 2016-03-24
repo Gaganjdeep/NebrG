@@ -63,6 +63,11 @@
     <style name="MyMaterialTheme.G.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
 
+    <style name="SeekBArtheme">
+        <item name="colorControlActivated">@color/button_pink</item>
+    </style>
+
+
 
 
 

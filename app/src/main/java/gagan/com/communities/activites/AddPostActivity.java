@@ -30,6 +30,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import gagan.com.communities.R;
+import gagan.com.communities.models.UserDataModel;
 import gagan.com.communities.utills.BitmapDecoderG;
 import gagan.com.communities.utills.GlobalConstants;
 import gagan.com.communities.utills.RoundedCornersGaganImg;
@@ -43,7 +44,7 @@ public class AddPostActivity extends BaseActivityG
 
 
     EditText edTitle, edMessage;
-    RoundedCornersGaganImg imgImageSend;
+    RoundedCornersGaganImg imgImageSend,imgvUserimg;
     TextView               tvlocation, tvType, tvUserName;
     String Base64String = "", anon_user = "0";
 
@@ -66,6 +67,11 @@ public class AddPostActivity extends BaseActivityG
         edTitle = (EditText) findViewById(R.id.edTitle);
         tvUserName = (TextView) findViewById(R.id.tvUserName);
         tvUserName.setText(sharedPrefHelper.getUserName());
+        imgvUserimg= (RoundedCornersGaganImg) findViewById(R.id.imgvUserimg);
+
+        UserDataModel data= SharedPrefHelper.read(AddPostActivity.this);
+        imgvUserimg.setRadius(170);
+        imgvUserimg.setImageUrl(AddPostActivity.this,data.getProfile_pic());
 
         edMessage = (EditText) findViewById(R.id.edMessage);
         imgImageSend = (RoundedCornersGaganImg) findViewById(R.id.imgImageSend);
@@ -232,13 +238,22 @@ public class AddPostActivity extends BaseActivityG
             {
                 if (resultCode == RESULT_OK)
                 {
-                    imgImageSend.setVisibility(View.VISIBLE);
-                    Uri uri = BitmapDecoderG.getFromData(requestCode, resultCode, data);
 
+                    try{
+                        imgImageSend.setVisibility(View.VISIBLE);
+                        Uri uri = BitmapDecoderG.getFromData(requestCode, resultCode, data);
 
-                    imgImageSend.setImageUrl(AddPostActivity.this,uri.toString());
+                        imgImageSend.setImageUrl(AddPostActivity.this,uri.toString());
 
-                    Base64String = BitmapDecoderG.getBytesImage(AddPostActivity.this, uri);
+                        Base64String = BitmapDecoderG.getBytesImage(AddPostActivity.this, uri);
+
+                    }
+                    catch (Exception |Error e)
+                    {
+                        BitmapDecoderG.selectImage(AddPostActivity.this, null);
+                        e.printStackTrace();
+                    }
+
                 }
 
             }

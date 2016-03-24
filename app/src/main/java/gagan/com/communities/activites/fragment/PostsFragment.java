@@ -68,7 +68,7 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
 
                 googleMapPost.setMyLocationEnabled(true);
 
-
+                googleMapPost.getUiSettings().setMapToolbarEnabled(false);
 
 
                 googleMapPost.setOnMyLocationChangeListener(PostsFragment.this);

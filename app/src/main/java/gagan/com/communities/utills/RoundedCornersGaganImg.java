@@ -27,7 +27,8 @@ import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 
 import gagan.com.communities.R;
 
-public class RoundedCornersGaganImg extends ImageView {
+public class RoundedCornersGaganImg extends ImageView
+{
 
     private boolean mBlockLayout;
 
@@ -36,31 +37,36 @@ public class RoundedCornersGaganImg extends ImageView {
     private ImageLoader imageLoader = ImageLoader.getInstance();
     private DisplayImageOptions options;
 
-    public RoundedCornersGaganImg(Context context) {
+    public RoundedCornersGaganImg(Context context)
+    {
         super(context);
 
     }
 
-    public RoundedCornersGaganImg(Context context, AttributeSet attrs) {
+    public RoundedCornersGaganImg(Context context, AttributeSet attrs)
+    {
         super(context, attrs);
 
     }
 
-    public RoundedCornersGaganImg(Context context, AttributeSet attrs, int defStyle) {
+    public RoundedCornersGaganImg(Context context, AttributeSet attrs, int defStyle)
+    {
         super(context, attrs, defStyle);
 
     }
 
     @Override
-    public void onDraw(Canvas canvas) {
+    public void onDraw(Canvas canvas)
+    {
         Drawable maiDrawable = getDrawable();
 
         if (maiDrawable != null && maiDrawable instanceof BitmapDrawable
-                && RADIUS > 0) {
-            Paint paint = ((BitmapDrawable) maiDrawable).getPaint();
-            final int color = 0xff000000;
-            Rect bitmapBounds = maiDrawable.getBounds();
-            final RectF rectF = new RectF(bitmapBounds);
+                && RADIUS > 0)
+        {
+            Paint       paint        = ((BitmapDrawable) maiDrawable).getPaint();
+            final int   color        = 0xff000000;
+            Rect        bitmapBounds = maiDrawable.getBounds();
+            final RectF rectF        = new RectF(bitmapBounds);
             // Create an off-screen bitmap to the PorterDuff alpha blending to
             // work right
             int saveCount = canvas.saveLayer(
@@ -88,21 +94,25 @@ public class RoundedCornersGaganImg extends ImageView {
             paint.setXfermode(oldMode);
             canvas.restoreToCount(saveCount);
         }
-        else {
+        else
+        {
             super.onDraw(canvas);
         }
     }
 
-    public void setRadius(int radius) {
+    public void setRadius(int radius)
+    {
         this.RADIUS = radius;
         setDrawableDefault(R.drawable.circle_grey);
     }
 
 
     @Override
-    public void requestLayout() {
+    public void requestLayout()
+    {
 
-        if (!mBlockLayout) {
+        if (!mBlockLayout)
+        {
 
             super.requestLayout();
 
@@ -111,7 +121,8 @@ public class RoundedCornersGaganImg extends ImageView {
     }
 
     @Override
-    public void setImageResource(int resId) {
+    public void setImageResource(int resId)
+    {
 
         mBlockLayout = true;
 
@@ -122,7 +133,8 @@ public class RoundedCornersGaganImg extends ImageView {
     }
 
     @Override
-    public void setImageURI(Uri uri) {
+    public void setImageURI(Uri uri)
+    {
 
         mBlockLayout = true;
 
@@ -133,7 +145,8 @@ public class RoundedCornersGaganImg extends ImageView {
     }
 
     @Override
-    public void setImageDrawable(Drawable drawable) {
+    public void setImageDrawable(Drawable drawable)
+    {
 
         mBlockLayout = true;
 
@@ -144,7 +157,8 @@ public class RoundedCornersGaganImg extends ImageView {
     }
 
     @Override
-    public void setImageBitmap(Bitmap bm) {
+    public void setImageBitmap(Bitmap bm)
+    {
         mBlockLayout = true;
 
         super.setImageBitmap(bm);
@@ -156,20 +170,24 @@ public class RoundedCornersGaganImg extends ImageView {
 
     private int drawable = R.drawable.grey_bg;
 
-    public void setDrawableDefault(int drwableG) {
+    public void setDrawableDefault(int drwableG)
+    {
         drawable = drwableG;
     }
 
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
+    {
         super.onMeasure(widthMeasureSpec, widthMeasureSpec);
     }
 
-    public void setImageUrl(Context con, String URL) {
+    public void setImageUrl(Context con, String URL)
+    {
 
 
-        if (!URL.isEmpty()) {
+        if (!URL.isEmpty())
+        {
 
             options = new DisplayImageOptions.Builder().cacheInMemory(true)
                     .cacheOnDisc(true).resetViewBeforeLoading(true)
@@ -182,63 +200,100 @@ public class RoundedCornersGaganImg extends ImageView {
 
 
             // imageLoader.displayImage(URL, this, options);
-              imageLoader.displayImage(URL, this, options, new ImageLoadingListener()
+            imageLoader.displayImage(URL, this, options, new ImageLoadingListener()
+            {
+
+                @Override
+                public void onLoadingStarted(String s, View view)
+                {
+
+                }
+
+                @Override
+                public void onLoadingFailed(String s, View view, FailReason failReason)
+                {
+
+                }
+
+                @Override
+                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                {
+
+                    AlphaAnimation scale = new AlphaAnimation(0.1f, 1f);
+                    scale.setDuration(500);
+                    scale.setInterpolator(new OvershootInterpolator());
+                    view.startAnimation(scale);
+
+                }
+
+                @Override
+                public void onLoadingCancelled(String imageUri, View view)
+                {
+
+                }
+            });
+        }
+    }
+
+
+    public void setImageWithCallBack(Context con, String URL, final CallBackG callBack)
+    {
+
+
+        if (!URL.isEmpty())
         {
 
-            @Override
-            public void onLoadingStarted(String s, View view)
+            options = new DisplayImageOptions.Builder().cacheInMemory(true)
+                    .cacheOnDisc(true).resetViewBeforeLoading(true)
+                    .showImageForEmptyUri(drawable)
+                    .showImageOnFail(drawable)
+                    .showImageOnLoading(drawable).build();
+
+
+            imageLoader.init(ImageLoaderConfiguration.createDefault(((ContextWrapper) con).getBaseContext()));
+
+
+            // imageLoader.displayImage(URL, this, options);
+            imageLoader.displayImage(URL, this, options, new ImageLoadingListener()
             {
 
-            }
+                @Override
+                public void onLoadingStarted(String s, View view)
+                {
 
-            @Override
-            public void onLoadingFailed(String s, View view, FailReason failReason)
-            {
+                }
 
-            }
+                @Override
+                public void onLoadingFailed(String s, View view, FailReason failReason)
+                {
 
-            @Override
-            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
-            {
+                }
 
-                AlphaAnimation scale = new AlphaAnimation(0.1f, 1f);
-                scale.setDuration(500);
-                scale.setInterpolator(new OvershootInterpolator());
-                view.startAnimation(scale);
+                @Override
+                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                {
 
-            }
+//                    AlphaAnimation scale = new AlphaAnimation(0.1f, 1f);
+//                    scale.setDuration(500);
+//                    scale.setInterpolator(new OvershootInterpolator());
+//                    view.startAnimation(scale);
 
-            @Override
-            public void onLoadingCancelled(String imageUri, View view)
-            {
+                    callBack.OnFinishG(loadedImage);
+                }
 
-            }
-        });
+                @Override
+                public void onLoadingCancelled(String imageUri, View view)
+                {
+
+                }
+            });
         }
-
-
     }
+
 
     //compile 'com.github.bumptech.glide:glide:3.7.0'
     // https://futurestud.io/blog/glide-custom-transformation
-    public void setThumbnail(Context con, String URL) {
 
-
-        if (!URL.isEmpty()) {
-            setImageUrl(con, URL);
-            this.setAlpha(40f);
-            
-            
-//            Glide
-//                    .with(con)
-//                    .load(URL)
-//                    .thumbnail(0.1f)
-//                    .into(this);
-
-        }
-
-
-    }
 
 
 }

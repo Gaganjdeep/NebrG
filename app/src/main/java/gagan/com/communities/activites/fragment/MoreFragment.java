@@ -63,12 +63,12 @@ public class MoreFragment extends BaseFragmentG implements View.OnClickListener 
         return v;
     }
 
-
+    TextView tvUserName;
     private void findViewbyIds(View v) {
 
         img_profilepic = (RoundedCornersGaganImg) v.findViewById(R.id.img_profilepic);
-        TextView tvUserName = (TextView) v.findViewById(R.id.tvUserName);
-        tvUserName.setText(sharedPrefHelper.getUserName());
+         tvUserName = (TextView) v.findViewById(R.id.tvUserName);
+
 
         layoutProfile = (LinearLayout) v.findViewById(R.id.layoutProfile);
         layoutMyBuisness = (LinearLayout) v.findViewById(R.id.layoutMyBuisness);
@@ -84,7 +84,7 @@ public class MoreFragment extends BaseFragmentG implements View.OnClickListener 
 
 
         img_profilepic.setRadius(200);
-        img_profilepic.setImageUrl(getActivity(), SharedPrefHelper.read(getActivity()).getProfile_pic());
+
 
 
         layoutLogout.setOnClickListener(this);
@@ -101,6 +101,14 @@ public class MoreFragment extends BaseFragmentG implements View.OnClickListener 
         layoutMyBuisness.setOnClickListener(this);
     }
 
+
+    @Override
+    public void onResume()
+    {
+        tvUserName.setText(sharedPrefHelper.getUserName());
+        img_profilepic.setImageUrl(getActivity(), SharedPrefHelper.read(getActivity()).getProfile_pic());
+        super.onResume();
+    }
 
     @Override
     public void onClick(View v) {

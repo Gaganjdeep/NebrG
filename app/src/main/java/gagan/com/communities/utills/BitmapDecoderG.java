@@ -30,11 +30,12 @@ import java.io.InputStream;
 
 //==============================================================================================================================
 public class BitmapDecoderG {
-    final public static int REQUESTCODE_CAMERA = 11;
-    final public static int REQUESTCODE_GALLERY = 22;
+    final public static int REQUESTCODE_CAMERA = 117;
+    final public static int REQUESTCODE_GALLERY = 227;
 
     //--------------------------------------------------------------------------------------------------------------------------
-    public static Uri getTemporaryUri() {
+    public static Uri getTemporaryUri()
+    {
         return Uri.fromFile(createTemporaryFile());
     }
 
@@ -57,6 +58,18 @@ public class BitmapDecoderG {
         }
         catch (Exception | Error e) {
             e.printStackTrace();
+            try
+            {
+                Bitmap                bm   = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bm.compress(Bitmap.CompressFormat.JPEG, 50, baos); //bm is the bitmap object
+                byte[] b = baos.toByteArray();
+                return Base64.encodeToString(b, Base64.DEFAULT);
+            }
+            catch (Exception e1)
+            {
+                e1.printStackTrace();
+            }
             return "";
         }
     }
@@ -192,7 +205,6 @@ public class BitmapDecoderG {
 
     //--------------------------------------------------------------------------------------------------------------------------
     private static File createTemporaryFile() {
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             try {
                 File file = new File(Environment.getExternalStorageDirectory(), randomName());
 
@@ -202,9 +214,9 @@ public class BitmapDecoderG {
 
                 return file;
             }
-            catch (IOException error) {
+            catch (Exception error) {
             }
-        }
+
 
         return null;
     }
