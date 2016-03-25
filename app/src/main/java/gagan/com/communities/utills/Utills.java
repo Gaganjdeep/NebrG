@@ -219,7 +219,7 @@ public class Utills
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         dialog.setCancelable(true);
 
-
+// compile 'org.adw.library:discrete-seekbar:1.0.1'
         final AppCompatSeekBar seek = (AppCompatSeekBar) dialog.findViewById(R.id.seekbar);
         seek.setMax(255);
         seek.setKeyProgressIncrement(1);
