@@ -297,7 +297,7 @@ public class AddPostActivity extends BaseActivityG
     }
 
     String anonymous   = "Anonymous";
-    String homesociety = "Change Subscribed Home Society";
+//    String homesociety = "Change Subscribed Home Society";
 
     public void optIons(View view)
     {
@@ -307,9 +307,9 @@ public class AddPostActivity extends BaseActivityG
         s.setSpan(new ForegroundColorSpan(Color.BLACK), 0, s.length(), 0);
         popup.getMenu().add(s);
 
-        SpannableString sHome = new SpannableString(homesociety);
-        sHome.setSpan(new ForegroundColorSpan(Color.BLACK), 0, sHome.length(), 0);
-        popup.getMenu().add(sHome);
+//        SpannableString sHome = new SpannableString(homesociety);
+//        sHome.setSpan(new ForegroundColorSpan(Color.BLACK), 0, sHome.length(), 0);
+//        popup.getMenu().add(sHome);
 
 
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
@@ -318,13 +318,13 @@ public class AddPostActivity extends BaseActivityG
             public boolean onMenuItemClick(MenuItem item)
             {
 
-                if (item.getTitle().toString().equals(homesociety))
-                {
-
-
-                }
-                else
-                {
+//                if (item.getTitle().toString().equals(homesociety))
+//                {
+//
+//
+//                }
+//                else
+//                {
                     if (anon_user.equals("0"))
                     {
                         anonymous = "Non Anonymous";
@@ -335,7 +335,7 @@ public class AddPostActivity extends BaseActivityG
                         anonymous = "Anonymous";
                         anon_user = "0";
                     }
-                }
+//                }
 
 
                 return false;

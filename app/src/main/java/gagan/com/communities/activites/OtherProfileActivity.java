@@ -1,12 +1,16 @@
 package gagan.com.communities.activites;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -19,6 +23,7 @@ import gagan.com.communities.activites.fragment.FollowersFragment;
 import gagan.com.communities.activites.fragment.MessageFragment;
 import gagan.com.communities.activites.fragment.PostProfileFragment;
 import gagan.com.communities.models.UserDataModel;
+import gagan.com.communities.utills.CallBackG;
 import gagan.com.communities.utills.GlobalConstants;
 import gagan.com.communities.utills.RoundedCornersGaganImg;
 import gagan.com.communities.utills.SharedPrefHelper;
@@ -35,7 +40,7 @@ public class OtherProfileActivity extends BaseActivityG {
 
     TextView tvUserName, tvProfession, tvLocation;
 
-
+    AppBarLayout appbar;
     String user_id="";
 
     @Override
@@ -73,7 +78,7 @@ public class OtherProfileActivity extends BaseActivityG {
         tvLocation = (TextView) findViewById(R.id.tvLocation);
         tvUserName = (TextView) findViewById(R.id.tvUserName);
         tvProfession = (TextView) findViewById(R.id.tvProfession);
-
+        appbar = (AppBarLayout) findViewById(R.id.appbar);
 
         hitWebserviceG();
     }
@@ -87,8 +92,8 @@ public class OtherProfileActivity extends BaseActivityG {
             showProgressDialog();
 
             JSONObject data = new JSONObject();
-            data.put("userid", sharedPrefHelper.getUserId());
-            data.put("f_user_id", user_id);
+            data.put("userid", user_id);
+//            data.put("f_user_id", user_id);
 
             new SuperWebServiceG(GlobalConstants.URL + "userProfile", data, new CallBackWebService() {
                 @Override
@@ -117,11 +122,32 @@ public class OtherProfileActivity extends BaseActivityG {
                             userDataModel.setuId(jsonarrayData.optString("uId"));
 
                             imgvProfilePic.setRadius(200);
-                            imgvProfilePic.setImageUrl(OtherProfileActivity.this, userDataModel.getProfile_pic());
+
                             tvUserName.setText(userDataModel.getName());
                             tvProfession.setText(userDataModel.getProfession());
                             tvLocation.setText(userDataModel.getLocation());
 
+
+                            imgvProfilePic.setImageUrl(OtherProfileActivity.this, userDataModel.getProfile_pic());
+                            imgvProfilePic.setImageWithCallBack(OtherProfileActivity.this, userDataModel.getProfile_pic(), new CallBackG<Bitmap>()
+                            {
+                                @Override
+                                public void OnFinishG(Bitmap output)
+                                {
+                                    try
+                                    {
+
+                                        Bitmap         bmp            = output;
+                                        BitmapDrawable bitmapDrawable = new BitmapDrawable(bmp);
+                                        bitmapDrawable.setGravity(Gravity.CENTER| Gravity.FILL);
+                                        appbar.setBackground(bitmapDrawable);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
 
                         }
 

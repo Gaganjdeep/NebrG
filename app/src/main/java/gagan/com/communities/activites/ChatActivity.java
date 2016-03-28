@@ -9,12 +9,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -46,7 +48,11 @@ public class ChatActivity extends BaseActivityG
     String otherUserID = "", profilePicOther = "";
 
     UserDataModel userData;
+    Intent        intnt;
 
+
+    LinearLayout layoutAddRecipients;
+    SimpleDateFormat sdf = new SimpleDateFormat(GlobalConstants.SEVER_FORMAT);
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -54,19 +60,44 @@ public class ChatActivity extends BaseActivityG
         setContentView(R.layout.activity_chat);
 
 
-        Intent intnt = getIntent();
-
-        otherUserID = intnt.getStringExtra("id");
-        profilePicOther = intnt.getStringExtra("pic");
-
-
-        userData = sharedPrefHelper.read(ChatActivity.this);
-
         settingActionBar();
 
         findViewByID();
-        hitWebserviceG();
 
+        intnt = getIntent();
+
+        otherUserID = intnt.getStringExtra("id");
+
+        if (otherUserID.equals("0"))
+        {
+            needUserSelection();
+        }
+        else
+        {
+            startChat();
+        }
+
+
+    }
+
+
+    private void needUserSelection()
+    {
+        edComment.setEnabled(false);
+        layoutAddRecipients.setVisibility(View.VISIBLE);
+
+    }
+
+
+    private void startChat()
+    {
+        edComment.setEnabled(true);
+        layoutAddRecipients.setVisibility(View.GONE);
+
+        profilePicOther = intnt.getStringExtra("pic");
+
+        userData = SharedPrefHelper.read(ChatActivity.this);
+        hitWebserviceG();
     }
 
 
@@ -97,6 +128,9 @@ public class ChatActivity extends BaseActivityG
     {
 
         listData = new ArrayList<>();
+
+
+        layoutAddRecipients = (LinearLayout) findViewById(R.id.layoutAddRecipients);
 
         edComment = (EditText) findViewById(R.id.edComment);
         recyclerList = (RecyclerView) findViewById(R.id.recyclerList);
@@ -236,13 +270,17 @@ public class ChatActivity extends BaseActivityG
                             String sender_userid    = sharedPrefHelper.getUserId();
                             String recipient_userid = otherUserID;
                             String message          = edComment.getText().toString();
-                            String created_at       = DateFormat.getDateTimeInstance().format(new Date());
+
+                            String created_at       = sdf.format(new Date());
+
+
+
                             String username         = userData.getName();
 
 
                             String profile_pic = userData.getProfile_pic();
 
-                            listData.add(0,new MsgDataModel(id, sender_userid, recipient_userid, message, created_at, username, profile_pic));
+                            listData.add(0, new MsgDataModel(id, sender_userid, recipient_userid, message, created_at, username, profile_pic));
 
 
                             edComment.setText("");
@@ -276,5 +314,13 @@ public class ChatActivity extends BaseActivityG
             e.printStackTrace();
         }
 
+    }
+
+    public void addRecipients(View view)
+    {
+        Intent intnt = new Intent(ChatActivity.this, ShowFragmentActivity
+                .class);
+        intnt.putExtra("title", "Select User");
+        startActivity(intnt);
     }
 }

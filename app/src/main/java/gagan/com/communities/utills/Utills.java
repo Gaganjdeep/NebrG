@@ -19,6 +19,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -209,7 +211,7 @@ public class Utills
     // seekbar dialog for home
     static int  progress = 0;
 
-    public static void ShowDialogProgress(Context con)
+    public static void ShowDialogProgress(Context con, final CallBackG callBackG)
     {
 
         progress=0;
@@ -218,22 +220,30 @@ public class Utills
         dialog.setContentView(R.layout.set_distance_dialog);
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(true);
 
 // compile 'org.adw.library:discrete-seekbar:1.0.1'
-        final AppCompatSeekBar seek = (AppCompatSeekBar) dialog.findViewById(R.id.seekbar);
-        seek.setMax(255);
-        seek.setKeyProgressIncrement(1);
+//        final AppCompatSeekBar seek             = (AppCompatSeekBar) dialog.findViewById(R.id.seekbar);
+        DiscreteSeekBar        seek = (DiscreteSeekBar)dialog. findViewById(R.id.seekbar);
+        seek.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
+            @Override
+            public int transform(int value) {
+                return value;
+            }
+        });
+
+//        seek.setMax(255);
+//        seek.setKeyProgressIncrement(1);
 
 
         final TextView tvKm =(TextView)dialog.findViewById(R.id.tvKm);
 
 
-        seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+        seek.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener()
         {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b)
+            public void onProgressChanged(DiscreteSeekBar seekBar, int i, boolean fromUser)
             {
-
                 tvKm.setText(i + " km");
                 progress = i;
 
@@ -241,13 +251,13 @@ public class Utills
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar)
+            public void onStartTrackingTouch(DiscreteSeekBar seekBar)
             {
 
             }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar)
+            public void onStopTrackingTouch(DiscreteSeekBar seekBar)
             {
 
             }
@@ -260,6 +270,7 @@ public class Utills
         lp.copyFrom(dialog.getWindow().getAttributes());
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
         dialog.getWindow().setAttributes(lp);
         dialog.show();
 
@@ -267,7 +278,14 @@ public class Utills
 
 
 
-
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener()
+        {
+            @Override
+            public void onDismiss(DialogInterface dialog)
+            {
+                callBackG.OnFinishG(null);
+            }
+        });
 
 
 

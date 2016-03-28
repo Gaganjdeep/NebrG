@@ -21,13 +21,14 @@ import java.util.List;
 import gagan.com.communities.R;
 import gagan.com.communities.adapters.HomeAdapter;
 import gagan.com.communities.models.HomeModel;
+import gagan.com.communities.utills.CallBackG;
 import gagan.com.communities.utills.CurrentLocActivityG;
 import gagan.com.communities.utills.GlobalConstants;
 import gagan.com.communities.utills.Utills;
 import gagan.com.communities.webserviceG.CallBackWebService;
 import gagan.com.communities.webserviceG.SuperWebServiceG;
 
-public class CurrentLocationPostActivity extends CurrentLocActivityG implements PullAndLoadListView.OnLoadMoreListener, PullToRefreshListView.OnRefreshListener
+public class CurrentLocationPostActivity extends CurrentLocActivityG implements PullAndLoadListView.OnLoadMoreListener, PullToRefreshListView.OnRefreshListener, CallBackG
 {
 
 
@@ -72,30 +73,7 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
     }
 
 
-    boolean firstStart = true;
 
-    @Override
-    protected void onResume()
-    {
-
-        if (!firstStart)
-        {
-
-
-            if (!listHome.isEmpty())
-            {
-                listHome.clear();
-            }
-
-
-            displayLocation();
-        }
-        else
-        {
-            firstStart = false;
-        }
-        super.onResume();
-    }
 //
 //    @Override
 //    protected void onPause()
@@ -306,7 +284,7 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
 
             case R.id.set_distance:
 
-                Utills.ShowDialogProgress(CurrentLocationPostActivity.this);
+                Utills.ShowDialogProgress(CurrentLocationPostActivity.this,this);
 
 
                 break;
@@ -339,6 +317,19 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
         index = 0;
         limit = 10;
         startId = 0;
+        displayLocation();
+    }
+
+    @Override
+    public void OnFinishG(Object output)
+    {
+        if (!listHome.isEmpty())
+        {
+            listHome.clear();
+        }
+        limit = 10;
+        startId = 0;
+
         displayLocation();
     }
 

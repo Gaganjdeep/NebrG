@@ -17,15 +17,15 @@ import android.widget.TextView;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import gagan.com.communities.R;
-import gagan.com.communities.activites.AddPostActivity;
 import gagan.com.communities.activites.CommentsListActivity;
-import gagan.com.communities.activites.CurrentLocationPostActivity;
+import gagan.com.communities.activites.ShowImageActivity;
+import gagan.com.communities.activites.ShowPostActivity;
 import gagan.com.communities.models.HomeModel;
-import gagan.com.communities.models.NotificationModel;
-import gagan.com.communities.utills.CallBackNotifierHome;
 import gagan.com.communities.utills.GlobalConstants;
 import gagan.com.communities.utills.RoundedCornersGaganImg;
 import gagan.com.communities.utills.SharedPrefHelper;
@@ -109,6 +109,11 @@ public class HomeAdapter extends BaseAdapter
 
             RoundedCornersGaganImg imgUserPic = (RoundedCornersGaganImg) viewOther.findViewById(R.id.imgUserPic);
             RoundedCornersGaganImg imgMessage = (RoundedCornersGaganImg) viewOther.findViewById(R.id.imgMessage);
+
+
+
+
+
             imgMessage.setImageResource(R.drawable.grey_bg);
 
             TextView  tvTitle         = (TextView) viewOther.findViewById(R.id.tvTitle);
@@ -124,9 +129,14 @@ public class HomeAdapter extends BaseAdapter
             TextView tvComments = (TextView) viewOther.findViewById(R.id.tvComments);
 
             imgUserPic.setRadius(120);
-            if (!data.isAnon_user())
+            if (data.isAnon_user())
+            {
+                tvTitle.setText("Anonymous");
+            }
+            else
             {
                 imgUserPic.setImageUrl(con, data.getProfile_pic());
+                tvTitle.setText(data.getTitle());
             }
 
 
@@ -134,8 +144,21 @@ public class HomeAdapter extends BaseAdapter
             sb.setCharAt(0, Character.toUpperCase(sb.charAt(0)));
             String loc = sb.toString();
 
-            tvTitle.setText(data.getTitle());
-            tvTime.setText(data.getCreate_date().substring(data.getCreate_date().indexOf(" ")));
+
+            try
+            {
+
+                SimpleDateFormat sdf       = new SimpleDateFormat(GlobalConstants.SEVER_FORMAT);
+                SimpleDateFormat sdfDesire = new SimpleDateFormat("dd.MMM hh:mm a");
+                Date             date      = sdf.parse(data.getCreate_date());
+                tvTime.setText(sdfDesire.format(date));
+
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
 
             tvLocationGenre.setText(loc);
             tvLocationGenre.setSelected(true);
@@ -195,6 +218,18 @@ public class HomeAdapter extends BaseAdapter
             {
                 imgMessage.setVisibility(View.VISIBLE);
                 imgMessage.setImageUrl(con, data.getImage());
+                imgMessage.setTag(data.getImage());
+
+                imgMessage.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        Intent intnt = new Intent(con, ShowImageActivity.class);
+                        intnt.putExtra("image", v.getTag().toString());
+                        con. startActivity(intnt);
+                    }
+                });
             }
             else
             {

@@ -242,7 +242,11 @@ public class CommentsListActivity extends Activity
 
                             edComment.setText("");
 
-                            (HomeFragment.homeFragment).notifier(index, listData.size() + "");
+                            if(HomeFragment.homeFragment!=null)
+                            {
+                                (HomeFragment.homeFragment).notifier(index, listData.size() + "");
+                            }
+
                         }
                         else
                         {

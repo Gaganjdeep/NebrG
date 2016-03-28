@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import gagan.com.communities.R;
@@ -98,7 +100,25 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MyViewHo
 
 
         holder.tvMSG.setText(currentData.getMessage());
-        holder.tvTime.setText(currentData.getCreated_at());
+
+
+        try
+        {
+
+            SimpleDateFormat sdf       = new SimpleDateFormat(GlobalConstants.SEVER_FORMAT);
+            SimpleDateFormat sdfDesire = new SimpleDateFormat("hh.mm a");
+            Date             date      = sdf.parse(currentData.getCreated_at());
+
+
+            holder.tvTime.setText(sdfDesire.format(date));
+
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
 
         holder.DP.setRadius(180);
         holder.DP.setImageUrl(con, currentData.getProfile_pic());
@@ -133,10 +153,10 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MyViewHo
             }
         });
 
-        if (animate && dataList.size()==position)
+        if (animate && dataList.size() == position)
         {
             Utills.animate(holder.view);
-            animate=false;
+            animate = false;
         }
 
 
@@ -146,9 +166,8 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MyViewHo
 
     public void animateMsg()
     {
-        animate=true;
+        animate = true;
     }
-
 
 
     private void delComment(final MsgDataModel cmntId)

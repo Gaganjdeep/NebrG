@@ -6,16 +6,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import gagan.com.communities.R;
 import gagan.com.communities.activites.ChatActivity;
 import gagan.com.communities.models.MsgDataModel;
-import gagan.com.communities.models.NotificationModel;
-import gagan.com.communities.models.UserDataModel;
+import gagan.com.communities.utills.GlobalConstants;
 import gagan.com.communities.utills.RoundedCornersGaganImg;
 
 /**
@@ -54,7 +54,22 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
 
         holder.tvUserName.setText(currentData.getUsername());
         holder.tvMessage.setText(currentData.getMessage());
-        holder.tvTime.setText(currentData.getCreated_at());
+
+
+        try
+        {
+
+            SimpleDateFormat sdf       = new SimpleDateFormat(GlobalConstants.SEVER_FORMAT);
+            SimpleDateFormat sdfDesire = new SimpleDateFormat("dd.MMM hh:mm a");
+            Date             date      = sdf.parse(currentData.getCreated_at());
+            holder.tvTime.setText(sdfDesire.format(date));
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
 
         holder.imgUserPic.setRadius(170);
         holder.imgUserPic.setImageUrl(con, currentData.getProfile_pic());

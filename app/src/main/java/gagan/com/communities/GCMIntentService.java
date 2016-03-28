@@ -15,6 +15,7 @@ import com.google.android.gcm.GCMBaseIntentService;
 
 import gagan.com.communities.R;
 import gagan.com.communities.activites.SplashActivity;
+import gagan.com.communities.utills.GlobalConstants;
 
 public class GCMIntentService extends GCMBaseIntentService
 {
@@ -25,7 +26,7 @@ public class GCMIntentService extends GCMBaseIntentService
 
     public GCMIntentService()
     {
-//        super(GlobalContstants.SENDER_ID);
+        super(GlobalConstants.SENDER_ID);
     }
 
 

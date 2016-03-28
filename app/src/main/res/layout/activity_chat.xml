@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:animateLayoutChanges="true"
     android:orientation="vertical"
-
     tools:context="gagan.com.communities.activites.CommentsListActivity">
-
 
 
     <android.support.v7.widget.Toolbar
@@ -31,6 +30,30 @@
 
     </android.support.v7.widget.Toolbar>
 
+
+    <LinearLayout
+        android:id="@+id/layoutAddRecipients"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="addRecipients"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:elevation="4dp">
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Enter recipient"
+            android:textSize="15sp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/add_contact_icon"/>
+
+    </LinearLayout>
 
 
     <FrameLayout
@@ -58,30 +81,31 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/greydefault"
         android:gravity="center"
         android:orientation="horizontal"
-        android:background="@color/greydefault"
         android:padding="7dp">
 
 
         <EditText
-            android:padding="7dp"
-            android:background="@color/white"
             android:id="@+id/edComment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@color/white"
             android:hint="Type message here.."
             android:maxLines="5"
+            android:padding="7dp"
             android:textColor="@color/black"/>
 
-        <Button
+        <ImageButton
             android:id="@+id/btnSendMsg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="sendMsg"
-            android:text="send"
-            android:textColor="@color/black"/>
+            android:background="@mipmap/send_btn"
+            android:textColor="@color/black"
+            android:layout_marginLeft="7dp"/>
 
 
     </LinearLayout>

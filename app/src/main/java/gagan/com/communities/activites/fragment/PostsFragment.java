@@ -2,6 +2,7 @@ package gagan.com.communities.activites.fragment;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -27,7 +28,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 import gagan.com.communities.R;
+import gagan.com.communities.activites.ShowPostActivity;
 import gagan.com.communities.adapters.HomeAdapter;
 import gagan.com.communities.models.CommunitiesListModel;
 import gagan.com.communities.models.HomeModel;
@@ -46,8 +50,7 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
 {
 
 
-
-    private  GoogleMap   googleMapPost;
+    private GoogleMap googleMapPost;
 
 
     public PostsFragment()
@@ -78,11 +81,10 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
     }
 
 
-
-
+    HashMap<String, HomeModel> MarkerData;
 
     //    ====================marker
-    private void setUpMap(String name, String genre, LatLng data)
+    private void setUpMap(String name, String genre, LatLng data, HomeModel homeModel)
     {
 
 
@@ -91,7 +93,7 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
         Marker markr = googleMapPost.addMarker(new MarkerOptions().position(markerLoc).draggable(false).title(name).snippet(genre).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker)));
 
         markr.showInfoWindow();
-//    MarkerData.put(markr.getId(), data);
+        MarkerData.put(markr.getId(), homeModel);
 
         googleMapPost.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener()
         {
@@ -99,6 +101,11 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
             @Override
             public void onInfoWindowClick(Marker arg0)
             {
+
+
+                Intent intnt = new Intent(getActivity(), ShowPostActivity.class);
+                intnt.putExtra("data", MarkerData.get(arg0.getId()));
+                startActivity(intnt);
 
 
             }
@@ -175,8 +182,9 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
                 googleMapPost.clear();
 
 
-
                 JSONArray jsonarrayData = jsonMainResult.getJSONArray("post");
+
+                MarkerData = new HashMap<>();
 
                 for (int g = 0; g < jsonarrayData.length(); g++)
                 {
@@ -205,7 +213,8 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
                     double lat = Double.parseDouble(jobj.optString("lat"));
                     double lng = Double.parseDouble(jobj.optString("lng"));
 
-                    setUpMap(jobj.optString("title"), jobj.optString("type"), new LatLng(lat, lng));
+
+                    setUpMap(jobj.optString("title"), jobj.optString("type"), new LatLng(lat, lng), homemodel);
 
                 }
 //                "post": [
@@ -247,7 +256,7 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
     @Override
     public void onMyLocationChange(Location location)
     {
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),location.getLongitude()), 6);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 6);
         googleMapPost.animateCamera(cameraUpdate);
         fetchHomeData(location);
 

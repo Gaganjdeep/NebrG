@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 
 import gagan.com.communities.R;
+import gagan.com.communities.activites.ChatActivity;
 import gagan.com.communities.activites.ShowFragmentActivity;
 import gagan.com.communities.adapters.MessageAdapter;
 import gagan.com.communities.models.MsgDataModel;
@@ -207,10 +208,15 @@ public class MessageFragment extends BaseFragmentG implements View.OnClickListen
     @Override
     public void onClick(View v)
     {
-        Intent intnt = new Intent(getActivity(), ShowFragmentActivity
+
+        Intent intnt = new Intent(getActivity(), ChatActivity
                 .class);
-        intnt.putExtra("title", "Select User");
-        startActivity(intnt);
+        intnt.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        intnt.putExtra("id", "0");
+//        intnt.putExtra("pic", data.getProfile_pic());
+        getActivity().startActivity(intnt);
+
+
 
     }
 

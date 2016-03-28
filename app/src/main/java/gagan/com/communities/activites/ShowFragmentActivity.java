@@ -1,8 +1,8 @@
 package gagan.com.communities.activites;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -11,7 +11,6 @@ import java.util.HashMap;
 
 import gagan.com.communities.R;
 import gagan.com.communities.activites.fragment.AddChatFragment;
-import gagan.com.communities.activites.fragment.BuisnessAdsAllFragment;
 import gagan.com.communities.activites.fragment.BuisnessCenterMapFragment;
 import gagan.com.communities.activites.fragment.Communitiesfragment;
 import gagan.com.communities.activites.fragment.PersonalAdsMapFragment;

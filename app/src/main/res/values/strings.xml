@@ -16,7 +16,8 @@
     <string name="title_activity_my_buisness">MyBuisness</string>
 
 
-    <string name="app_id">162357230814856</string>
+    <!--<string name="app_id">162357230814856</string>-->
+    <string name="app_id">491075661087188</string>
 
 
     <string-array name="add_post">

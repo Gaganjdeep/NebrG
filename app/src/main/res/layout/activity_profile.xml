@@ -28,6 +28,7 @@
                 android:background="@android:color/transparent"
                 android:elevation="4dp"
                 app:popupTheme="@style/MyMaterialTheme.G"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark"
                 >
 
             </android.support.v7.widget.Toolbar>

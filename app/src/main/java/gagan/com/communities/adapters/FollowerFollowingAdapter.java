@@ -1,5 +1,6 @@
 package gagan.com.communities.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -89,6 +90,8 @@ public class FollowerFollowingAdapter extends RecyclerView.Adapter<FollowerFollo
                                 intnt.putExtra("id", data.getuId());
                                 intnt.putExtra("pic", data.getProfile_pic());
                                 con.startActivity(intnt);
+//                                ((Activity)con).finish();
+
                             }
                         }
                 );
