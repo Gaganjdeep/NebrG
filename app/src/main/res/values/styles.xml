@@ -35,10 +35,12 @@
 
 
     </style>
+
     <style name="tab_heading" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
         <item name="android:textSize">11sp</item>
         <item name="android:textStyle">bold</item>
     </style>
+
     <style name="headingtext_style">
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
@@ -65,13 +67,13 @@
 
     <style name="SeekBArtheme">
         <item name="colorControlActivated">@color/button_pink</item>
+        <item name="colorAccent">@color/button_pink</item>
+        <item name="android:textColorSecondary">@color/button_pink</item>
     </style>
+
     <style name="optionOverFlowTheme">
         <item name="colorControlActivated">@color/white</item>
     </style>
-
-
-
 
 
     <style name="CustomFloaterTextAppearance" parent="android:TextAppearance.Small">

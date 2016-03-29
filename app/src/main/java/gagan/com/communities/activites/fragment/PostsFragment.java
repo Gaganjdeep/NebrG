@@ -256,7 +256,7 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
     @Override
     public void onMyLocationChange(Location location)
     {
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 6);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 9);
         googleMapPost.animateCamera(cameraUpdate);
         fetchHomeData(location);
 

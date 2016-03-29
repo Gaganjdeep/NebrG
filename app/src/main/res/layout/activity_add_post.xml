@@ -118,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="7dp"
                     android:padding="10dp"
-                    android:text="-at chandigarh"
+                    android:text=""
                     android:textColor="@color/blue_grey"
                     android:visibility="gone"/>
 

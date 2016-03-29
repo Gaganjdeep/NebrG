@@ -195,7 +195,7 @@ public class Communitiesfragment extends SupportMapFragment implements GoogleMap
     @Override
     public void onMyLocationChange(Location location)
     {
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),location.getLongitude()), 6);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),location.getLongitude()), 9);
         googleMapCommunity.animateCamera(cameraUpdate);
         fetchDataNearby(location);
 

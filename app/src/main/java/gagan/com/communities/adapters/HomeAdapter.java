@@ -131,12 +131,13 @@ public class HomeAdapter extends BaseAdapter
             imgUserPic.setRadius(120);
             if (data.isAnon_user())
             {
-                tvTitle.setText("Anonymous");
+                tvUsername.setText("Anonymous");
+
             }
             else
             {
                 imgUserPic.setImageUrl(con, data.getProfile_pic());
-                tvTitle.setText(data.getTitle());
+                tvUsername.setText(data.getUsername());
             }
 
 
@@ -162,9 +163,10 @@ public class HomeAdapter extends BaseAdapter
 
             tvLocationGenre.setText(loc);
             tvLocationGenre.setSelected(true);
+            tvTitle.setText(data.getTitle());
 
             tvGenre.setText(data.getType());
-            tvUsername.setText(data.getUsername());
+
             tvMessage.setText(data.getMessage());
             tvComments.setText(data.getComments_count() + " comments");
 

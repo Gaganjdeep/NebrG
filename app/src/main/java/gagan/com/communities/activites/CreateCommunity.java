@@ -1,5 +1,6 @@
 package gagan.com.communities.activites;
 
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatSpinner;
@@ -28,29 +29,36 @@ import gagan.com.communities.utills.Utills;
 import gagan.com.communities.webserviceG.CallBackWebService;
 import gagan.com.communities.webserviceG.SuperWebServiceG;
 
-public class CreateCommunity extends CurrentLocActivityG {
+public class CreateCommunity extends CurrentLocActivityG
+{
 
 
     Button btnpublic, btnprivate;
 
     AppCompatSpinner spinner;
-    EditText edDescription, edCommunityName;
+    EditText         edDescription, edCommunityName;
     TextView tvGenre;
     private MapFragment mapFragment;
 
     GoogleMap googleMap;
 
-    @Override
-    public void getCurrentLocationG(Location currentLocation) {
 
-        if (googleMap != null) {
+    String inviteUsers = "";
+
+    @Override
+    public void getCurrentLocationG(Location currentLocation)
+    {
+
+        if (googleMap != null)
+        {
             latLngG = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
             addMarker(latLngG);
         }
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_community);
 
@@ -59,7 +67,8 @@ public class CreateCommunity extends CurrentLocActivityG {
         findViewByID();
     }
 
-    void findViewByID() {
+    void findViewByID()
+    {
         btnpublic = (Button) findViewById(R.id.btnpublic);
         btnprivate = (Button) findViewById(R.id.btnprivate);
 
@@ -68,16 +77,19 @@ public class CreateCommunity extends CurrentLocActivityG {
         edCommunityName = (EditText) findViewById(R.id.edCommunityName);
 
         spinner = (AppCompatSpinner) findViewById(R.id.spinner);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
 
 
                 tvGenre.setText(((TextView) view).getText().toString());
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            public void onNothingSelected(AdapterView<?> parent)
+            {
 
             }
         });
@@ -92,33 +104,42 @@ public class CreateCommunity extends CurrentLocActivityG {
     private LatLng latLngG = null;
 
 
-    private void initializeMapFragment() {
+    private void initializeMapFragment()
+    {
 
-        try {
+        try
+        {
 //            mapFragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.map);
             mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         }
-        catch (Exception | Error e) {
+        catch (Exception | Error e)
+        {
             e.printStackTrace();
-            if (mapFragment == null) {
+            if (mapFragment == null)
+            {
                 mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
             }
         }
 
-        if (mapFragment == null) {
+        if (mapFragment == null)
+        {
             mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         }
 
 
-        mapFragment.getMapAsync(new OnMapReadyCallback() {
+        mapFragment.getMapAsync(new OnMapReadyCallback()
+        {
             @Override
-            public void onMapReady(final GoogleMap gMap) {
+            public void onMapReady(final GoogleMap gMap)
+            {
 
                 googleMap = gMap;
 
-                googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener()
+                {
                     @Override
-                    public void onMapClick(LatLng latLng) {
+                    public void onMapClick(LatLng latLng)
+                    {
 
                         addMarker(latLng);
                         latLngG = latLng;
@@ -132,7 +153,8 @@ public class CreateCommunity extends CurrentLocActivityG {
     }
 
 
-    private void addMarker(LatLng latLng) {
+    private void addMarker(LatLng latLng)
+    {
         googleMap.clear();
         googleMap.addMarker(new MarkerOptions()
                 .position(latLng));
@@ -141,9 +163,12 @@ public class CreateCommunity extends CurrentLocActivityG {
     }
 
 
-    void hitWebserviceG() {
-        if (validation()) {
-            try {
+    void hitWebserviceG()
+    {
+        if (validation())
+        {
+            try
+            {
 
                 showProgressDialog();
 
@@ -155,33 +180,39 @@ public class CreateCommunity extends CurrentLocActivityG {
                 data.put("c_long", latLngG.longitude);
                 data.put("c_description", edDescription.getText().toString().trim());
                 data.put("owner_id", sharedPrefHelper.getUserId());
-                data.put("invite_user_id", "");
+                data.put("invite_user_id", inviteUsers);
                 data.put("c_type", isPublic);
 
-                new SuperWebServiceG(GlobalConstants.URL + "addcommunity", data, new CallBackWebService() {
+                new SuperWebServiceG(GlobalConstants.URL + "addcommunity", data, new CallBackWebService()
+                {
                     @Override
-                    public void webOnFinish(String output) {
+                    public void webOnFinish(String output)
+                    {
 
                         cancelDialog();
 
-                        try {
+                        try
+                        {
 
                             JSONObject jsonMain = new JSONObject(output);
 
                             JSONObject jsonMainResult = jsonMain.getJSONObject("result");
 
-                            if (jsonMainResult.getString("code").contains("200")) {
+                            if (jsonMainResult.getString("code").contains("200"))
+                            {
                                 finish();
                             }
                             Utills.showToast(jsonMainResult.getString("status"), CreateCommunity.this, true);
                         }
-                        catch (Exception e) {
+                        catch (Exception e)
+                        {
                             e.printStackTrace();
                         }
                     }
                 }).execute();
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 e.printStackTrace();
             }
 
@@ -189,7 +220,8 @@ public class CreateCommunity extends CurrentLocActivityG {
 
     }
 
-    private void settingActionBar() {
+    private void settingActionBar()
+    {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -199,7 +231,8 @@ public class CreateCommunity extends CurrentLocActivityG {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
 
 
         finish();
@@ -211,8 +244,10 @@ public class CreateCommunity extends CurrentLocActivityG {
 
     String isPublic = "0";
 
-    public void publicPrivate(View view) {
-        if (view.getId() == R.id.btnpublic) {
+    public void publicPrivate(View view)
+    {
+        if (view.getId() == R.id.btnpublic)
+        {
             btnpublic.setTextColor(getResources().getColor(R.color.white));
             btnpublic.setBackgroundColor(getResources().getColor(R.color.button_pink));
 
@@ -221,7 +256,8 @@ public class CreateCommunity extends CurrentLocActivityG {
 
             isPublic = "0";
         }
-        else if (view.getId() == R.id.btnprivate) {
+        else if (view.getId() == R.id.btnprivate)
+        {
 
             btnprivate.setTextColor(getResources().getColor(R.color.white));
             btnprivate.setBackgroundColor(getResources().getColor(R.color.button_pink));
@@ -233,12 +269,15 @@ public class CreateCommunity extends CurrentLocActivityG {
     }
 
 
-    private boolean validation() {
-        if (edCommunityName.getText().toString().trim().isEmpty()) {
+    private boolean validation()
+    {
+        if (edCommunityName.getText().toString().trim().isEmpty())
+        {
             edCommunityName.setError("Please enter community name");
             return false;
         }
-        else if (edDescription.getText().toString().trim().length() < 0) {
+        else if (edDescription.getText().toString().trim().length() < 0)
+        {
             edDescription.setError("Please enter some description");
             return false;
         }
@@ -246,17 +285,44 @@ public class CreateCommunity extends CurrentLocActivityG {
     }
 
 
-    public void openSpinner(View view) {
+    public void openSpinner(View view)
+    {
         spinner.performClick();
     }
 
-    public void subMitt(View view) {
+    public void subMitt(View view)
+    {
         hitWebserviceG();
     }
 
-    public void selectUsers(View view) {
-        Utills.showToast("No user in your circle..!", CreateCommunity.this, true);
+    public void selectUsers(View view)
+    {
+//        Utills.showToast("No user in your circle..!", CreateCommunity.this, true);
 
-//        startActivityForResult(new Intent(CreateCommunity.this, SelectUsersListActivity.class), 11);
+        startActivityForResult(new Intent(CreateCommunity.this, SelectUsersListActivity.class), 11);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        try
+        {
+
+            if (resultCode == RESULT_OK)
+            {
+
+                inviteUsers = data.getStringExtra("data");
+
+
+            }
+
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
