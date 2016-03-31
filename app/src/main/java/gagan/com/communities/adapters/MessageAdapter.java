@@ -60,7 +60,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
         {
 
             SimpleDateFormat sdf       = new SimpleDateFormat(GlobalConstants.SEVER_FORMAT);
-            SimpleDateFormat sdfDesire = new SimpleDateFormat("dd.MMM hh:mm a");
+            SimpleDateFormat sdfDesire = new SimpleDateFormat("dd MMM hh:mm a");
             Date             date      = sdf.parse(currentData.getCreated_at());
             holder.tvTime.setText(sdfDesire.format(date));
 

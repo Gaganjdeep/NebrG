@@ -56,6 +56,19 @@
         <item name="android:windowAnimationStyle">@style/DialogAnimation</item>
     </style>
 
+
+
+    <style name="Theme.Transparent" parent="MyMaterialTheme.G">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+
+
+
+
     <style name="DialogAnimation">
         <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
     </style>

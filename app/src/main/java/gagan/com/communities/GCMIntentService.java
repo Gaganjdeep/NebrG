@@ -13,6 +13,8 @@ import android.util.Log;
 
 import com.google.android.gcm.GCMBaseIntentService;
 
+import org.json.JSONObject;
+
 import gagan.com.communities.R;
 import gagan.com.communities.activites.SplashActivity;
 import gagan.com.communities.utills.GlobalConstants;
@@ -30,7 +32,6 @@ public class GCMIntentService extends GCMBaseIntentService
     }
 
 
-
     private void showNotification(Context context, String message)
     {
         Intent notificationIntent = new Intent(context, SplashActivity.class);
@@ -39,7 +40,7 @@ public class GCMIntentService extends GCMBaseIntentService
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 
-        builder.setSmallIcon(R.mipmap.apparel_icon);
+        builder.setSmallIcon(R.mipmap.ic_launcher);
 
         builder.setContentIntent(pendingIntent);
 
@@ -63,7 +64,7 @@ public class GCMIntentService extends GCMBaseIntentService
 //        }
 //        else
 //        {
-            builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.grey_bg));
+        builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.grey_bg));
 //        }
 
         builder.setContentTitle("Neibr");
@@ -74,14 +75,14 @@ public class GCMIntentService extends GCMBaseIntentService
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
 
+        if (defaultSound == null)
+        {
+            defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
             if (defaultSound == null)
             {
-                defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
-                if (defaultSound == null)
-                {
-                    defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-                }
+                defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
             }
+        }
 
         builder.setSound(defaultSound);
 
@@ -119,15 +120,16 @@ public class GCMIntentService extends GCMBaseIntentService
             Log.e("++++GCM message++++", message);
 
 
+//            {"message":"You have successfully liked the post title: \"for liki dislike test post\"",
+//                    "title":"Post Liked","status":2,"vibrate":1,"sound":1,"post_id":"45"}
 
-            showNotification(context, "Gagan");
+//            JSONObject jobj = new JSONObject(message);
+
+
+            showNotification(context, message);
 
         }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        catch (Error e)
+        catch (Exception | Error e)
         {
             e.printStackTrace();
         }

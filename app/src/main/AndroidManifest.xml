@@ -171,7 +171,8 @@
         </activity>
         <activity android:name=".activites.ShowPostActivity">
         </activity>
-        <activity android:name=".activites.ShowImageActivity">
+        <activity android:name=".activites.ShowImageActivity"
+            android:theme="@style/Theme.Transparent">
         </activity>
     </application>
 
