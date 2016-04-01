@@ -323,4 +323,80 @@ public class ChatActivity extends BaseActivityG
         intnt.putExtra("title", "Select User");
         startActivity(intnt);
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+     @Override
+    public void onResume()
+    {
+        super.onResume();
+
+        if (!mIsReceiverRegistered)
+        {
+            if (mReceiver == null)
+                mReceiver = new UpdateMessageListReceiver();
+            getActivity().registerReceiver(mReceiver, new IntentFilter(GlobalConstants.UPDATE_MSG_FRAGMENT));
+            mIsReceiverRegistered = true;
+        }
+    }
+
+
+
+
+    // @Override
+    // public void onDestroy()
+    // {
+    //     if (mIsReceiverRegistered)
+    //     {
+    //         getActivity().unregisterReceiver(mReceiver);
+    //         mReceiver = null;
+    //         mIsReceiverRegistered = false;
+    //     }
+    //     super.onDestroy();
+    // }
+
+   
+    // UpdateMessageListReceiver mReceiver;
+    // private boolean mIsReceiverRegistered = false;
+
+
+
+
+
+    // private class UpdateMessageListReceiver extends BroadcastReceiver
+    // {
+
+    //     @Override
+    //     public void onReceive(Context context, Intent intent)
+    //     {
+
+    //         hitWebserviceG();
+    //     }
+    // }
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
