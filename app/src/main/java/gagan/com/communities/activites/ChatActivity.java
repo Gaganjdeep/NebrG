@@ -336,19 +336,19 @@ public class ChatActivity extends BaseActivityG
     
     
     
-     @Override
-    public void onResume()
-    {
-        super.onResume();
+    //  @Override
+    // public void onResume()
+    // {
+    //     super.onResume();
 
-        if (!mIsReceiverRegistered)
-        {
-            if (mReceiver == null)
-                mReceiver = new UpdateMessageListReceiver();
-            getActivity().registerReceiver(mReceiver, new IntentFilter(GlobalConstants.UPDATE_MSG_FRAGMENT));
-            mIsReceiverRegistered = true;
-        }
-    }
+    //     if (!mIsReceiverRegistered)
+    //     {
+    //         if (mReceiver == null)
+    //             mReceiver = new UpdateMessageListReceiver();
+    //         getActivity().registerReceiver(mReceiver, new IntentFilter(GlobalConstants.UPDATE_MSG_FRAGMENT));
+    //         mIsReceiverRegistered = true;
+    //     }
+    // }
 
 
 
