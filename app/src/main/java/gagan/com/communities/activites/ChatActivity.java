@@ -3,6 +3,7 @@ package gagan.com.communities.activites;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -271,7 +272,7 @@ public class ChatActivity extends BaseActivityG
                             String recipient_userid = otherUserID;
                             String message          = edComment.getText().toString();
 
-                            String created_at       = sdf.format(new Date());
+                            String created_at       = sdf.format(new Date(System.currentTimeMillis()));
 
 
 

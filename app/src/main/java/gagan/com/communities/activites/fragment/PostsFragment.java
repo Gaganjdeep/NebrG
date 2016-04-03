@@ -1,23 +1,13 @@
 package gagan.com.communities.activites.fragment;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.LocationSource;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -32,10 +22,7 @@ import java.util.HashMap;
 
 import gagan.com.communities.R;
 import gagan.com.communities.activites.ShowPostActivity;
-import gagan.com.communities.adapters.HomeAdapter;
-import gagan.com.communities.models.CommunitiesListModel;
 import gagan.com.communities.models.HomeModel;
-import gagan.com.communities.utills.CurrentLocFragment;
 import gagan.com.communities.utills.GlobalConstants;
 import gagan.com.communities.utills.SharedPrefHelper;
 import gagan.com.communities.utills.Utills;
@@ -74,10 +61,30 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
                 googleMapPost.getUiSettings().setMapToolbarEnabled(false);
 
 
-                googleMapPost.setOnMyLocationChangeListener(PostsFragment.this);
+                if (modelToSet == null)
+                {
+                    googleMapPost.setOnMyLocationChangeListener(PostsFragment.this);
+                }
+                else
+                {
+                    MarkerData = new HashMap<>();
+                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(modelToSet.getLatLng(), 9);
+                    googleMapPost.animateCamera(cameraUpdate);
+
+                    setUpMap(modelToSet.getTitle(), modelToSet.getType(), modelToSet.getLatLng(), modelToSet);
+                }
+
 
             }
         });
+    }
+
+
+    HomeModel modelToSet;
+
+    public void setPost(HomeModel homemodel)
+    {
+        modelToSet = homemodel;
     }
 
 
@@ -93,6 +100,7 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
         Marker markr = googleMapPost.addMarker(new MarkerOptions().position(markerLoc).draggable(false).title(name).snippet(genre).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker)));
 
         markr.showInfoWindow();
+
         MarkerData.put(markr.getId(), homeModel);
 
         googleMapPost.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener()
@@ -212,29 +220,11 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
 
                     double lat = Double.parseDouble(jobj.optString("lat"));
                     double lng = Double.parseDouble(jobj.optString("lng"));
-
+                    homemodel.setLatLng(new LatLng(lat, lng));
 
                     setUpMap(jobj.optString("title"), jobj.optString("type"), new LatLng(lat, lng), homemodel);
 
                 }
-//                "post": [
-//                {
-//                    "message": "bshbwbbss",
-//                        "id": "43",
-//                        "username": "Vz",
-//                        "distance": "0.16712854019496423",
-//                        "anon_user": "0",
-//                        "title": "bsbsbdbbdhdhh",
-//                        "create_date": "2016-03-10 18:46:36",
-//                        "location": "dav public school river side",
-//                        "userid": "24",
-//                        "image": "http://orasisdata.com/Neiber/images/1457635596.png",
-//                        "lng": "76.8745",
-//                        "profile_pic": "",
-//                        "lat": "30.336"
-//                }
-//                ],
-
 
             }
             else

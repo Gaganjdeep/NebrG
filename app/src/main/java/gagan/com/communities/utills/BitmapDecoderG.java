@@ -29,8 +29,9 @@ import java.io.InputStream;
 
 
 //==============================================================================================================================
-public class BitmapDecoderG {
-    final public static int REQUESTCODE_CAMERA = 117;
+public class BitmapDecoderG
+{
+    final public static int REQUESTCODE_CAMERA  = 117;
     final public static int REQUESTCODE_GALLERY = 227;
 
     //--------------------------------------------------------------------------------------------------------------------------
@@ -41,14 +42,16 @@ public class BitmapDecoderG {
 
 
     //    ========================================================
-    
+
 //       ImageSize targetSize = new ImageSize(80, 50); // result Bitmap will be fit to this size
 // Bitmap bmp = imageLoader.loadImageSync(imageUri, targetSize, options);
-    
-    
-    public static String getBytesImage(Context context,Uri imageUri) {
-        try {
-            Bitmap bm = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
+
+
+    public static String getBytesImage(Context context, Uri imageUri)
+    {
+        try
+        {
+            Bitmap                bm   = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bm.compress(Bitmap.CompressFormat.JPEG, 70, baos); //bm is the bitmap object
             byte[] b = baos.toByteArray();
@@ -56,7 +59,8 @@ public class BitmapDecoderG {
 
 
         }
-        catch (Exception | Error e) {
+        catch (Exception | Error e)
+        {
             e.printStackTrace();
             try
             {
@@ -78,13 +82,17 @@ public class BitmapDecoderG {
 
 
     //--------------------------------------------------------------------------------------------------------------------------
-    public static Uri getFromData(int requestCode, int resultCode, Intent data) {
+    public static Uri getFromData(int requestCode, int resultCode, Intent data)
+    {
         Bitmap bitmap = null;
 
-        switch (requestCode) {
+        switch (requestCode)
+        {
             case REQUESTCODE_CAMERA:
-                if (resultCode == Activity.RESULT_OK) {
-                    try {
+                if (resultCode == Activity.RESULT_OK)
+                {
+                    try
+                    {
 //                        File tempFile = generatedname;
 //                        String tempFileName = tempFile.getAbsolutePath();
 //                        InputStream inputStream = contentResolver.openInputStream(Uri.fromFile(generatedname));
@@ -103,7 +111,8 @@ public class BitmapDecoderG {
 //                        if (tempFile.exists())
 //                            tempFile.delete();
                     }
-                    catch (Exception error) {
+                    catch (Exception error)
+                    {
                         error.printStackTrace();
                     }
                 }
@@ -111,7 +120,8 @@ public class BitmapDecoderG {
                 break;
 
             case REQUESTCODE_GALLERY:
-                try {
+                try
+                {
 
 
 //                    File tempFile = createTemporaryFile();
@@ -121,7 +131,8 @@ public class BitmapDecoderG {
 
                     return data.getData();
                 }
-                catch (Exception error) {
+                catch (Exception error)
+                {
                     error.printStackTrace();
                 }
 
@@ -132,7 +143,8 @@ public class BitmapDecoderG {
     }
 
     //--------------------------------------------------------------------------------------------------------------------------
-    public static Bitmap decodeFile(String filePath) {
+    public static Bitmap decodeFile(String filePath)
+    {
         int scale = getAproptiateScale(filePath);
 
         BitmapFactory.Options option = new BitmapFactory.Options();
@@ -141,7 +153,8 @@ public class BitmapDecoderG {
 
         Bitmap bitmap = BitmapFactory.decodeFile(filePath, option);
 
-        try {
+        try
+        {
             ExifInterface exifInterface = new ExifInterface(filePath);
             int orientation = exifInterface.getAttributeInt(
                     ExifInterface.TAG_ORIENTATION,
@@ -149,7 +162,7 @@ public class BitmapDecoderG {
             );
             Matrix matrix = new Matrix();
 
-            final float DEGREE_90 = 90;
+            final float DEGREE_90  = 90;
             final float DEGREE_180 = 180;
             final float DEGREE_270 = 270;
 
@@ -164,7 +177,8 @@ public class BitmapDecoderG {
 
             bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
         }
-        catch (Throwable error) {
+        catch (Throwable error)
+        {
             error.printStackTrace();
         }
 
@@ -178,16 +192,17 @@ public class BitmapDecoderG {
     }
 
     //--------------------------------------------------------------------------------------------------------------------------
-    private static int getAproptiateScale(String filePath) {
+    private static int getAproptiateScale(String filePath)
+    {
         BitmapFactory.Options option = new BitmapFactory.Options();
 
         option.inJustDecodeBounds = true;
 
         BitmapFactory.decodeFile(filePath, option);
 
-        final int REQUIRED_SIZE = 1024;
-        int maximalSideSize = Math.max(option.outWidth, option.outHeight);
-        int scale = 1;
+        final int REQUIRED_SIZE   = 1024;
+        int       maximalSideSize = Math.max(option.outWidth, option.outHeight);
+        int       scale           = 1;
 
         if (maximalSideSize > REQUIRED_SIZE)
             scale = (int) Math.pow(2, Math.ceil(Math.log((double) maximalSideSize / REQUIRED_SIZE) / LOG_2));
@@ -196,7 +211,8 @@ public class BitmapDecoderG {
     }
 
 
-    private static String randomName() {
+    private static String randomName()
+    {
 
         return System.currentTimeMillis() + "";
 
@@ -204,25 +220,29 @@ public class BitmapDecoderG {
 
 
     //--------------------------------------------------------------------------------------------------------------------------
-    private static File createTemporaryFile() {
-            try {
-                File file = new File(Environment.getExternalStorageDirectory(), randomName());
+    private static File createTemporaryFile()
+    {
+        try
+        {
+            File file = new File(Environment.getExternalStorageDirectory(), randomName());
 
-                file.createNewFile();
+            file.createNewFile();
 
-                generatedname = file;
+            generatedname = file;
 
-                return file;
-            }
-            catch (Exception error) {
-            }
+            return file;
+        }
+        catch (Exception error)
+        {
+        }
 
 
         return null;
     }
 
 
-    public static void selectImage(final Context context, final Fragment frag) {
+    public static void selectImage(final Context context, final Fragment frag)
+    {
         generatedname = null;
         final CharSequence[] items = {
                 "Take Photo", "Choose from Library",
@@ -230,37 +250,48 @@ public class BitmapDecoderG {
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Add Photo!");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
+        builder.setItems(items, new DialogInterface.OnClickListener()
+        {
             @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (items[item].equals("Take Photo")) {
+            public void onClick(DialogInterface dialog, int item)
+            {
+                if (items[item].equals("Take Photo"))
+                {
                     Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 
                     cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, getTemporaryUri());
 
-                    if (frag != null) {
+                    if (frag != null)
+                    {
                         frag.startActivityForResult(cameraIntent, REQUESTCODE_CAMERA);
                     }
-                    else {
+                    else
+                    {
                         ((Activity) context).startActivityForResult(cameraIntent, REQUESTCODE_CAMERA);
                     }
+                    dialog.dismiss();
                 }
-                else if (items[item].equals("Choose from Library")) {
+                else if (items[item].equals("Choose from Library"))
+                {
                     Intent pickPhoto = new Intent(Intent.ACTION_PICK);
 
                     pickPhoto.setType("image/*");
 
 
-                    if (frag != null) {
+                    if (frag != null)
+                    {
                         frag.startActivityForResult(pickPhoto, REQUESTCODE_GALLERY);
                     }
-                    else {
+                    else
+                    {
                         ((Activity) context).startActivityForResult(pickPhoto, REQUESTCODE_GALLERY);
-                    }
 
+                    }
+                    dialog.dismiss();
 
                 }
-                else if (items[item].equals("Cancel")) {
+                else if (items[item].equals("Cancel"))
+                {
                     dialog.dismiss();
                 }
             }
@@ -269,13 +300,14 @@ public class BitmapDecoderG {
     }
 
     //--------------------------------------------------------------------------------------------------------------------------
-    private static String temporaryFilePath() {
+    private static String temporaryFilePath()
+    {
         return Environment.getExternalStorageDirectory() + "/" + TEMP_PHOTO_FILE;
     }
 
     //--------------------------------------------------------------------------------------------------------------------------
-    public static final String TEMP_PHOTO_FILE = "temporary_holderGagan.jpg";
-    private static final double LOG_2 = Math.log(2);
+    public static final  String TEMP_PHOTO_FILE = "temporary_holderGagan.jpg";
+    private static final double LOG_2           = Math.log(2);
 
 
     static File generatedname;

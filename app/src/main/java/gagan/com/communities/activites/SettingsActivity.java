@@ -15,19 +15,27 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 
 import gagan.com.communities.R;
+import gagan.com.communities.models.UserDataModel;
+import gagan.com.communities.utills.GlobalConstants;
 import gagan.com.communities.utills.SharedPrefHelper;
+import gagan.com.communities.utills.Utills;
+import gagan.com.communities.webserviceG.CallBackWebService;
+import gagan.com.communities.webserviceG.SuperWebServiceG;
 
-public class SettingsActivity extends AppCompatActivity
+public class SettingsActivity extends BaseActivityG
 {
 
 
     LinearLayout layoutChangepswd;
     TextView     tvCurrentLocation;
 
-    SharedPrefHelper        sharedPrefHelper;
+
     HashMap<String, String> currentLocData;
 
 
@@ -37,7 +45,7 @@ public class SettingsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        sharedPrefHelper = new SharedPrefHelper(SettingsActivity.this);
+
 //        currentLocData=new HashMap<>();
         currentLocData = sharedPrefHelper.getHomeLocation();
 
@@ -60,6 +68,18 @@ public class SettingsActivity extends AppCompatActivity
 
         tvCurrentLocation.setText(currentLocData.get(SharedPrefHelper.HOMELOC_NAME));
 
+
+    }
+
+    @Override
+    void findViewByID()
+    {
+
+    }
+
+    @Override
+    void hitWebserviceG()
+    {
 
     }
 
@@ -123,9 +143,59 @@ public class SettingsActivity extends AppCompatActivity
             final CharSequence address = place.getAddress();
 
 
-            sharedPrefHelper.setHomeLocation(name.toString(), place.getLatLng().latitude + "", place.getLatLng().longitude + "");
+            try
+            {
 
-            tvCurrentLocation.setText(name);
+
+                showProgressDialog();
+
+                JSONObject dataJ = new JSONObject();
+                dataJ.put("userid", sharedPrefHelper.getUserId());
+                dataJ.put("home_lat",place.getLatLng().latitude+"");
+                dataJ.put("home_long", place.getLatLng().longitude+"");
+
+                new SuperWebServiceG(GlobalConstants.URL + "editProfile", dataJ, new CallBackWebService()
+                {
+                    @Override
+                    public void webOnFinish(String response)
+                    {
+                        try
+                        {
+                            cancelDialog();
+
+                            JSONObject jsonMain = new JSONObject(response);
+
+                            JSONObject jsonMainResult = jsonMain.getJSONObject("result");
+
+                            if (jsonMainResult.getString("code").equals("200"))
+                            {
+                                sharedPrefHelper.setPincodeStatus(jsonMainResult.optString("pincode_status").equals("1"));
+                                sharedPrefHelper.setHomeLocation(name.toString(), place.getLatLng().latitude + "", place.getLatLng().longitude + "");
+
+                                tvCurrentLocation.setText(name);
+                            }
+                            else
+                            {
+                                Utills.showToast(jsonMainResult.optString("status"), SettingsActivity.this, true);
+                            }
+
+
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }).execute();
+
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
+
 
         }
         else

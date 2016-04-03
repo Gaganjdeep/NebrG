@@ -6,12 +6,11 @@
         android:icon="@mipmap/ic_current_location"
         android:title="current location"
         gagan:showAsAction="ifRoom"/>
-  <!--  <item
-        android:id="@+id/search_home"
-        android:actionViewClass="android.widget.SearchView"
-        android:icon="@mipmap/ic_search"
-        android:title="search"
-        android:visible="true"
-        gagan:showAsAction="collapseActionView|ifRoom"/>
--->
+    <item
+        android:id="@+id/set_distance"
+        android:icon="@mipmap/distance_icon"
+        android:title="Set Distance"
+        gagan:showAsAction="always"/>
+
+    -->
 </menu>

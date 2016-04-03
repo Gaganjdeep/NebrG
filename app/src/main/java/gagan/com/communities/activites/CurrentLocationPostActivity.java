@@ -1,7 +1,5 @@
 package gagan.com.communities.activites;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +9,7 @@ import android.view.MenuItem;
 
 import com.costum.android.widget.PullAndLoadListView;
 import com.costum.android.widget.PullToRefreshListView;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -50,8 +49,6 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
         setContentView(R.layout.activity_current_location_post);
         settingActionBar();
 
-
-//        pref = getSharedPreferences("Neibr", Context.MODE_PRIVATE);
 
         listViewNotiMsg = (PullAndLoadListView) findViewById(R.id.listViewHomeList);
 
@@ -185,6 +182,15 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
                     homemodel.setIs_liked(jobj.optString("is_liked").equals("1"));
                     homemodel.setIs_disliked(jobj.optString("is_disliked").equals("1"));
                     homemodel.setAnon_user(jobj.optString("anon_user").equals("1"));
+
+
+
+                    double lat = Double.parseDouble(jobj.optString("lat"));
+                    double lng = Double.parseDouble(jobj.optString("lng"));
+
+                    homemodel.setLatLng(new LatLng(lat, lng));
+
+
 
                     listHome.add(homemodel);
 //                "id": "1", "like_count": "1",

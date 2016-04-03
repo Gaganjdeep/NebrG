@@ -159,7 +159,7 @@
             android:background="@color/lt_grey"/>
 
 
-        <EditText
+        <!--<EditText
             android:id="@+id/edHomeSociety"
             android:inputType="text"
             android:textColor="@color/black"
@@ -170,7 +170,7 @@
             android:drawableLeft="@mipmap/home_icon_"
             android:gravity="center_vertical"
             android:hint="Home Society"
-            android:maxLines="1"/>
+            android:maxLines="1"/>-->
 
 
     </LinearLayout>

@@ -3,7 +3,11 @@ package gagan.com.communities.adapters;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.PopupMenu;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -13,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.json.JSONObject;
@@ -20,9 +25,13 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import gagan.com.communities.R;
+import gagan.com.communities.activites.ChatActivity;
 import gagan.com.communities.activites.CommentsListActivity;
+import gagan.com.communities.activites.OtherProfileActivity;
+import gagan.com.communities.activites.ShowFragmentActivity;
 import gagan.com.communities.activites.ShowImageActivity;
 import gagan.com.communities.activites.ShowPostActivity;
 import gagan.com.communities.models.HomeModel;
@@ -111,10 +120,10 @@ public class HomeAdapter extends BaseAdapter
             RoundedCornersGaganImg imgMessage = (RoundedCornersGaganImg) viewOther.findViewById(R.id.imgMessage);
 
 
-
-
-
             imgMessage.setImageResource(R.drawable.grey_bg);
+
+            ImageView imgvShare = (ImageView) viewOther.findViewById(R.id.imgvShare);
+
 
             TextView  tvTitle         = (TextView) viewOther.findViewById(R.id.tvTitle);
             TextView  tvLocationGenre = (TextView) viewOther.findViewById(R.id.tvLocationGenre);
@@ -128,30 +137,64 @@ public class HomeAdapter extends BaseAdapter
             TextView tvDislikes = (TextView) viewOther.findViewById(R.id.tvDislikes);
             TextView tvComments = (TextView) viewOther.findViewById(R.id.tvComments);
 
+            TextView tvAvatar = (TextView) viewOther.findViewById(R.id.tvAvatar);
+
+
+            TextView tvShowOnMap = (TextView) viewOther.findViewById(R.id.tvShowOnMap);
+
             imgUserPic.setRadius(120);
             if (data.isAnon_user())
             {
-                tvUsername.setText("Anonymous");
+                tvUsername.setText("");
+                tvAvatar.setVisibility(View.VISIBLE);
+                tvAvatar.setText(data.getUsername().substring(0, 1));
+                imgUserPic.setVisibility(View.GONE);
 
             }
             else
             {
+                imgUserPic.setTag(data.getUserid());
+                imgUserPic.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        Intent intnt = new Intent(con, OtherProfileActivity.class);
+                        intnt.putExtra("user_id", v.getTag().toString());
+                        con.startActivity(intnt);
+                    }
+                });
+
+
+                imgUserPic.setVisibility(View.VISIBLE);
                 imgUserPic.setImageUrl(con, data.getProfile_pic());
                 tvUsername.setText(data.getUsername());
+                tvAvatar.setVisibility(View.GONE);
             }
 
 
             StringBuilder sb = new StringBuilder(data.getLocation());
             sb.setCharAt(0, Character.toUpperCase(sb.charAt(0)));
             String loc = sb.toString();
-
-
             try
             {
 
-                SimpleDateFormat sdf       = new SimpleDateFormat(GlobalConstants.SEVER_FORMAT);
-                SimpleDateFormat sdfDesire = new SimpleDateFormat("dd.MMM hh:mm a");
-                Date             date      = sdf.parse(data.getCreate_date());
+                SimpleDateFormat sdf = new SimpleDateFormat(GlobalConstants.SEVER_FORMAT);
+                SimpleDateFormat sdfDesire;
+
+                Date date = sdf.parse(data.getCreate_date());
+
+                long differenceDate = System.currentTimeMillis() - date.getTime();
+
+                if (differenceDate > TimeUnit.HOURS.toMillis(24))
+                {
+                    sdfDesire = new SimpleDateFormat("dd MMM hh:mm a");
+                }
+                else
+                {
+                    sdfDesire = new SimpleDateFormat("hh:mm a");
+                }
+
                 tvTime.setText(sdfDesire.format(date));
 
             }
@@ -168,10 +211,45 @@ public class HomeAdapter extends BaseAdapter
             tvGenre.setText(data.getType());
 
             tvMessage.setText(data.getMessage());
-            tvComments.setText(data.getComments_count() + " comments");
+            tvComments.setText(data.getComments_count() + " Comments");
 
-            tvLikes.setText(data.getLike_count() + " useful");
-            tvDislikes.setText(data.getDislike_count() + " not useful");
+            tvLikes.setText(data.getLike_count() + " Useful");
+            tvDislikes.setText(data.getDislike_count() + " Not Useful");
+
+            imgvShare.setTag(data.getMessage());
+            imgvShare.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    Utills.shareIntent(con, v.getTag().toString());
+                }
+            });
+
+            if (data.getLatLng().longitude * data.getLatLng().latitude != 0)
+            {
+                tvShowOnMap.setVisibility(View.VISIBLE);
+                tvShowOnMap.setTag(data);
+                tvShowOnMap.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+
+                        HomeModel homeModel = (HomeModel) v.getTag();
+
+                        Intent intnt = new Intent(con, ShowFragmentActivity.class);
+                        intnt.putExtra("title", "Posts");
+                        intnt.putExtra("data", homeModel);
+                        con.startActivity(intnt);
+
+                    }
+                });
+            }
+            else
+            {
+                tvShowOnMap.setVisibility(View.GONE);
+            }
 
 
             tvComments.setTag(i);
@@ -229,9 +307,10 @@ public class HomeAdapter extends BaseAdapter
                     {
                         Intent intnt = new Intent(con, ShowImageActivity.class);
                         intnt.putExtra("image", v.getTag().toString());
-                        con. startActivity(intnt);
+                        con.startActivity(intnt);
                     }
                 });
+
             }
             else
             {
@@ -248,7 +327,8 @@ public class HomeAdapter extends BaseAdapter
 
                     if (((HomeModel) v.getTag()).is_liked())
                     {
-                        Utills.showToast("Already marked as useful", con, true);
+//                        Utills.showToast("Already marked as useful", con, true);
+                        like_dislike("2", (HomeModel) v.getTag());
                     }
                     else
                     {
@@ -266,7 +346,8 @@ public class HomeAdapter extends BaseAdapter
                 {
                     if (((HomeModel) v.getTag()).is_disliked())
                     {
-                        Utills.showToast("Already marked as not useful", con, true);
+//                        Utills.showToast("Already marked as not useful", con, true);
+                        like_dislike("1", (HomeModel) v.getTag());
                     }
                     else
                     {
@@ -301,14 +382,21 @@ public class HomeAdapter extends BaseAdapter
                         public boolean onMenuItemClick(MenuItem item)
                         {
 
-                            if (title.equals("Report Abuse"))
+                            if (item.getTitle().toString().equals("Report Abuse"))
                             {
                                 reportAbuse(homeModel.getId(), homeModel, false);
                             }
-                            else
+                            else if (item.getTitle().toString().equals("Delete post"))
                             {
                                 reportAbuse(homeModel.getId(), homeModel, true);
                             }
+//                            else if (item.getTitle().toString().equals("View on Map"))
+//                            {
+////                                Utills.startGoogleMaps(con, homeModel.getLatLng());
+//
+//
+//
+//                            }
 
 
                             return false;
@@ -444,7 +532,7 @@ public class HomeAdapter extends BaseAdapter
                                     DataList.get(DataList.indexOf(homeModel)).setIs_disliked(false);
 
 
-                                    Utills.showToast("Marked as useful", con, true);
+//                                    Utills.showToast("Marked as useful", con, true);
                                 }
                                 else
                                 {
@@ -459,7 +547,7 @@ public class HomeAdapter extends BaseAdapter
                                     DataList.get(DataList.indexOf(homeModel)).setIs_disliked(true);
                                     DataList.get(DataList.indexOf(homeModel)).setIs_liked(false);
 
-                                    Utills.showToast("Marked as not useful", con, true);
+//                                    Utills.showToast("Marked as not useful", con, true);
 
                                 }
 
@@ -491,4 +579,6 @@ public class HomeAdapter extends BaseAdapter
             e.printStackTrace();
         }
     }
+
+
 }

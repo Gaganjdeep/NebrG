@@ -192,6 +192,27 @@ public class SharedPrefHelper
 // distance end
 
 
+
+
+// set distance
+
+    public void setDistanceParamHome(int km)
+    {
+        SharedPreferences.Editor ed = sharedPreferences.edit();
+        ed.putInt("distanceParamHome", km);
+        ed.apply();
+    }
+
+
+    public int getDistanceParamHome()
+    {
+        return sharedPreferences.getInt("distanceParamHome", 5);
+    }
+
+// distance end
+
+
+
     // set distance
 
     public void setPincodeStatus(boolean status)

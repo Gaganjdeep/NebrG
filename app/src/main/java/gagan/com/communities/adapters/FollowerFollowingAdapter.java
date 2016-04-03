@@ -1,6 +1,5 @@
 package gagan.com.communities.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +14,6 @@ import gagan.com.communities.R;
 import gagan.com.communities.activites.ChatActivity;
 import gagan.com.communities.activites.OtherProfileActivity;
 import gagan.com.communities.activites.ProfileActivity;
-import gagan.com.communities.activites.ShowFragmentActivity;
 import gagan.com.communities.models.UserDataModel;
 import gagan.com.communities.utills.RoundedCornersGaganImg;
 
@@ -73,10 +71,14 @@ public class FollowerFollowingAdapter extends RecyclerView.Adapter<FollowerFollo
                     }
             );
         }
+        else if (con instanceof OtherProfileActivity)
+        {
+
+        }
         else
         {
-            if (setOnClickListener)
-            {
+//            if (setOnClickListener)
+//            {
                 holder.view.setTag(currentData);
                 holder.view.setOnClickListener(
                         new View.OnClickListener() {
@@ -95,7 +97,7 @@ public class FollowerFollowingAdapter extends RecyclerView.Adapter<FollowerFollo
                             }
                         }
                 );
-            }
+//            }
         }
 
 
@@ -103,11 +105,11 @@ public class FollowerFollowingAdapter extends RecyclerView.Adapter<FollowerFollo
 
     }
 
-    boolean setOnClickListener=false;
-
-    public void setOnclickOnView(boolean onclickOnView) {
-        setOnClickListener = onclickOnView;
-    }
+//    boolean setOnClickListener=false;
+//
+//    public void setOnclickOnView(boolean onclickOnView) {
+//        setOnClickListener = onclickOnView;
+//    }
 
 
     @Override

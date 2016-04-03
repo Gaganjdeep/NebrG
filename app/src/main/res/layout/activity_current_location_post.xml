@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_marginRight="20dp"
-            android:text="Posts in current location"/>
+            android:text="Posts in Current Location"/>
 
 
     </android.support.v7.widget.Toolbar>

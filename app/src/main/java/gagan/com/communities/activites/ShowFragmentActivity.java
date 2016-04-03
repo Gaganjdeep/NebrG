@@ -15,11 +15,14 @@ import gagan.com.communities.activites.fragment.BuisnessCenterMapFragment;
 import gagan.com.communities.activites.fragment.Communitiesfragment;
 import gagan.com.communities.activites.fragment.PersonalAdsMapFragment;
 import gagan.com.communities.activites.fragment.PostsFragment;
+import gagan.com.communities.models.HomeModel;
 
-public class ShowFragmentActivity extends AppCompatActivity {
+public class ShowFragmentActivity extends AppCompatActivity
+{
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_map);
 
@@ -34,13 +37,26 @@ public class ShowFragmentActivity extends AppCompatActivity {
         fragmentHashMap.put("Current Location", new PersonalAdsMapFragment());
         fragmentHashMap.put("Select User", new AddChatFragment());
 
+        if (getIntent().getStringExtra("title").equals("Posts"))
+        {
+            PostsFragment postsFragment=new PostsFragment();
+            HomeModel homeModel=(HomeModel) getIntent().getSerializableExtra("data");
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentHashMap.get(getIntent().getStringExtra("title"))).commit();
+            postsFragment.setPost(homeModel);
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.container,postsFragment).commit();
+        }
+        else
+        {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentHashMap.get(getIntent().getStringExtra("title"))).commit();
+        }
+
 
     }
 
 
-    private void settingActionBar(String title) {
+    private void settingActionBar(String title)
+    {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -54,7 +70,8 @@ public class ShowFragmentActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
 
 
         finish();

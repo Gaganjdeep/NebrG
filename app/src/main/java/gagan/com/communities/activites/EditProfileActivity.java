@@ -60,7 +60,7 @@ public class EditProfileActivity extends BaseActivityG
     }
 
     RoundedCornersGaganImg imgvProfilePic;
-    EditText               edEmail, edLocation, edGender, edPhoneNumber, edHomeSociety, edprofession, edName;
+    EditText               edEmail, edLocation, edGender, edPhoneNumber, /*edHomeSociety,*/ edprofession, edName;
     String Base64Image = "";
 
 
@@ -79,7 +79,7 @@ public class EditProfileActivity extends BaseActivityG
         edPhoneNumber = (EditText) findViewById(R.id.edPhoneNumber);
         edEmail = (EditText) findViewById(R.id.edEmail);
         edLocation = (EditText) findViewById(R.id.edLocation);
-        edHomeSociety = (EditText) findViewById(R.id.edHomeSociety);
+//        edHomeSociety = (EditText) findViewById(R.id.edHomeSociety);
         edprofession = (EditText) findViewById(R.id.edprofession);
         edName = (EditText) findViewById(R.id.edName);
         edGender = (EditText) findViewById(R.id.edGender);
@@ -97,11 +97,11 @@ public class EditProfileActivity extends BaseActivityG
         imgvProfilePic.setImageUrl(EditProfileActivity.this, userData.getProfile_pic());
         edName.setText(userData.getName());
         edprofession.setText(userData.getProfession());
-        edLocation.setText(userData.getLocation());
+        edLocation.setText(userData.getHome_society());
 
 //        edPhoneNumber.setText(userData.ge);
         edEmail.setText(userData.getEmail());
-        edHomeSociety.setText(userData.getHome_society());
+//        edHomeSociety.setText(userData.getHome_society());
         edGender.setText(userData.getGender());
 
 
@@ -129,11 +129,11 @@ public class EditProfileActivity extends BaseActivityG
             edLocation.setError("Please enter location");
             return false;
         }
-        else if (edHomeSociety.getText().toString().trim().isEmpty())
+       /* else if (edHomeSociety.getText().toString().trim().isEmpty())
         {
             edHomeSociety.setError("Please enter home society");
             return false;
-        }
+        }*/
 
 
         return true;
@@ -157,7 +157,7 @@ public class EditProfileActivity extends BaseActivityG
             data.put("name", edName.getText().toString().trim());
             data.put("location", edLocation.getText().toString().trim());
             data.put("profession", edprofession.getText().toString().trim());
-            data.put("home_society", edHomeSociety.getText().toString().trim());
+//            data.put("home_society", edLocation.getText().toString().trim());
             data.put("device_type", "android");
 
             if(!Base64Image.contains("."))

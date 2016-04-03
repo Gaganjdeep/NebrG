@@ -1,39 +1,35 @@
 package gagan.com.communities.activites;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import gagan.com.communities.R;
 import gagan.com.communities.activites.fragment.HomeFragment;
-import gagan.com.communities.models.CommunitiesListModel;
-import gagan.com.communities.models.UserDataModel;
-import gagan.com.communities.utills.CallBackNotifierHome;
 import gagan.com.communities.utills.GlobalConstants;
 import gagan.com.communities.utills.RoundedCornersGaganImg;
 import gagan.com.communities.utills.SharedPrefHelper;
@@ -41,7 +37,7 @@ import gagan.com.communities.utills.Utills;
 import gagan.com.communities.webserviceG.CallBackWebService;
 import gagan.com.communities.webserviceG.SuperWebServiceG;
 
-public class CommentsListActivity extends Activity
+public class CommentsListActivity extends AppCompatActivity
 {
 
 
@@ -56,6 +52,9 @@ public class CommentsListActivity extends Activity
 
     int index = 0;
 
+
+    String img;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -67,10 +66,37 @@ public class CommentsListActivity extends Activity
 
         sharedPrefHelper = new SharedPrefHelper(CommentsListActivity.this);
 
+        img = SharedPrefHelper.read(CommentsListActivity.this).getProfile_pic();
+
+
+        settingActionBar();
+
         findViewByID();
         hitWebserviceG();
 
 
+    }
+
+
+    private void settingActionBar()
+    {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.back_img);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+
+
+        finish();
+
+
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -159,7 +185,7 @@ public class CommentsListActivity extends Activity
 
                                 boolean ismyComment = jobj.optString("is_user_comment").equals("1");
 
-                                CommentsModel data = new CommentsModel(name, cmntmsg, comntId, ismyComment);
+                                CommentsModel data = new CommentsModel(name, cmntmsg, comntId, jobj.optString("profile_pic"), ismyComment);
 
                                 listData.add(data);
                             }
@@ -232,9 +258,9 @@ public class CommentsListActivity extends Activity
                             String comntId = jsonMainResult.optString("postId");
 
 
-                            CommentsModel data = new CommentsModel(name, cmntmsg, comntId, true);
+                            CommentsModel data = new CommentsModel(name, cmntmsg, comntId, img, true);
 
-                            listData.add(0,data);
+                            listData.add(0, data);
 
 
                             commentsAdapter.notifyDataSetChanged();
@@ -242,7 +268,7 @@ public class CommentsListActivity extends Activity
 
                             edComment.setText("");
 
-                            if(HomeFragment.homeFragment!=null)
+                            if (HomeFragment.homeFragment != null)
                             {
                                 (HomeFragment.homeFragment).notifier(index, listData.size() + "");
                             }
@@ -250,7 +276,7 @@ public class CommentsListActivity extends Activity
                         }
                         else
                         {
-//                Utills.showToast("No users available", getActivity(), true);
+                            Utills.showToast("Please try again..!", CommentsListActivity.this, true);
                         }
 
                     }
@@ -272,16 +298,22 @@ public class CommentsListActivity extends Activity
 
     public class CommentsModel
     {
-        private String name, commentmsg, commentid;
+        private String name, commentmsg, commentid, imgUrl;
 
         private boolean isMyComment;
 
-        public CommentsModel(String name, String commentmsg, String commentid, boolean isMyComment)
+        public CommentsModel(String name, String commentmsg, String commentid, String imgUrl, boolean isMyComment)
         {
             this.name = name;
             this.commentmsg = commentmsg;
             this.commentid = commentid;
+            this.imgUrl = imgUrl;
             this.isMyComment = isMyComment;
+        }
+
+        public String getImgUrl()
+        {
+            return imgUrl;
         }
 
         public String getName()
@@ -340,7 +372,14 @@ public class CommentsListActivity extends Activity
             holder.tvName.setText(currentData.getName());
             holder.tvText.setText(currentData.getCommentmsg());
 
-            holder.imgUserPic.setVisibility(View.GONE);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(100, 100);
+            params.gravity = Gravity.TOP;
+            holder.imgUserPic.setLayoutParams(params);
+
+            holder.imgUserPic.setRadius(170);
+            holder.imgUserPic.setImageUrl(con, currentData.getImgUrl());
+
 
             holder.view.setTag(currentData);
             holder.view.setOnLongClickListener(new View.OnLongClickListener()

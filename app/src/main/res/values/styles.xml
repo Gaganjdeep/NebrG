@@ -20,6 +20,8 @@
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColorSecondary">@color/white</item>
 
+        <item name="android:actionOverflowButtonStyle">@style/over_flow</item>
+
     </style>
 
     <style name="over_flow" parent="Base.Widget.AppCompat.ActionButton.Overflow">
@@ -38,6 +40,11 @@
 
     <style name="tab_heading" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
         <item name="android:textSize">11sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="tab_heading_upper" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
+        <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 

@@ -135,7 +135,7 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
                             data.put("device_token", DeviceID);
                             data.put("is_fb", "1");
                             data.put("facebook_id", object.getString("id"));
-                            data.put("profile_pic", fb_profile_image);
+                            data.put("fb_profile_pic", fb_profile_image);
                             data.put("name", loginData.get("full_name"));
 
 
@@ -373,6 +373,9 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
 
                 sharedPrefHelper.setPincodeStatus(jsonMainResult.optString("pincode_status").equals("1"));
 
+
+
+                sharedPrefHelper.setHomeLocation(jsonarrayData.getJSONObject(0).optString("home_society"),"","");
 
                 SharedPrefHelper.write(LoginActivity.this, userDataModel);
 

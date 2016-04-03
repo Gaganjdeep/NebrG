@@ -1,26 +1,17 @@
 package gagan.com.communities.activites.fragment;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import gagan.com.communities.R;
-import gagan.com.communities.activites.AddPostActivity;
 import gagan.com.communities.activites.MainTabActivity;
-import gagan.com.communities.activites.ShowFragmentActivity;
 
 
 public class NotificationTabFragment extends android.support.v4.app.Fragment {

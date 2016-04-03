@@ -127,8 +127,6 @@ public class OtherProfileActivity extends BaseActivityG {
                             tvProfession.setText(userDataModel.getProfession());
                             tvLocation.setText(userDataModel.getLocation());
 
-
-                            imgvProfilePic.setImageUrl(OtherProfileActivity.this, userDataModel.getProfile_pic());
                             imgvProfilePic.setImageWithCallBack(OtherProfileActivity.this, userDataModel.getProfile_pic(), new CallBackG<Bitmap>()
                             {
                                 @Override

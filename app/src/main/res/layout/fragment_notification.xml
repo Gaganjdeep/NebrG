@@ -53,6 +53,7 @@
         android:theme="@style/tab_style_notification"
         app:tabSelectedTextColor="@color/black"
         app:tabTextColor="@color/white"
+        app:tabTextAppearance="@style/tab_heading_upper"
         />
 
     <android.support.v4.view.ViewPager

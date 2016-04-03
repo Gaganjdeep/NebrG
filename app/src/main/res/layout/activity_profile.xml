@@ -10,8 +10,7 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:background="@drawable/user_img_bg"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+       >
 
 
         <LinearLayout
@@ -28,7 +27,7 @@
                 android:background="@android:color/transparent"
                 android:elevation="4dp"
                 app:popupTheme="@style/MyMaterialTheme.G"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark"
+                app:theme="@style/optionOverFlowTheme"
                 >
 
             </android.support.v7.widget.Toolbar>
@@ -55,7 +54,7 @@
                     android:id="@+id/tvUserName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="User Name"
+                    android:text=""
                     android:textColor="@color/button_pink"
                     android:textSize="22sp"
                     android:textStyle="bold"/>
@@ -64,7 +63,7 @@
                     android:id="@+id/tvProfession"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Software Engineer"
+                    android:text=""
                     android:textColor="@color/white"
                     />
 
@@ -74,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@mipmap/ic_location"
                     android:gravity="center"
-                    android:text="Ambala Haryana"
+                    android:text=""
                     android:textColor="@color/white"
                     android:textSize="11sp"
                     />

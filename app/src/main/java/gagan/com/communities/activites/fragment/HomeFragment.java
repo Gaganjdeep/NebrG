@@ -21,6 +21,7 @@ import android.widget.ProgressBar;
 
 import com.costum.android.widget.PullAndLoadListView;
 import com.costum.android.widget.PullToRefreshListView;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -33,6 +34,7 @@ import gagan.com.communities.activites.AddPostActivity;
 import gagan.com.communities.activites.CurrentLocationPostActivity;
 import gagan.com.communities.adapters.HomeAdapter;
 import gagan.com.communities.models.HomeModel;
+import gagan.com.communities.utills.CallBackG;
 import gagan.com.communities.utills.CallBackNotifierHome;
 import gagan.com.communities.utills.GlobalConstants;
 import gagan.com.communities.utills.Utills;
@@ -42,7 +44,7 @@ import gagan.com.communities.webserviceG.SuperWebServiceG;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,SearchView.OnQueryTextListener, PullAndLoadListView.OnLoadMoreListener, PullToRefreshListView.OnRefreshListener
+public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome, SearchView.OnQueryTextListener, PullAndLoadListView.OnLoadMoreListener, PullToRefreshListView.OnRefreshListener, CallBackG
 {
 
 
@@ -53,10 +55,11 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
 
     PullAndLoadListView listViewNotiMsg;
     HomeAdapter         homeadapter;
-    ProgressBar progressBar;
+    ProgressBar         progressBar;
 
 
-   public static HomeFragment homeFragment;
+    public static HomeFragment homeFragment;
+
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
@@ -72,7 +75,7 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
 
             settingActionBar(v);
 
-            homeFragment=this;
+            homeFragment = this;
 
             progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
             progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.button_pink), PorterDuff.Mode.MULTIPLY);
@@ -119,7 +122,7 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
         try
         {
 
-            if (startId==0)
+            if (startId == 0)
             {
                 progressBar.setVisibility(View.VISIBLE);
             }
@@ -128,13 +131,14 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
             data.put("userid", sharedPrefHelper.getUserId());
             data.put("limit", limit + "");
             data.put("startId", startId + "");
+            data.put("distance", sharedPrefHelper.getDistanceParamHome()+"");
 
-            new SuperWebServiceG(GlobalConstants.URL + "homeFeed", data, new CallBackWebService()
+
+            new SuperWebServiceG(GlobalConstants.URL + "homeFeeduserradius", data, new CallBackWebService()
             {
                 @Override
                 public void webOnFinish(String output)
                 {
-
 
 
                     startId = limit;
@@ -149,8 +153,7 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
                     listViewNotiMsg.onRefreshComplete();
 
 
-
-                    if(progressBar.getVisibility()==View.VISIBLE)
+                    if (progressBar.getVisibility() == View.VISIBLE)
                     {
                         progressBar.setVisibility(View.GONE);
                     }
@@ -184,7 +187,7 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
 
                 JSONArray jsonarrayData = jsonMainResult.getJSONArray("feedData");
 
-                if(jsonarrayData.length()>9)
+                if (jsonarrayData.length() > 9)
                 {
                     listViewNotiMsg.setOnLoadMoreListener(this);
                 }
@@ -215,6 +218,13 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
                     homemodel.setIs_liked(jobj.optString("is_liked").equals("1"));
                     homemodel.setIs_disliked(jobj.optString("is_disliked").equals("1"));
                     homemodel.setAnon_user(jobj.optString("anon_user").equals("1"));
+
+
+                    double lat = Double.parseDouble(jobj.optString("lat"));
+                    double lng = Double.parseDouble(jobj.optString("lng"));
+
+                    homemodel.setLatLng(new LatLng(lat, lng));
+
 
                     listHome.add(homemodel);
 //                "id": "1", "like_count": "1",
@@ -300,7 +310,7 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
 
         ImageView txtvAddPost = (ImageView) toolbar.findViewById(R.id.txtvAddPost);
 
-        if(!sharedPrefHelper.getPincodeStatus())
+        if (!sharedPrefHelper.getPincodeStatus())
         {
             txtvAddPost.setVisibility(View.GONE);
         }
@@ -324,15 +334,15 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
         inflater.inflate(R.menu.home_menu, menu);
 
 
-        MenuItem gMenu = menu.add("Search");
-        gMenu.setIcon(R.mipmap.ic_search);
-        gMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-
-        SearchView searchView = new SearchView(getActivity());
+//        MenuItem gMenu = menu.add("Search");
+//        gMenu.setIcon(R.mipmap.ic_search);
+//        gMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+//
+//        SearchView searchView = new SearchView(getActivity());
 
 //        searchView.setOnQueryTextListener(this);
 
-        gMenu.setActionView(searchView);
+//        gMenu.setActionView(searchView);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -348,6 +358,12 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
                 Intent intnt = new Intent(getActivity(), CurrentLocationPostActivity
                         .class);
                 startActivity(intnt);
+
+                break;
+            case R.id.set_distance:
+
+                Utills.ShowDialogProgress(getActivity(),this);
+
 
                 break;
 
@@ -382,7 +398,7 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
     @Override
     public void onRefresh()
     {
-        homeadapter=null;
+        homeadapter = null;
         if (listHome != null)
         {
             listHome.clear();
@@ -397,11 +413,25 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
     public void notifier(int index, String count)
     {
 
-        if(listHome.size()>=index)
+        if (listHome.size() >= index)
         {
             listHome.get(index).setComments_count(count);
             homeadapter.notifyDataSetChanged();
         }
 
+    }
+
+    @Override
+    public void OnFinishG(Object output)
+    {
+        homeadapter = null;
+        if (listHome != null)
+        {
+            listHome.clear();
+        }
+        index = 0;
+        limit = 10;
+        startId = 0;
+        fetchHomeData(startId, limit);
     }
 }

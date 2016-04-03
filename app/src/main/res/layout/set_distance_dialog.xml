@@ -56,5 +56,18 @@
             app:dsb_rippleColor="@color/button_pink"
             />
 
+
+
+
+        <Button
+            android:id="@id/btnDone"
+            android:layout_margin="10dp"
+            android:background="@drawable/btn_selector"
+            android:textColor="@color/white"
+            android:layout_width="match_parent"
+            android:text="Ok"
+            android:layout_height="wrap_content"/>
+
+
     </LinearLayout>
 </LinearLayout>

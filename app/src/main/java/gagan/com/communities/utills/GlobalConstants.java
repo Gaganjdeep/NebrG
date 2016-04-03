@@ -13,7 +13,7 @@ public class GlobalConstants
 
     public static final String UPDATE_MSG_FRAGMENT = "com.j.gagan.msgFragment";
 
-    public static final String SEVER_FORMAT = "yyyy-MM-dd hh:mm:ss";
+    public static final String SEVER_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
 
 

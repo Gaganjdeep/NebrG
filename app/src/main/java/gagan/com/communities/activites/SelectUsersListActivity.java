@@ -105,8 +105,9 @@ public class SelectUsersListActivity extends BaseActivityG
 
 
             setResult(Activity.RESULT_OK, resultIntent);
-            finish();
+
         }
+        finish();
 
         return super.onOptionsItemSelected(item);
     }

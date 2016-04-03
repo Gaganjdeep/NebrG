@@ -1,5 +1,7 @@
 package gagan.com.communities.models;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.Serializable;
 
 /**
@@ -13,6 +15,22 @@ public class HomeModel implements Serializable
 
     private boolean anon_user;
     private boolean is_liked;
+
+//    private LatLng latLng;
+
+    private double lat,lng;
+
+    public LatLng getLatLng()
+    {
+        return new LatLng(lat,lng);
+    }
+
+    public void setLatLng(LatLng latLng)
+    {
+//        this.latLng = latLng;
+        this.lat=latLng.latitude;
+        this.lng=latLng.longitude;
+    }
 
     public boolean is_disliked()
     {

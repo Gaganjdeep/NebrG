@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatSeekBar;
@@ -19,12 +20,16 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Locale;
 
 import gagan.com.communities.R;
+import gagan.com.communities.activites.CurrentLocationPostActivity;
 
 /**
  * Created by gagandeep on 22 Dec 2015.
@@ -209,34 +214,33 @@ public class Utills
 
 
     // seekbar dialog for home
-    static int  progress = 0;
+    static int progress = 0;
 
-    public static void ShowDialogProgress(Context con, final CallBackG callBackG)
+    public static void ShowDialogProgress(final Context con, final CallBackG callBackG)
     {
 
-        progress=0;
+        progress = 0;
         final SharedPrefHelper shrdHeler = new SharedPrefHelper(con);
-        Dialog dialog = new Dialog(con, R.style.Theme_Dialog);
+        final Dialog           dialog    = new Dialog(con, R.style.Theme_Dialog);
         dialog.setContentView(R.layout.set_distance_dialog);
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         dialog.setCancelable(true);
         dialog.setCanceledOnTouchOutside(true);
 
-// compile 'org.adw.library:discrete-seekbar:1.0.1'
-//        final AppCompatSeekBar seek             = (AppCompatSeekBar) dialog.findViewById(R.id.seekbar);
-        DiscreteSeekBar        seek = (DiscreteSeekBar)dialog. findViewById(R.id.seekbar);
-        seek.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
+        Button btnDone = (Button) dialog.findViewById(R.id.btnDone);
+
+
+        DiscreteSeekBar seek = (DiscreteSeekBar) dialog.findViewById(R.id.seekbar);
+        seek.setNumericTransformer(new DiscreteSeekBar.NumericTransformer()
+        {
             @Override
-            public int transform(int value) {
+            public int transform(int value)
+            {
                 return value;
             }
         });
 
-//        seek.setMax(255);
-//        seek.setKeyProgressIncrement(1);
-
-
-        final TextView tvKm =(TextView)dialog.findViewById(R.id.tvKm);
+        final TextView tvKm = (TextView) dialog.findViewById(R.id.tvKm);
 
 
         seek.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener()
@@ -246,8 +250,6 @@ public class Utills
             {
                 tvKm.setText(i + " km");
                 progress = i;
-
-                shrdHeler.setDistanceParam(progress);
             }
 
             @Override
@@ -263,8 +265,14 @@ public class Utills
             }
         });
 
-        seek.setProgress(shrdHeler.getDistanceParam());
-
+        if (con instanceof CurrentLocationPostActivity)
+        {
+            seek.setProgress(shrdHeler.getDistanceParam());
+        }
+        else
+        {
+            seek.setProgress(shrdHeler.getDistanceParamHome());
+        }
 
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());
@@ -275,19 +283,23 @@ public class Utills
         dialog.show();
 
 
-
-
-
-        dialog.setOnDismissListener(new DialogInterface.OnDismissListener()
+        btnDone.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onDismiss(DialogInterface dialog)
+            public void onClick(View v)
             {
+                if (con instanceof CurrentLocationPostActivity)
+                {
+                    shrdHeler.setDistanceParam(progress);
+                }
+                else
+                {
+                    shrdHeler.setDistanceParamHome(progress);
+                }
                 callBackG.OnFinishG(null);
+                dialog.dismiss();
             }
         });
-
-
 
 
        /* final AlertDialog.Builder popDialog = new AlertDialog.Builder(con);
@@ -361,6 +373,25 @@ public class Utills
         popDialog.show();*/
     }
     // seekbar dialog end
+
+
+    public static void startGoogleMaps(Context con, LatLng ltlng)
+    {
+        String url    = String.format(Locale.ENGLISH, "geo:%f%f", ltlng.latitude, ltlng.longitude);
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        con.startActivity(intent);
+    }
+
+
+    public static void shareIntent(Context con, String msg)
+    {
+        Intent intnt = new Intent(Intent.ACTION_SEND);
+        intnt.setType("text/plain");
+        intnt.putExtra(Intent.EXTRA_SUBJECT, "Neibr");
+        intnt.putExtra(Intent.EXTRA_TEXT, msg);
+        con.startActivity(Intent.createChooser(intnt, "Share via"));
+
+    }
 
 
 }

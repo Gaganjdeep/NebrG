@@ -13,8 +13,10 @@ import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -44,8 +46,8 @@ public class AddPostActivity extends BaseActivityG
 
 
     EditText edTitle, edMessage;
-    RoundedCornersGaganImg imgImageSend,imgvUserimg;
-    TextView               tvlocation, tvType, tvUserName;
+    RoundedCornersGaganImg imgImageSend, imgvUserimg;
+    TextView tvlocation, tvType, tvUserName;
     String Base64String = "", anon_user = "0";
 
 
@@ -61,17 +63,19 @@ public class AddPostActivity extends BaseActivityG
         findViewByID();
     }
 
+    UserDataModel dataUser;
+
     @Override
     void findViewByID()
     {
         edTitle = (EditText) findViewById(R.id.edTitle);
         tvUserName = (TextView) findViewById(R.id.tvUserName);
         tvUserName.setText(sharedPrefHelper.getUserName());
-        imgvUserimg= (RoundedCornersGaganImg) findViewById(R.id.imgvUserimg);
+        imgvUserimg = (RoundedCornersGaganImg) findViewById(R.id.imgvUserimg);
 
-        UserDataModel data= SharedPrefHelper.read(AddPostActivity.this);
+        dataUser = SharedPrefHelper.read(AddPostActivity.this);
         imgvUserimg.setRadius(170);
-        imgvUserimg.setImageUrl(AddPostActivity.this,data.getProfile_pic());
+        imgvUserimg.setImageUrl(AddPostActivity.this, dataUser.getProfile_pic());
 
         edMessage = (EditText) findViewById(R.id.edMessage);
         imgImageSend = (RoundedCornersGaganImg) findViewById(R.id.imgImageSend);
@@ -98,8 +102,6 @@ public class AddPostActivity extends BaseActivityG
         });
 
 
-
-
     }
 
     @Override
@@ -119,13 +121,19 @@ public class AddPostActivity extends BaseActivityG
             data.put("message", edMessage.getText().toString().trim());
             data.put("image", Base64String);
             data.put("anon_user", anon_user);
-            data.put("location", tvlocation.getText().toString().trim());
+
+
             data.put("type", spinner.getSelectedItem().toString());
 //            data.put("post_pincode", );
             if (tvlocation.getTag() != null)
             {
                 data.put("lat", ((LatLng) tvlocation.getTag()).latitude + "");
                 data.put("lng", ((LatLng) tvlocation.getTag()).longitude + "");
+                data.put("location", tvlocation.getText().toString().trim());
+            }
+            else
+            {
+                data.put("location", dataUser.getHome_society() + "");
             }
 
             new SuperWebServiceG(GlobalConstants.URL + "addPost", data, new CallBackWebService()
@@ -239,16 +247,21 @@ public class AddPostActivity extends BaseActivityG
                 if (resultCode == RESULT_OK)
                 {
 
-                    try{
+                    try
+                    {
                         imgImageSend.setVisibility(View.VISIBLE);
                         Uri uri = BitmapDecoderG.getFromData(requestCode, resultCode, data);
 
-                        imgImageSend.setImageUrl(AddPostActivity.this,uri.toString());
+
+                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 70);
+                        params.setMargins(5,5,5,5);
+                        imgImageSend.setLayoutParams(params);
+                        imgImageSend.setImageUrl(AddPostActivity.this, uri.toString());
 
                         Base64String = BitmapDecoderG.getBytesImage(AddPostActivity.this, uri);
 
                     }
-                    catch (Exception |Error e)
+                    catch (Exception | Error e)
                     {
                         BitmapDecoderG.selectImage(AddPostActivity.this, null);
                         e.printStackTrace();
@@ -296,7 +309,7 @@ public class AddPostActivity extends BaseActivityG
         spinner.performClick();
     }
 
-    String anonymous   = "Anonymous";
+    String anonymous = "Anonymous";
 //    String homesociety = "Change Subscribed Home Society";
 
     public void optIons(View view)
@@ -325,16 +338,16 @@ public class AddPostActivity extends BaseActivityG
 //                }
 //                else
 //                {
-                    if (anon_user.equals("0"))
-                    {
-                        anonymous = "Non Anonymous";
-                        anon_user = "1";
-                    }
-                    else
-                    {
-                        anonymous = "Anonymous";
-                        anon_user = "0";
-                    }
+                if (anon_user.equals("0"))
+                {
+                    anonymous = "Non Anonymous";
+                    anon_user = "1";
+                }
+                else
+                {
+                    anonymous = "Anonymous";
+                    anon_user = "0";
+                }
 //                }
 
 

@@ -162,8 +162,7 @@
         <activity android:name=".activites.FrameActivity">
         </activity>
         <activity
-            android:name=".activites.CommentsListActivity"
-            android:theme="@style/Base.Theme.AppCompat.Light.Dialog">
+            android:name=".activites.CommentsListActivity">
         </activity>
         <activity
             android:name=".activites.ChatActivity"

@@ -106,7 +106,7 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MyViewHo
         {
 
             SimpleDateFormat sdf       = new SimpleDateFormat(GlobalConstants.SEVER_FORMAT);
-            SimpleDateFormat sdfDesire = new SimpleDateFormat("hh.mm a");
+            SimpleDateFormat sdfDesire = new SimpleDateFormat("hh:mm a");
             Date             date      = sdf.parse(currentData.getCreated_at());
 
 
