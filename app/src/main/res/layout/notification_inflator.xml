@@ -12,7 +12,7 @@
     <gagan.com.communities.utills.RoundedCornersGaganImg
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="@mipmap/user_img"/>
+        android:background="@drawable/user_img"/>
 
 
 

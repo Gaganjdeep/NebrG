@@ -65,6 +65,32 @@ public class ShowPostActivity extends AppCompatActivity
         TextView tvDislikes = (TextView) findViewById(R.id.tvDislikes);
         TextView tvComments = (TextView) findViewById(R.id.tvComments);
 
+            ImageView tvShowOnMap = (ImageView) findViewById(R.id.tvShowOnMap);
+            if (dataHome.getLatLng().longitude * dataHome.getLatLng().latitude != 0)
+            {
+                tvShowOnMap.setVisibility(View.VISIBLE);
+                tvShowOnMap.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+
+                        HomeModel homeModel = (HomeModel) v.getTag();
+
+                        Intent intnt = new Intent(ShowPostActivity.this, ShowFragmentActivity.class);
+                        intnt.putExtra("title", "Posts");
+                        intnt.putExtra("data", homeModel);
+                        startActivity(intnt);
+
+                    }
+                });
+            }
+            else
+            {
+                tvShowOnMap.setVisibility(View.GONE);
+            }
+
+
         imgUserPic.setRadius(120);
         if (!dataHome.isAnon_user())
         {
@@ -167,7 +193,8 @@ public class ShowPostActivity extends AppCompatActivity
 
                 if (((HomeModel) v.getTag()).is_liked())
                 {
-                    Utills.showToast("Already marked as useful", ShowPostActivity.this, true);
+//                    Utills.showToast("Already marked as useful", ShowPostActivity.this, true);
+                    like_dislike("0", (HomeModel) v.getTag());
                 }
                 else
                 {
@@ -185,7 +212,8 @@ public class ShowPostActivity extends AppCompatActivity
             {
                 if (((HomeModel) v.getTag()).is_disliked())
                 {
-                    Utills.showToast("Already marked as not useful", ShowPostActivity.this, true);
+//                    Utills.showToast("Already marked as not useful", ShowPostActivity.this, true);
+                    like_dislike("0", (HomeModel) v.getTag());
                 }
                 else
                 {
@@ -372,7 +400,7 @@ public class ShowPostActivity extends AppCompatActivity
 
                                     Utills.showToast("Marked as useful", ShowPostActivity.this, true);
                                 }
-                                else
+                                else if (likeDislike.equals("2"))
                                 {
 
                                     dataHome.setDislike_count((dislikecount + 1) + "");
@@ -386,6 +414,22 @@ public class ShowPostActivity extends AppCompatActivity
                                     dataHome.setIs_liked(false);
 
                                     Utills.showToast("Marked as not useful", ShowPostActivity.this, true);
+
+                                }
+                                else
+                                {
+                                    if (homeModel.is_liked())
+                                    {
+                                        dataHome.setLike_count(((likecount - 1) < 0 ? 0 : (likecount - 1)) + "");
+                                    }
+                                    else if (homeModel.is_disliked())
+                                    {
+                                        dataHome.setDislike_count(((dislikecount - 1) < 0 ? 0 : (dislikecount - 1)) + "");
+                                    }
+
+
+                                    dataHome.setIs_disliked(false);
+                                    dataHome.setIs_liked(false);
 
                                 }
 
@@ -417,8 +461,8 @@ public class ShowPostActivity extends AppCompatActivity
             e.printStackTrace();
         }
     }
-        
-        
+
+
         
         
         

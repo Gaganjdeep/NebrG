@@ -1,5 +1,7 @@
 package gagan.com.communities.adapters;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +10,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -140,7 +144,7 @@ public class HomeAdapter extends BaseAdapter
             TextView tvAvatar = (TextView) viewOther.findViewById(R.id.tvAvatar);
 
 
-            TextView tvShowOnMap = (TextView) viewOther.findViewById(R.id.tvShowOnMap);
+            ImageView tvShowOnMap = (ImageView) viewOther.findViewById(R.id.tvShowOnMap);
 
             imgUserPic.setRadius(120);
             if (data.isAnon_user())
@@ -305,9 +309,26 @@ public class HomeAdapter extends BaseAdapter
                     @Override
                     public void onClick(View v)
                     {
-                        Intent intnt = new Intent(con, ShowImageActivity.class);
-                        intnt.putExtra("image", v.getTag().toString());
-                        con.startActivity(intnt);
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                        {
+                            Intent i = new Intent(con, ShowImageActivity.class);
+                            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(
+                                    (AppCompatActivity) con,
+                                    android.util.Pair.create(v, "image")
+                            );
+                            i.putExtra("image", v.getTag().toString());
+
+                            con.startActivity(i, options.toBundle());
+
+                        }
+                        else
+                        {
+                            Intent intnt = new Intent(con, ShowImageActivity.class);
+                            intnt.putExtra("image", v.getTag().toString());
+                            con.startActivity(intnt);
+                        }
+
                     }
                 });
 
@@ -328,7 +349,7 @@ public class HomeAdapter extends BaseAdapter
                     if (((HomeModel) v.getTag()).is_liked())
                     {
 //                        Utills.showToast("Already marked as useful", con, true);
-                        like_dislike("2", (HomeModel) v.getTag());
+                        like_dislike("0", (HomeModel) v.getTag());
                     }
                     else
                     {
@@ -347,7 +368,7 @@ public class HomeAdapter extends BaseAdapter
                     if (((HomeModel) v.getTag()).is_disliked())
                     {
 //                        Utills.showToast("Already marked as not useful", con, true);
-                        like_dislike("1", (HomeModel) v.getTag());
+                        like_dislike("0", (HomeModel) v.getTag());
                     }
                     else
                     {
@@ -534,7 +555,7 @@ public class HomeAdapter extends BaseAdapter
 
 //                                    Utills.showToast("Marked as useful", con, true);
                                 }
-                                else
+                                else if (likeDislike.equals("2"))
                                 {
 
                                     DataList.get(DataList.indexOf(homeModel)).setDislike_count((dislikecount + 1) + "");
@@ -548,6 +569,23 @@ public class HomeAdapter extends BaseAdapter
                                     DataList.get(DataList.indexOf(homeModel)).setIs_liked(false);
 
 //                                    Utills.showToast("Marked as not useful", con, true);
+
+                                }
+                                else
+                                {
+
+                                    if (homeModel.is_liked())
+                                    {
+                                        DataList.get(DataList.indexOf(homeModel)).setLike_count(((likecount - 1) < 0 ? 0 : (likecount - 1)) + "");
+                                    }
+                                    else if (homeModel.is_disliked())
+                                    {
+                                        DataList.get(DataList.indexOf(homeModel)).setDislike_count(((dislikecount - 1) < 0 ? 0 : (dislikecount - 1)) + "");
+                                    }
+
+
+                                    DataList.get(DataList.indexOf(homeModel)).setIs_disliked(false);
+                                    DataList.get(DataList.indexOf(homeModel)).setIs_liked(false);
 
                                 }
 

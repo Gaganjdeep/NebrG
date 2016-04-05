@@ -55,7 +55,7 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:scaleType="fitXY"
-                    android:src="@mipmap/user_img"/>
+                    android:src="@drawable/user_img"/>
 
                 <TextView
                     android:id="@+id/tvUserName"
@@ -79,6 +79,7 @@
                 android:inputType="textCapWords"
                 android:padding="10dp"
                 android:singleLine="true"
+                android:maxLength="25"
                 android:textColor="@color/black"/>
 
 
@@ -101,6 +102,7 @@
                     android:minLines="2"
                     android:inputType="textMultiLine|textCapSentences"
                     android:textColor="@color/black"
+                    android:maxLength="200"
                     />
 
 

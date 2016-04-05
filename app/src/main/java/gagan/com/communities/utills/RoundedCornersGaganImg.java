@@ -103,7 +103,7 @@ public class RoundedCornersGaganImg extends ImageView
     public void setRadius(int radius)
     {
         this.RADIUS = radius;
-        setDrawableDefault(R.drawable.circle_grey);
+        setDrawableDefault(R.drawable.user_img);
     }
 
 
@@ -232,6 +232,10 @@ public class RoundedCornersGaganImg extends ImageView
 
                 }
             });
+        }
+        else
+        {
+            this.setImageResource(drawable);
         }
     }
 

@@ -12,7 +12,7 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:scaleType="fitXY"
-        android:src="@mipmap/user_img"/>
+        android:src="@drawable/user_img"/>
 
 
     <LinearLayout
