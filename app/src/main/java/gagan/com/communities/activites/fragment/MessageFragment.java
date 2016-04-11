@@ -137,7 +137,7 @@ public class MessageFragment extends BaseFragmentG implements View.OnClickListen
                                 String username         = jobj.optString("username");
                                 String profile_pic      = jobj.optString("profile_pic");
 
-                                listMsg.add(new MsgDataModel(id, sender_userid, recipient_userid, message, created_at, username, profile_pic));
+                                listMsg.add(new MsgDataModel(false,id, sender_userid, recipient_userid, message, created_at, username, profile_pic));
                             }
 
                             Collections.reverse(listMsg);

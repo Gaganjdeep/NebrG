@@ -49,7 +49,15 @@ public class PostProfileFragment extends BaseFragmentG
 
         listViewPost = (ListView) v.findViewById(R.id.listViewPost);
 
-        fetchHomeData();
+
+        if (getArguments().getString("userid").equals("g"))
+        {
+            fetchCommunityPost();
+        }
+        else
+        {
+            fetchHomeData();
+        }
 
 
         setHasOptionsMenu(true);
@@ -64,7 +72,7 @@ public class PostProfileFragment extends BaseFragmentG
         {
 
 
-            listHome=new ArrayList<>();
+            listHome = new ArrayList<>();
             listHome.clear();
 
 
@@ -79,7 +87,39 @@ public class PostProfileFragment extends BaseFragmentG
                 public void webOnFinish(String output)
                 {
 
-                    processOutput(output);
+                    processOutput(output,false);
+
+                }
+            }).execute();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    private void fetchCommunityPost()
+    {
+
+        try
+        {
+            listHome = new ArrayList<>();
+            listHome.clear();
+
+
+            JSONObject data = new JSONObject();
+            data.put("c_id", getArguments().getString("c_id"));
+            data.put("userid", sharedPrefHelper.getUserId());
+
+            new SuperWebServiceG(GlobalConstants.URL + "getcommunitypost", data, new CallBackWebService()
+            {
+                @Override
+                public void webOnFinish(String output)
+                {
+
+                    processOutput(output,true);
 
                 }
             }).execute();
@@ -95,7 +135,7 @@ public class PostProfileFragment extends BaseFragmentG
     List<HomeModel> listHome;
 
     //   ==============process output++++
-    private void processOutput(String response)
+    private void processOutput(String response,boolean Iscommunitypost)
     {
 
         try
@@ -108,7 +148,17 @@ public class PostProfileFragment extends BaseFragmentG
             if (jsonMainResult.getString("code").contains("20") && !jsonMainResult.getString("code").equals("201"))
             {
 
-                JSONArray jsonarrayData = jsonMainResult.getJSONArray("feedData");
+                JSONArray jsonarrayData ;
+
+
+                if (Iscommunitypost)
+                {
+                    jsonarrayData  = jsonMainResult.getJSONArray("groupData");
+                }
+                else
+                {
+                    jsonarrayData  = jsonMainResult.getJSONArray("feedData");
+                }
 
                 for (int g = 0; g < jsonarrayData.length(); g++)
                 {

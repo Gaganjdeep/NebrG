@@ -38,7 +38,42 @@ public class FollowersFragment extends BaseFragmentG
     }
 
     RecyclerView recyclerList;
-    ProgressBar progressBar;
+    ProgressBar  progressBar;
+
+
+    private boolean isAlreadySet = false;
+
+
+    List<UserDataModel> listG;
+    public void setList(String json)
+    {
+        try
+        {
+            isAlreadySet = true;
+
+            JSONArray           jsonarrayData = new JSONArray(json);
+             listG          = new ArrayList<>();
+
+            for (int g = 0; g < jsonarrayData.length(); g++)
+            {
+                JSONObject jobj = jsonarrayData.optJSONArray(g).getJSONObject(0);
+
+                UserDataModel homemodel = new UserDataModel();
+
+                homemodel.setProfile_pic(jobj.optString("profile_pic"));
+                homemodel.setuId(jobj.optString("uId"));
+                homemodel.setName(jobj.optString("name"));
+                homemodel.setProfession(jobj.optString("profession"));
+
+
+                listG.add(homemodel);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 
 
     @Override
@@ -55,7 +90,15 @@ public class FollowersFragment extends BaseFragmentG
         recyclerList = (RecyclerView) v.findViewById(R.id.recyclerList);
         recyclerList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        hitWebserviceG();
+        if (!isAlreadySet)
+        {
+            hitWebserviceG();
+        }
+        else
+        {
+            FollowerFollowingAdapter msgAdapter = new FollowerFollowingAdapter(getActivity(), listG);
+            recyclerList.setAdapter(msgAdapter);
+        }
 
 //        FollowerFollowingAdapter msgAdapter = new FollowerFollowingAdapter(getActivity(), null);
 //        recyclerList.setAdapter(msgAdapter);
@@ -113,15 +156,15 @@ public class FollowersFragment extends BaseFragmentG
 
                 if (getArguments().getString("follower").equals("1"))
                 {
-                    jsonarrayData= jsonMainResult.getJSONArray("followers");
+                    jsonarrayData = jsonMainResult.getJSONArray("followers");
                 }
                 else
                 {
-                    jsonarrayData= jsonMainResult.getJSONArray("following");
+                    jsonarrayData = jsonMainResult.getJSONArray("following");
                 }
 
 
-                if (jsonarrayData==null)
+                if (jsonarrayData == null)
                 {
                     return;
                 }

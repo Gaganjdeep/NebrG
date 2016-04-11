@@ -58,7 +58,7 @@ public class MainTabActivity extends AppCompatActivity
         Adapter adapter = new Adapter(getSupportFragmentManager());
         adapter.addFragment(new HomeFragment(), "Home");
         adapter.addFragment(new MapViewTab(), "Map View");
-        adapter.addFragment(new NotificationTabFragment(), "Notification");
+        adapter.addFragment(new NotificationTabFragment(), "Notification ");
         adapter.addFragment(new MoreFragment(), "More");
         viewPager.setAdapter(adapter);
 

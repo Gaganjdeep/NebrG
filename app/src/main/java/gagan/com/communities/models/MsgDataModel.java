@@ -7,6 +7,8 @@ public class MsgDataModel
 {
 
 
+    private boolean lastMsg;
+
     private String id,sender_userid,recipient_userid,message,created_at,username,profile_pic;
 
 //    "id": "12",
@@ -25,8 +27,19 @@ public class MsgDataModel
         return created_at;
     }
 
-    public MsgDataModel(String id, String sender_userid, String recipient_userid, String message, String created_at, String username, String profile_pic)
+    public boolean isLastMsg()
     {
+        return lastMsg;
+    }
+
+    public void setLastMsg(boolean lastMsg)
+    {
+        this.lastMsg = lastMsg;
+    }
+
+    public MsgDataModel(boolean lastMsg, String id, String sender_userid, String recipient_userid, String message, String created_at, String username, String profile_pic)
+    {
+        this.lastMsg = lastMsg;
         this.id = id;
         this.sender_userid = sender_userid;
         this.recipient_userid = recipient_userid;

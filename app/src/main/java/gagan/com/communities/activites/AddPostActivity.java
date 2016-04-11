@@ -48,16 +48,20 @@ public class AddPostActivity extends BaseActivityG
     EditText edTitle, edMessage;
     RoundedCornersGaganImg imgImageSend, imgvUserimg;
     TextView tvlocation, tvType, tvUserName;
-    String Base64String = "", anon_user = "0";
+    String Base64String = "", anon_user = "0", COMMUNITY_ID = "";
 
 
     android.support.v7.widget.AppCompatSpinner spinner;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_post);
+
+        COMMUNITY_ID = getIntent().getStringExtra("Cid");
+
 
         settingActionBar();
         findViewByID();
@@ -135,6 +139,13 @@ public class AddPostActivity extends BaseActivityG
             {
                 data.put("location", dataUser.getHome_society() + "");
             }
+
+
+            if (!COMMUNITY_ID.equals(""))
+            {
+                data.put("c_id", COMMUNITY_ID);
+            }
+
 
             new SuperWebServiceG(GlobalConstants.URL + "addPost", data, new CallBackWebService()
             {
@@ -254,7 +265,7 @@ public class AddPostActivity extends BaseActivityG
 
 
                         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 70);
-                        params.setMargins(5,5,5,5);
+                        params.setMargins(5, 5, 5, 5);
                         imgImageSend.setLayoutParams(params);
                         imgImageSend.setImageUrl(AddPostActivity.this, uri.toString());
 

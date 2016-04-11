@@ -13,9 +13,12 @@ import gagan.com.communities.R;
 import gagan.com.communities.activites.fragment.AddChatFragment;
 import gagan.com.communities.activites.fragment.BuisnessCenterMapFragment;
 import gagan.com.communities.activites.fragment.Communitiesfragment;
+import gagan.com.communities.activites.fragment.FollowersFragment;
 import gagan.com.communities.activites.fragment.PersonalAdsMapFragment;
 import gagan.com.communities.activites.fragment.PostsFragment;
+import gagan.com.communities.models.CommunitiesListModel;
 import gagan.com.communities.models.HomeModel;
+import gagan.com.communities.models.UserDataModel;
 
 public class ShowFragmentActivity extends AppCompatActivity
 {
@@ -30,12 +33,15 @@ public class ShowFragmentActivity extends AppCompatActivity
         settingActionBar(getIntent().getStringExtra("title"));
 
         HashMap<String, Fragment> fragmentHashMap = new HashMap<>();
-        fragmentHashMap.put("Communities", new Communitiesfragment());
-        fragmentHashMap.put("Posts", new PostsFragment());
+        fragmentHashMap.put("Communities", null);
+        fragmentHashMap.put("Posts", null);
         fragmentHashMap.put("Business Center", new BuisnessCenterMapFragment());
         fragmentHashMap.put("Personal Ads", new PersonalAdsMapFragment());
         fragmentHashMap.put("Current Location", new PersonalAdsMapFragment());
         fragmentHashMap.put("Select User", new AddChatFragment());
+
+        fragmentHashMap.put("Members",null);
+
 
         if (getIntent().getStringExtra("title").equals("Posts"))
         {
@@ -46,6 +52,24 @@ public class ShowFragmentActivity extends AppCompatActivity
 
             getSupportFragmentManager().beginTransaction().replace(R.id.container,postsFragment).commit();
         }
+       else if (getIntent().getStringExtra("title").equals("Communities"))
+        {
+            Communitiesfragment communitiesfragment=new Communitiesfragment();
+            CommunitiesListModel homeModel=(CommunitiesListModel) getIntent().getSerializableExtra("data");
+
+            communitiesfragment.setGoogleMapCommunity(homeModel);
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, communitiesfragment).commit();
+        }
+        else if (getIntent().getStringExtra("title").equals("Members"))
+        {
+            FollowersFragment myFollowers = new FollowersFragment();
+           String     userDataModel   =(String) getIntent().getStringExtra("data");
+
+            myFollowers.setList(userDataModel);
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, myFollowers).commit();
+        }
+
         else
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentHashMap.get(getIntent().getStringExtra("title"))).commit();

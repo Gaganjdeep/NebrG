@@ -153,20 +153,20 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MyViewHo
             }
         });
 
-        if (animate && dataList.size() == position)
+        if (currentData.isLastMsg())
         {
-            Utills.animate(holder.view);
-            animate = false;
+            holder.chatbubble.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
+            holder.chatbubble.requestLayout();
+            Utills.collapse_expand(holder.chatbubble, 1500, holder.view.getWidth() / 2);
+
+            dataList.get(position).setLastMsg(false);
+        }
+        else
+        {
+            holder.chatbubble.getLayoutParams().width = LinearLayout.LayoutParams.WRAP_CONTENT;
         }
 
 
-    }
-
-    boolean animate = false;
-
-    public void animateMsg()
-    {
-        animate = true;
     }
 
 
@@ -228,7 +228,7 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MyViewHo
     class MyViewHolderG extends RecyclerView.ViewHolder
     {
         TextView tvMSG, tvTime;
-        //        LinearLayout           linearLayout;
+        LinearLayout           chatbubble;
         View                   view;
         RoundedCornersGaganImg DP;
 
@@ -239,7 +239,7 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MyViewHo
             tvMSG = (TextView) itemView.findViewById(R.id.tvChatmsg);
 
             DP = (RoundedCornersGaganImg) itemView.findViewById(R.id.imgChat);
-//            linearLayout = (LinearLayout) itemView.findViewById(R.id.FrameLayoutotherChat);
+            chatbubble = (LinearLayout) itemView.findViewById(R.id.chatbubble);
 
             tvTime = (TextView) itemView.findViewById(R.id.tvChatDate);
 

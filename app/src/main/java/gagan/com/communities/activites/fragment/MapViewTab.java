@@ -27,10 +27,12 @@ import gagan.com.communities.activites.MainTabActivity;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MapViewTab extends Fragment {
+public class MapViewTab extends Fragment
+{
 
 
-    public MapViewTab() {
+    public MapViewTab()
+    {
         // Required empty public constructor
     }
 
@@ -39,12 +41,14 @@ public class MapViewTab extends Fragment {
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
-    ) {
+    )
+    {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_map_view_tab, container, false);
 
         viewPagerG = (ViewPager) v.findViewById(R.id.viewpager);
-        if (viewPagerG != null) {
+        if (viewPagerG != null)
+        {
             setupViewPager(viewPagerG);
         }
 
@@ -62,7 +66,6 @@ public class MapViewTab extends Fragment {
         settingActionBar(v);
 
 
-
         setHasOptionsMenu(false);
 
         return v;
@@ -76,7 +79,8 @@ public class MapViewTab extends Fragment {
         super.onResume();
     }
 
-    private void settingActionBar(View view) {
+    private void settingActionBar(View view)
+    {
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
 //        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
@@ -87,11 +91,16 @@ public class MapViewTab extends Fragment {
         ImageView btnAddPost = (ImageView) toolbar.findViewById(R.id.btnAdd);
 
         btnAddPost.requestFocus();
-        btnAddPost.setOnClickListener(new View.OnClickListener() {
+        btnAddPost.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
 
-                startActivity(new Intent(getActivity(), classes[viewPagerG.getCurrentItem()]));
+                Intent i = new Intent(getActivity(), classes[viewPagerG.getCurrentItem()]);
+                i.putExtra("Cid", "");
+                startActivity(i);
+
 
             }
         });
@@ -101,7 +110,8 @@ public class MapViewTab extends Fragment {
     TabLayout tabLayoutG;
     ViewPager viewPagerG;
 
-    private void setupViewPager(ViewPager viewPager) {
+    private void setupViewPager(ViewPager viewPager)
+    {
         MainTabActivity.Adapter adapter = new MainTabActivity.Adapter(getChildFragmentManager());
         adapter.addFragment(new Communitiesfragment(), "Communities");
         adapter.addFragment(new PostsFragment(), "Posts");
@@ -112,7 +122,8 @@ public class MapViewTab extends Fragment {
         viewPager.setOffscreenPageLimit(0);
     }
 
-    public void setupTabLayout(TabLayout tabLayout, final ViewPager mViewpager) {
+    public void setupTabLayout(TabLayout tabLayout, final ViewPager mViewpager)
+    {
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(mViewpager);
 

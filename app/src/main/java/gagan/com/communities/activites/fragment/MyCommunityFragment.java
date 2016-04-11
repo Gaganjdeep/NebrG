@@ -76,7 +76,7 @@ public class MyCommunityFragment extends CurrentLocFragment {
                 public void webOnFinish(String output) {
 
 
-                    processOutput(output);
+                    processOutput(output,true);
 
                 }
             }).execute();
@@ -100,7 +100,7 @@ public class MyCommunityFragment extends CurrentLocFragment {
                 public void webOnFinish(String output) {
 
 
-                    processOutput(output);
+                    processOutput(output,false);
 
                 }
             }).execute();
@@ -110,7 +110,7 @@ public class MyCommunityFragment extends CurrentLocFragment {
         }
     }
 
-    private void processOutput(String output) {
+    private void processOutput(String output,boolean myCommunity) {
         try {
 
             List<CommunitiesListModel> list = new ArrayList<>();
@@ -144,6 +144,7 @@ public class MyCommunityFragment extends CurrentLocFragment {
 
                     data.setOwner_id(jobj.optString("owner_id"));
                     data.setUser_id(jobj.optString("user_id"));
+                    data.setMyCommunity(myCommunity);
                     list.add(data);
                 }
 

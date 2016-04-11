@@ -1,6 +1,8 @@
 package gagan.com.communities.activites.fragment;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -23,9 +25,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import gagan.com.communities.R;
+import gagan.com.communities.activites.CommunityDetailsActivity;
 import gagan.com.communities.models.CommunitiesListModel;
 import gagan.com.communities.models.HomeModel;
 import gagan.com.communities.utills.CurrentLocFragment;
@@ -42,7 +46,7 @@ public class Communitiesfragment extends SupportMapFragment implements GoogleMap
 {
 
 
-    private GoogleMap   googleMapCommunity;
+    private GoogleMap googleMapCommunity;
 
     public Communitiesfragment()
     {
@@ -63,14 +67,37 @@ public class Communitiesfragment extends SupportMapFragment implements GoogleMap
                 googleMapCommunity.setMyLocationEnabled(true);
                 googleMapCommunity.getUiSettings().setMapToolbarEnabled(false);
 
-                googleMapCommunity.setOnMyLocationChangeListener(Communitiesfragment.this);
+                if (communitiesListModelG == null)
+                {
+                    googleMapCommunity.setOnMyLocationChangeListener(Communitiesfragment.this);
+                }
+                else
+                {
+
+                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(communitiesListModelG.getLatLng(), 9);
+                    googleMapCommunity.animateCamera(cameraUpdate);
+
+                    setUpMap(communitiesListModelG);
+                }
+
 
             }
         });
 
 
+    }
+
+
+    public void setGoogleMapCommunity(CommunitiesListModel data)
+    {
+
+        communitiesListModelG = data;
 
     }
+
+    CommunitiesListModel communitiesListModelG;
+
+    HashMap<String, CommunitiesListModel> MarkerDataC;
 
 
     //    ====================marker
@@ -83,7 +110,12 @@ public class Communitiesfragment extends SupportMapFragment implements GoogleMap
         Marker markr = googleMapCommunity.addMarker(new MarkerOptions().position(markerLoc).draggable(false).title(data.getC_name()).snippet(data.getC_genre()).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker)));
 
         markr.showInfoWindow();
-//    MarkerData.put(markr.getId(), data);
+
+
+        if (MarkerDataC != null)
+        {
+            MarkerDataC.put(markr.getId(), data);
+        }
 
         googleMapCommunity.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener()
         {
@@ -91,7 +123,13 @@ public class Communitiesfragment extends SupportMapFragment implements GoogleMap
             @Override
             public void onInfoWindowClick(Marker arg0)
             {
+                if (MarkerDataC != null)
+                {
+                    Intent intnt = new Intent(getActivity(), CommunityDetailsActivity.class);
+                    intnt.putExtra("data", MarkerDataC.get(arg0.getId()));
+                    getActivity().startActivity(intnt);
 
+                }
 
             }
         });
@@ -114,9 +152,10 @@ public class Communitiesfragment extends SupportMapFragment implements GoogleMap
     }
 
 
-
-    private void fetchDataNearby(Location currentLocation) {
-        try {
+    private void fetchDataNearby(Location currentLocation)
+    {
+        try
+        {
             JSONObject data = new JSONObject();
             data.put("lat", currentLocation.getLatitude());
             data.put("long", currentLocation.getLongitude());
@@ -125,9 +164,11 @@ public class Communitiesfragment extends SupportMapFragment implements GoogleMap
             data.put("distance", "50");
 
 
-            new SuperWebServiceG(GlobalConstants.URL + "mynearcommunity", data, new CallBackWebService() {
+            new SuperWebServiceG(GlobalConstants.URL + "mynearcommunity", data, new CallBackWebService()
+            {
                 @Override
-                public void webOnFinish(String output) {
+                public void webOnFinish(String output)
+                {
 
 
                     processOutput(output);
@@ -135,14 +176,17 @@ public class Communitiesfragment extends SupportMapFragment implements GoogleMap
                 }
             }).execute();
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
     //   ==============process output++++
-    private void processOutput(String output) {
-        try {
+    private void processOutput(String output)
+    {
+        try
+        {
 
             List<CommunitiesListModel> list = new ArrayList<>();
 
@@ -150,12 +194,14 @@ public class Communitiesfragment extends SupportMapFragment implements GoogleMap
 
             JSONObject jsonMainResult = jsonMain.getJSONObject("result");
 
-            if (jsonMainResult.getString("code").contains("20") && !jsonMainResult.getString("code").equals("201")) {
+            if (jsonMainResult.getString("code").contains("20") && !jsonMainResult.getString("code").equals("201"))
+            {
 
                 JSONArray jsonarrayData = jsonMainResult.getJSONArray("community");
 
-                for (int g = 0; g < jsonarrayData.length(); g++) {
-                    JSONObject jobj = jsonarrayData.optJSONObject(g);
+                for (int g = 0; g < jsonarrayData.length(); g++)
+                {
+                    JSONObject           jobj = jsonarrayData.optJSONObject(g);
                     CommunitiesListModel data = new CommunitiesListModel();
 
                     data.setCid(jobj.optString("cid"));
@@ -163,11 +209,13 @@ public class Communitiesfragment extends SupportMapFragment implements GoogleMap
                     data.setC_genre(jobj.optString("c_genre"));
                     data.setC_name(jobj.optString("c_name"));
                     data.setCreated_at(jobj.optString("created_at"));
-                    try {
+                    try
+                    {
                         LatLng latlng = new LatLng(Double.parseDouble(jobj.optString("c_lat")), Double.parseDouble(jobj.optString("c_long")));
                         data.setLatLng(latlng);
                     }
-                    catch (Exception e) {
+                    catch (Exception e)
+                    {
                         e.printStackTrace();
                     }
 
@@ -181,13 +229,15 @@ public class Communitiesfragment extends SupportMapFragment implements GoogleMap
 
 
             }
-            else {
+            else
+            {
                 googleMapCommunity.setOnMyLocationChangeListener(Communitiesfragment.this);
                 Utills.showToast("No communities available", getActivity(), true);
             }
 
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
@@ -195,7 +245,9 @@ public class Communitiesfragment extends SupportMapFragment implements GoogleMap
     @Override
     public void onMyLocationChange(Location location)
     {
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),location.getLongitude()), 9);
+        MarkerDataC = new HashMap<>();
+
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 9);
         googleMapCommunity.animateCamera(cameraUpdate);
         fetchDataNearby(location);
 

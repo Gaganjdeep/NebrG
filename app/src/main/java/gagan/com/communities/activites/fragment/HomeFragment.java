@@ -131,7 +131,7 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
             data.put("userid", sharedPrefHelper.getUserId());
             data.put("limit", limit + "");
             data.put("startId", startId + "");
-            data.put("distance", sharedPrefHelper.getDistanceParamHome()+"");
+            data.put("distance", sharedPrefHelper.getDistanceParamHome() + "");
 
 
             new SuperWebServiceG(GlobalConstants.URL + "homeFeeduserradius", data, new CallBackWebService()
@@ -312,18 +312,33 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
 
         if (!sharedPrefHelper.getPincodeStatus())
         {
-            txtvAddPost.setVisibility(View.GONE);
-        }
-        txtvAddPost.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
+            txtvAddPost.setAlpha(0.4f);
+            txtvAddPost.setOnClickListener(new View.OnClickListener()
             {
-                startActivity(new Intent(getActivity(), AddPostActivity
-                        .class));
+                @Override
+                public void onClick(View v)
+                {
+                 Utills.show_dialog_msg(getActivity(),"We are yet to enable our service in your area, however you can the view posts",null);
+                }
+            });
+        }
+        else
+        {
+            txtvAddPost.setAlpha(1f);
+            txtvAddPost.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    Intent i = new Intent(getActivity(), AddPostActivity
+                            .class);
+                    i.putExtra("Cid", "");
+                    startActivity(i);
 
-            }
-        });
+                }
+            });
+        }
+
 
     }
 
@@ -362,7 +377,7 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
                 break;
             case R.id.set_distance:
 
-                Utills.ShowDialogProgress(getActivity(),this);
+                Utills.ShowDialogProgress(getActivity(), this);
 
 
                 break;

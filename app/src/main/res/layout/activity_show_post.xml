@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:gagan="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="gagan.com.communities.activites.ShowPostActivity"
-    xmlns:gagan="http://schemas.android.com/apk/res-auto">
-
-
-
+    android:orientation="vertical"
+    tools:context="gagan.com.communities.activites.ShowPostActivity">
 
 
     <android.support.v7.widget.Toolbar
@@ -32,9 +29,11 @@
 
     </android.support.v7.widget.Toolbar>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+        <include layout="@layout/home_inflator"/>
 
-    <include layout="@layout/home_inflator"/>
-
-
+    </ScrollView>
 </LinearLayout>

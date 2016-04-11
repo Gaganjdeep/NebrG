@@ -1,22 +1,21 @@
 package gagan.com.communities.utills;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.AppCompatSeekBar;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -302,75 +301,6 @@ public class Utills
         });
 
 
-       /* final AlertDialog.Builder popDialog = new AlertDialog.Builder(con);
-
-
-        final SharedPrefHelper shrdHeler = new SharedPrefHelper(con);
-        progress = 0;
-
-        LinearLayout layout = new LinearLayout(con);
-        layout.setOrientation(LinearLayout.VERTICAL);
-
-
-        final TextView tvKm = new TextView(con);
-        tvKm.setGravity(Gravity.RIGHT);
-        tvKm.setPadding(0, 0, 20, 0);
-
-        final SeekBar seek = new SeekBar(con);
-        seek.setMax(255);
-        seek.setKeyProgressIncrement(1);
-
-        seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
-        {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b)
-            {
-
-                tvKm.setText(i + " km");
-                progress = i;
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar)
-            {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar)
-            {
-
-            }
-        });
-
-        layout.addView(seek);
-        layout.addView(tvKm);
-        seek.setProgress(shrdHeler.getDistanceParam());
-
-        popDialog.setTitle("Please Select distance");
-        popDialog.setView(layout);
-
-        popDialog.setPositiveButton("OK", new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i)
-            {
-                shrdHeler.setDistanceParam(progress);
-                dialogInterface.dismiss();
-
-            }
-        });
-        popDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i)
-            {
-                dialogInterface.dismiss();
-            }
-        });
-
-
-        popDialog.show();*/
     }
     // seekbar dialog end
 
@@ -391,6 +321,56 @@ public class Utills
         intnt.putExtra(Intent.EXTRA_TEXT, msg);
         con.startActivity(Intent.createChooser(intnt, "Share via"));
 
+    }
+
+
+    public static void collapse_expand(final View v, int duration, int targetHeight)
+    {
+        int           prevHeight    = v.getWidth();
+        ValueAnimator valueAnimator = ValueAnimator.ofInt(prevHeight, targetHeight);
+        valueAnimator.setInterpolator(new DecelerateInterpolator());
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
+        {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation)
+            {
+                //you can change width or height according to your need.
+                v.getLayoutParams().width = (int) animation.getAnimatedValue();
+                v.requestLayout();
+            }
+
+
+        });
+        valueAnimator.addListener(new Animator.AnimatorListener()
+        {
+            @Override
+            public void onAnimationStart(Animator animation)
+            {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation)
+            {
+                v.getLayoutParams().width = LinearLayout.LayoutParams.WRAP_CONTENT;
+                v.requestLayout();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation)
+            {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation)
+            {
+
+            }
+        });
+        valueAnimator.setInterpolator(new DecelerateInterpolator());
+        valueAnimator.setDuration(duration);
+        valueAnimator.start();
     }
 
 

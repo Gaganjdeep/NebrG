@@ -35,7 +35,7 @@ public class NotificationFragment extends BaseFragmentG
         // Required empty public constructor
     }
 
-    List<NotificationModel> listMsg;
+    List<NotificationModel> listNOti;
 
     RecyclerView recyclerList;
 
@@ -52,9 +52,9 @@ public class NotificationFragment extends BaseFragmentG
         recyclerList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
-        if (listMsg != null)
+        if (listNOti != null)
         {
-            NotificationAdapter msgAdapter = new NotificationAdapter(getActivity(), null);
+            NotificationAdapter msgAdapter = new NotificationAdapter(getActivity(), listNOti);
             recyclerList.setAdapter(msgAdapter);
 
         }
@@ -93,13 +93,13 @@ public class NotificationFragment extends BaseFragmentG
 
                             JSONArray jsonarrayData = jsonMainResult.getJSONArray("message");
 
-                            if (listMsg == null)
+                            if (listNOti == null)
                             {
-                                listMsg = new ArrayList<NotificationModel>();
+                                listNOti = new ArrayList<NotificationModel>();
                             }
                             else
                             {
-                                listMsg.clear();
+                                listNOti.clear();
                             }
 
                             for (int g = 0; g < jsonarrayData.length(); g++)
@@ -108,20 +108,25 @@ public class NotificationFragment extends BaseFragmentG
 
                                 JSONObject jobj = jsonarrayData.optJSONObject(g);
 
+//                                "id": "354",
+//                                    "from_userid": "12",
+//                                    "to_userid": "48",
+//                                    "message": "Your message have been sent",
+//                                    "status": "0",
+//                                    "created_at": "2016-04-08 22:29:40",
+//                                    "username": "Gagan Deep",
+//                                    "profile_pic": "http://orasisdata.com/Neiber/http://graph.facebook.com/1152850238072299/picture"
+                                String id               = jobj.optString("id");
+                                 String message          = jobj.optString("message");
+                                String created_at       = jobj.optString("created_at");
+                                String username         = jobj.optString("username");
+                                String profile_pic      = jobj.optString("profile_pic");
 
-//                                String id               = jobj.optString("id");
-//                                String sender_userid    = jobj.optString("sender_userid");
-//                                String recipient_userid = jobj.optString("recipient_userid");
-//                                String message          = jobj.optString("message");
-//                                String created_at       = jobj.optString("created_at");
-//                                String username         = jobj.optString("username");
-//                                String profile_pic      = jobj.optString("profile_pic");
-
-//                                listMsg.add(new MsgDataModel(id, sender_userid, recipient_userid, message, created_at, username, profile_pic));
+                                listNOti.add(new NotificationModel(username,created_at,message,profile_pic));
                             }
 
-                            Collections.reverse(listMsg);
-                            NotificationAdapter msgAdapter = new NotificationAdapter(getActivity(), null);
+                            Collections.reverse(listNOti);
+                            NotificationAdapter msgAdapter = new NotificationAdapter(getActivity(), listNOti);
                             recyclerList.setAdapter(msgAdapter);
 
 

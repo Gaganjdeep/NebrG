@@ -188,8 +188,8 @@ public class ProfileActivity extends BaseActivityG
 
 
         PostProfileFragment myPost     = new PostProfileFragment();
-        Bundle              bundlePost = new Bundle();
-        bundlePost.putString("userid", sharedPrefHelper.getUserId());
+//        Bundle              bundlePost = new Bundle();
+//        bundlePost.putString("userid", sharedPrefHelper.getUserId());
         myPost.setArguments(bundleOther);
 
 

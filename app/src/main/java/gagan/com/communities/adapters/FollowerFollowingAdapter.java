@@ -14,6 +14,7 @@ import gagan.com.communities.R;
 import gagan.com.communities.activites.ChatActivity;
 import gagan.com.communities.activites.OtherProfileActivity;
 import gagan.com.communities.activites.ProfileActivity;
+import gagan.com.communities.activites.ShowFragmentActivity;
 import gagan.com.communities.models.UserDataModel;
 import gagan.com.communities.utills.RoundedCornersGaganImg;
 
@@ -72,6 +73,10 @@ public class FollowerFollowingAdapter extends RecyclerView.Adapter<FollowerFollo
             );
         }
         else if (con instanceof OtherProfileActivity)
+        {
+
+        }
+        else if (con instanceof ShowFragmentActivity)
         {
 
         }

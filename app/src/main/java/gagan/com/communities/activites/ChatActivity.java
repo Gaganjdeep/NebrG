@@ -198,7 +198,7 @@ public class ChatActivity extends BaseActivityG
 
                                 String profile_pic = sender_userid.equals(userData.getuId()) ? userData.getProfile_pic() : profilePicOther;
 
-                                listData.add(new MsgDataModel(id, sender_userid, recipient_userid, message, created_at, username, profile_pic));
+                                listData.add(new MsgDataModel(false,id, sender_userid, recipient_userid, message, created_at, username, profile_pic));
 
                             }
 
@@ -230,7 +230,7 @@ public class ChatActivity extends BaseActivityG
     }
 
 
-    public void sendMsg(View view)
+    public void sendMsg(final View view)
     {
         try
         {
@@ -242,7 +242,8 @@ public class ChatActivity extends BaseActivityG
             }
 
 
-            showProgressDialog();
+//            showProgressDialog();
+            view.setEnabled(false);
 
             JSONObject data = new JSONObject();
             data.put("message", edComment.getText().toString());
@@ -256,10 +257,11 @@ public class ChatActivity extends BaseActivityG
                 public void webOnFinish(String output)
                 {
 
-                    cancelDialog();
+//                    cancelDialog();
 
                     try
                     {
+                        view.setEnabled(true);
 
                         JSONObject jsonMain = new JSONObject(output);
 
@@ -281,13 +283,11 @@ public class ChatActivity extends BaseActivityG
 
                             String profile_pic = userData.getProfile_pic();
 
-                            listData.add(0, new MsgDataModel(id, sender_userid, recipient_userid, message, created_at, username, profile_pic));
+                            listData.add(0, new MsgDataModel(true,id, sender_userid, recipient_userid, message, created_at, username, profile_pic));
 
 
                             edComment.setText("");
 
-
-                            chatMsgAdapter.animateMsg();
 
                             chatMsgAdapter.notifyDataSetChanged();
 

@@ -1,15 +1,10 @@
 package gagan.com.communities.adapters;
 
-import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
@@ -21,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.json.JSONObject;
@@ -32,12 +26,10 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import gagan.com.communities.R;
-import gagan.com.communities.activites.ChatActivity;
 import gagan.com.communities.activites.CommentsListActivity;
 import gagan.com.communities.activites.OtherProfileActivity;
 import gagan.com.communities.activites.ShowFragmentActivity;
 import gagan.com.communities.activites.ShowImageActivity;
-import gagan.com.communities.activites.ShowPostActivity;
 import gagan.com.communities.models.HomeModel;
 import gagan.com.communities.utills.GlobalConstants;
 import gagan.com.communities.utills.RoundedCornersGaganImg;
@@ -151,8 +143,17 @@ public class HomeAdapter extends BaseAdapter
             {
                 tvUsername.setText("");
                 tvAvatar.setVisibility(View.VISIBLE);
-                tvAvatar.setText(data.getUsername().substring(0, 1));
                 imgUserPic.setVisibility(View.GONE);
+                try
+                {
+                    tvAvatar.setText(data.getUsername().substring(0, 1));
+
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
 
             }
             else
@@ -524,6 +525,8 @@ public class HomeAdapter extends BaseAdapter
                         {
                             dialog.cancel();
                         }
+                        int likecount    = Integer.parseInt(DataList.get(DataList.indexOf(homeModel)).getLike_count());
+                        int dislikecount = Integer.parseInt(DataList.get(DataList.indexOf(homeModel)).getDislike_count());
 
 
                         JSONObject jsonMain = new JSONObject(output);
@@ -535,9 +538,6 @@ public class HomeAdapter extends BaseAdapter
 
                             try
                             {
-
-                                int likecount    = Integer.parseInt(DataList.get(DataList.indexOf(homeModel)).getLike_count());
-                                int dislikecount = Integer.parseInt(DataList.get(DataList.indexOf(homeModel)).getDislike_count());
 
 
                                 if (likeDislike.equals("1"))
@@ -599,7 +599,27 @@ public class HomeAdapter extends BaseAdapter
                         }
                         else
                         {
-                            Utills.showToast(jsonMainResult.getString("status"), con, true);
+                            if (likeDislike.equals("0"))
+                            {
+                                if (homeModel.is_liked())
+                                {
+                                    DataList.get(DataList.indexOf(homeModel)).setLike_count(((likecount - 1) < 0 ? 0 : (likecount - 1)) + "");
+                                }
+                                else if (homeModel.is_disliked())
+                                {
+                                    DataList.get(DataList.indexOf(homeModel)).setDislike_count(((dislikecount - 1) < 0 ? 0 : (dislikecount - 1)) + "");
+                                }
+
+
+                                DataList.get(DataList.indexOf(homeModel)).setIs_disliked(false);
+                                DataList.get(DataList.indexOf(homeModel)).setIs_liked(false);
+                            }
+                            else
+                            {
+                                Utills.showToast(jsonMainResult.getString("status"), con, true);
+                            }
+
+
                         }
 
 

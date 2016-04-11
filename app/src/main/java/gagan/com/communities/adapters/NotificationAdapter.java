@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import gagan.com.communities.R;
@@ -16,6 +18,7 @@ import gagan.com.communities.activites.OtherProfileActivity;
 import gagan.com.communities.activites.ProfileActivity;
 import gagan.com.communities.models.NotificationModel;
 import gagan.com.communities.models.UserDataModel;
+import gagan.com.communities.utills.GlobalConstants;
 import gagan.com.communities.utills.RoundedCornersGaganImg;
 
 /**
@@ -50,15 +53,28 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public void onBindViewHolder(MyViewHolderG holder, int position)
     {
 
-//        final NotificationModel currentData = dataList.get(position);
+        final NotificationModel currentData = dataList.get(position);
 
-//        holder.tvName.setText(currentData.getName());
-//        holder.tvText.setText(currentData.getMsg());
+        holder.tvName.setText(currentData.getName());
+        holder.tvmsg.setText(currentData.getMsg());
+
+        holder.img_profilepic.setRadius(170);
+        holder.img_profilepic.setImageUrl(con,currentData.getImage());
 
 
+        try
+        {
 
+            SimpleDateFormat sdf       = new SimpleDateFormat(GlobalConstants.SEVER_FORMAT);
+            SimpleDateFormat sdfDesire = new SimpleDateFormat("dd MMM hh:mm a");
+            Date             date      = sdf.parse(currentData.getTime());
+            holder.tvTime.setText(sdfDesire.format(date));
 
-
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
 
     }
@@ -67,24 +83,25 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     @Override
     public int getItemCount()
     {
-//        return dataList.size();
-        return 7;
+        return dataList.size();
     }
 
 
 
     class MyViewHolderG extends RecyclerView.ViewHolder
     {
-        TextView tvName, tvText;
+        TextView tvName, tvmsg,tvTime;
         View                   view;
-        RoundedCornersGaganImg imgUserPic;
+        RoundedCornersGaganImg img_profilepic;
 
         public MyViewHolderG(View itemView)
         {
             super(itemView);
-//            tvText = (TextView) itemView.findViewById(R.id.tvText);
-//            tvName = (TextView) itemView.findViewById(R.id.tvName);
 
+            tvTime= (TextView) itemView.findViewById(R.id.tvTime);
+            tvmsg = (TextView) itemView.findViewById(R.id.tvmsg);
+            tvName = (TextView) itemView.findViewById(R.id.tvName);
+            img_profilepic= (RoundedCornersGaganImg) itemView.findViewById(R.id.img_profilepic);
             view = itemView;
         }
     }
