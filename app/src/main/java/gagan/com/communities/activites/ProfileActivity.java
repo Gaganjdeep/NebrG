@@ -115,9 +115,9 @@ public class ProfileActivity extends BaseActivityG
 //                    imgvProfilePic.setRadius(200);
 //                    imgvProfilePic.setBackground(g);
 
-                    Bitmap bmp = output;
+                    Bitmap         bmp            = output;
                     BitmapDrawable bitmapDrawable = new BitmapDrawable(bmp);
-                    bitmapDrawable.setGravity(Gravity.CENTER| Gravity.FILL);
+                    bitmapDrawable.setGravity(Gravity.CENTER | Gravity.FILL);
                     appbar.setBackground(bitmapDrawable);
                 }
                 catch (Exception e)
@@ -181,13 +181,14 @@ public class ProfileActivity extends BaseActivityG
 
 
         FollowersFragment myFollowings = new FollowersFragment();
-        Bundle            bundleOther  = new Bundle();
+        myFollowings.setShowUnFollow(true);
+        Bundle bundleOther = new Bundle();
         bundleOther.putString("follower", "2");
         bundleOther.putString("userid", sharedPrefHelper.getUserId());
         myFollowings.setArguments(bundleOther);
 
 
-        PostProfileFragment myPost     = new PostProfileFragment();
+        PostProfileFragment myPost = new PostProfileFragment();
 //        Bundle              bundlePost = new Bundle();
 //        bundlePost.putString("userid", sharedPrefHelper.getUserId());
         myPost.setArguments(bundleOther);

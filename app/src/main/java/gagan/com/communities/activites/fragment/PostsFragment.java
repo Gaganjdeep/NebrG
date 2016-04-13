@@ -67,7 +67,7 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
                 }
                 else
                 {
-                    MarkerData = new HashMap<>();
+
                     CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(modelToSet.getLatLng(), 9);
                     googleMapPost.animateCamera(cameraUpdate);
 
@@ -100,9 +100,10 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
         Marker markr = googleMapPost.addMarker(new MarkerOptions().position(markerLoc).draggable(false).title(name).snippet(genre).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker)));
 
         markr.showInfoWindow();
-
-        MarkerData.put(markr.getId(), homeModel);
-
+        if (MarkerData != null)
+        {
+            MarkerData.put(markr.getId(), homeModel);
+        }
         googleMapPost.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener()
         {
 
@@ -110,11 +111,12 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
             public void onInfoWindowClick(Marker arg0)
             {
 
-
-                Intent intnt = new Intent(getActivity(), ShowPostActivity.class);
-                intnt.putExtra("data", MarkerData.get(arg0.getId()));
-                startActivity(intnt);
-
+                if (MarkerData != null)
+                {
+                    Intent intnt = new Intent(getActivity(), ShowPostActivity.class);
+                    intnt.putExtra("data", MarkerData.get(arg0.getId()));
+                    startActivity(intnt);
+                }
 
             }
         });

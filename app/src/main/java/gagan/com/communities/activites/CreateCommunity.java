@@ -281,6 +281,12 @@ public class CreateCommunity extends CurrentLocActivityG
             edDescription.setError("Please enter some description");
             return false;
         }
+        else if (tvGenre.getText().toString().trim().equals("Select genre"))
+        {
+            Utills.showToast("Please select genre",CreateCommunity.this,true);
+            tvGenre.requestFocus();
+            return false;
+        }
         return true;
     }
 

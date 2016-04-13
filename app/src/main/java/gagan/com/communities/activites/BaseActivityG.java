@@ -8,7 +8,7 @@ import gagan.com.communities.R;
 import gagan.com.communities.utills.SharedPrefHelper;
 
 /**
- * Created by sony on 10-02-2016.
+ * Created by gagaN on 10-02-2016.
  */
 abstract class BaseActivityG extends AppCompatActivity {
 

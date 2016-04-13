@@ -1,19 +1,13 @@
 package gagan.com.communities.activites.fragment;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -31,10 +25,7 @@ import java.util.List;
 import gagan.com.communities.R;
 import gagan.com.communities.activites.CommunityDetailsActivity;
 import gagan.com.communities.models.CommunitiesListModel;
-import gagan.com.communities.models.HomeModel;
-import gagan.com.communities.utills.CurrentLocFragment;
 import gagan.com.communities.utills.GlobalConstants;
-import gagan.com.communities.utills.SharedPrefHelper;
 import gagan.com.communities.utills.Utills;
 import gagan.com.communities.webserviceG.CallBackWebService;
 import gagan.com.communities.webserviceG.SuperWebServiceG;

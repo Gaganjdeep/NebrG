@@ -374,8 +374,22 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
                 sharedPrefHelper.setPincodeStatus(jsonMainResult.optString("pincode_status").equals("1"));
 
 
+                if (locationCurrent != null)
+                {
+                    if(jsonarrayData.getJSONObject(0).optString("home_society").equals(""))
+                    {
+                        sharedPrefHelper.setHomeLocation(jsonarrayData.getJSONObject(0).optString("location"), locationCurrent.getLatitude() + "", locationCurrent.getLongitude() + "");
+                    }
+                    else {
+                        sharedPrefHelper.setHomeLocation(jsonarrayData.getJSONObject(0).optString("home_society"), locationCurrent.getLatitude() + "", locationCurrent.getLongitude() + "");
+                    }
 
-                sharedPrefHelper.setHomeLocation(jsonarrayData.getJSONObject(0).optString("home_society"),"","");
+                }
+                else
+                {
+                    sharedPrefHelper.setHomeLocation(jsonarrayData.getJSONObject(0).optString("home_society"), "", "");
+                }
+
 
                 SharedPrefHelper.write(LoginActivity.this, userDataModel);
 
@@ -502,7 +516,7 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
         {
 
 
-            if(!mGoogleApiClient.isConnected())
+            if (!mGoogleApiClient.isConnected())
             {
                 return;
             }

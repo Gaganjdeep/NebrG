@@ -186,7 +186,7 @@ public class SharedPrefHelper
 
     public int getDistanceParam()
     {
-        return sharedPreferences.getInt("distanceParam", 5);
+        return sharedPreferences.getInt("distanceParam", 20);
     }
 
 // distance end

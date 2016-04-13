@@ -58,7 +58,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Change current location"
+                android:text="Change Home Location"
                 android:textColor="@color/black"
                 android:textStyle="bold"/>
 

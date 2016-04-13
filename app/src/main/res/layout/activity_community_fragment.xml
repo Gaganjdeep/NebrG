@@ -24,7 +24,7 @@
 
 
             <TextView
-                android:id="@+id/txtvAddPost"
+                android:id="@+id/tvaddCommunity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@mipmap/add_community_btn"
@@ -32,14 +32,13 @@
                 android:layout_centerVertical="true"
                 android:textColor="@color/white"
                 android:textStyle="bold"
-                android:onClick="addCummunity"
                 />
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Community"
+                android:text="Communities"
                 android:layout_centerInParent="true"
                 android:textColor="@color/white"
                 style="@style/headingtext_style"
@@ -72,6 +71,7 @@
         android:theme="@style/tab_style_notification"
         gagan:tabSelectedTextColor="@color/black"
         gagan:tabTextColor="@color/white"
+        gagan:tabTextAppearance="@style/tab_heading_upper"
         />
 
     <android.support.v4.view.ViewPager

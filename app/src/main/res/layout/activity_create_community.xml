@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:gagan="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              xmlns:gagan="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -18,12 +18,13 @@
             style="@style/headingtext_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_marginRight="20dp"
+            android:gravity="center"
             android:text="Create Community"/>
 
 
     </android.support.v7.widget.Toolbar>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -32,7 +33,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
 
 
             <LinearLayout
@@ -46,41 +46,44 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Community Name"
-                    android:textStyle="bold"
-                    android:textColor="@color/button_pink"/>
+                    android:textColor="@color/button_pink"
+                    android:textStyle="bold"/>
 
 
                 <EditText
                     android:id="@+id/edCommunityName"
-                    android:textColor="@color/black"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/grey_stroke"
+                    android:inputType="textCapSentences"
+                    android:maxLines="1"
                     android:padding="10dp"
-                    android:maxLines="1"/>
+                    android:textColor="@color/black"/>
 
 
                 <TextView
-                    android:layout_marginTop="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:text="Genre"
-                    android:textStyle="bold"
-                    android:textColor="@color/button_pink"/>
+                    android:textColor="@color/button_pink"
+                    android:textStyle="bold"/>
 
 
                 <LinearLayout
-                    android:onClick="openSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
+                    android:background="@drawable/grey_stroke"
+                    android:onClick="openSpinner"
                     android:orientation="horizontal"
-                    android:background="@drawable/grey_stroke">
+                    android:padding="8dp">
+
                     <TextView
                         android:id="@+id/tvGenre"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:padding="5dp"
                         android:text="Electronics"/>
 
                     <android.support.v7.widget.AppCompatSpinner
@@ -88,29 +91,30 @@
                         android:layout_width="0.5dp"
                         android:layout_height="0.5dp"
                         android:entries="@array/community_category"/>
+
                     <View
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
                         android:background="@color/blue_grey"/>
+
                     <ImageView
-                        android:layout_marginLeft="7dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="7dp"
                         android:src="@mipmap/drop_btn"/>
                 </LinearLayout>
 
 
-
-
             </LinearLayout>
+
             <TextView
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="20dp"
                 android:text="Locate the community"
-                android:textStyle="bold"
-                android:textColor="@color/button_pink"/>
+                android:textColor="@color/button_pink"
+                android:textStyle="bold"/>
 
 
             <FrameLayout
@@ -126,101 +130,63 @@
             </FrameLayout>
 
 
-
-
-
-
             <TextView
-                android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Community Description"
-                android:textStyle="bold"
+                android:layout_marginTop="10dp"
                 android:paddingLeft="20dp"
-                android:textColor="@color/button_pink"/>
+                android:text="Community Description"
+                android:textColor="@color/button_pink"
+                android:textStyle="bold"/>
 
 
             <EditText
                 android:id="@+id/edDescription"
-                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/grey_stroke"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:hint="Type your text"
                 android:gravity="left"
-                android:minLines="2"/>
+                android:hint="Type your text"
+                android:inputType="textCapSentences"
+                android:minLines="2"
+                android:padding="10dp"
+                android:textColor="@color/black"/>
 
 
             <LinearLayout
-                android:onClick="selectUsers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@color/lt_grey"
                 android:gravity="center_vertical"
+                android:onClick="selectUsers"
                 android:orientation="horizontal"
                 android:padding="10dp">
+
                 <ImageView
-                    android:layout_marginLeft="12dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
                     android:src="@mipmap/add_people"/>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginLeft="7dp"
+                    android:layout_weight="1"
                     android:text="Add people"/>
 
                 <ImageView
-                    android:layout_marginRight="12dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="12dp"
                     android:src="@mipmap/ic_arrow_next"/>
 
             </LinearLayout>
 
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/lt_grey"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-
-            <Button
-                android:onClick="publicPrivate"
-                android:id="@+id/btnpublic"
-                android:layout_marginLeft="12dp"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:text="Public"
-                android:textColor="@color/white"
-                android:background="@color/button_pink"
-                android:layout_height="wrap_content"/>
-
-
-            <Button
-                android:onClick="publicPrivate"
-                android:id="@+id/btnprivate"
-                android:layout_marginRight="12dp"
-                android:textColor="@color/black"
-                android:background="@color/lt_grey"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:text="Private"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -231,34 +197,73 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="10dp">
-                <ImageView
+
+
+                <Button
+                    android:id="@+id/btnpublic"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
+                    android:layout_weight="1"
+                    android:background="@color/button_pink"
+                    android:onClick="publicPrivate"
+                    android:text="Public"
+                    android:textColor="@color/white"/>
+
+
+                <Button
+                    android:id="@+id/btnprivate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="12dp"
+                    android:layout_weight="1"
+                    android:background="@color/lt_grey"
+                    android:onClick="publicPrivate"
+                    android:text="Private"
+                    android:textColor="@color/black"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/lt_grey"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:visibility="gone">
+
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
                     android:src="@mipmap/contact_icon"/>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginLeft="7dp"
+                    android:layout_weight="1"
                     android:text="Add admin"/>
 
                 <ImageView
-                    android:layout_marginRight="12dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="12dp"
                     android:src="@mipmap/ic_arrow_next"/>
 
             </LinearLayout>
 
 
             <Button
-                android:onClick="subMitt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_selector"
-                android:textColor="@color/white"
-                android:text="Submit"/>
+                android:onClick="subMitt"
+                android:text="Submit"
+                android:textColor="@color/white"/>
         </LinearLayout>
 
     </ScrollView>

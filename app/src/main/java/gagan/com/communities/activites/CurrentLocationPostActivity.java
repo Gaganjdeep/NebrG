@@ -339,8 +339,16 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
         displayLocation();
     }
 
+    @Override
+    protected void onDestroy()
+    {
+        sharedPrefHelper.setDistanceParam(20);
+        super.onDestroy();
+    }
 
-   /* SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener()
+
+
+    /* SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener()
     {
         public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
         {

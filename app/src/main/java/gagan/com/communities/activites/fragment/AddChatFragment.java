@@ -45,7 +45,8 @@ public class AddChatFragment extends BaseFragmentG
 
 
         viewPagerG = (ViewPager) v.findViewById(R.id.viewpager);
-        if (viewPagerG != null) {
+        if (viewPagerG != null)
+        {
             setupViewPager(viewPagerG);
         }
 
@@ -60,33 +61,30 @@ public class AddChatFragment extends BaseFragmentG
         setupTabLayout(tabLayoutG, viewPagerG);
 
 
-
         return v;
     }
-
-
-
-
 
 
     TabLayout tabLayoutG;
     ViewPager viewPagerG;
 
-    private void setupViewPager(ViewPager viewPager) {
+    private void setupViewPager(ViewPager viewPager)
+    {
 
         FollowersFragment myFollowers = new FollowersFragment();
-        Bundle            bundleall   = new Bundle();
+        myFollowers.setChatEnable(true);
+        Bundle bundleall = new Bundle();
         bundleall.putString("follower", "1");
         bundleall.putString("userid", sharedPrefHelper.getUserId());
         myFollowers.setArguments(bundleall);
 
 
         FollowersFragment myFollowings = new FollowersFragment();
-        Bundle            bundleOther  = new Bundle();
+        myFollowings.setChatEnable(true);
+        Bundle bundleOther = new Bundle();
         bundleOther.putString("follower", "2");
         bundleOther.putString("userid", sharedPrefHelper.getUserId());
         myFollowings.setArguments(bundleOther);
-
 
 
         MainTabActivity.Adapter adapter = new MainTabActivity.Adapter(getChildFragmentManager());
@@ -95,10 +93,10 @@ public class AddChatFragment extends BaseFragmentG
         viewPager.setAdapter(adapter);
 
 
-
     }
 
-    public void setupTabLayout(TabLayout tabLayout, final ViewPager mViewpager) {
+    public void setupTabLayout(TabLayout tabLayout, final ViewPager mViewpager)
+    {
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(mViewpager);
 

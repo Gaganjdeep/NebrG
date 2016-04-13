@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -182,6 +184,14 @@ public class PostProfileFragment extends BaseFragmentG
                     homemodel.setIs_liked(jobj.optString("is_liked").equals("1"));
                     homemodel.setIs_disliked(jobj.optString("is_disliked").equals("1"));
                     homemodel.setAnon_user(jobj.optString("anon_user").equals("1"));
+
+
+                    double lat = Double.parseDouble(jobj.optString("lat"));
+                    double lng = Double.parseDouble(jobj.optString("lng"));
+
+                    homemodel.setLatLng(new LatLng(lat, lng));
+
+
 
                     listHome.add(homemodel);
                 }

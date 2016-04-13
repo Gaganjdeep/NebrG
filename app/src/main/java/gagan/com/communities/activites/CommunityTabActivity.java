@@ -7,20 +7,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 
 import gagan.com.communities.R;
 import gagan.com.communities.activites.fragment.MyCommunityFragment;
 
-public class CommunityTabActivity extends AppCompatActivity {
+public class CommunityTabActivity extends AppCompatActivity
+{
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_community_fragment);
 
+        settingActionBar();
 
         viewPagerG = (ViewPager) findViewById(R.id.viewpager);
-        if (viewPagerG != null) {
+        if (viewPagerG != null)
+        {
             setupViewPager(viewPagerG);
         }
 
@@ -39,25 +44,35 @@ public class CommunityTabActivity extends AppCompatActivity {
 
     TabLayout tabLayoutG;
     ViewPager viewPagerG;
+    TextView  tvaddCommunity;
 
-    private void settingActionBar(View view) {
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-
-
+    private void settingActionBar()
+    {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        tvaddCommunity = (TextView) toolbar.findViewById(R.id.tvaddCommunity);
+        tvaddCommunity.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                addCummunity();
+            }
+        });
     }
 
 
-    private void setupViewPager(ViewPager viewPager) {
+    private void setupViewPager(ViewPager viewPager)
+    {
 
 
         MyCommunityFragment myCommunityFragment = new MyCommunityFragment();
-        Bundle bundleall = new Bundle();
+        Bundle              bundleall           = new Bundle();
         bundleall.putBoolean("myData", true);
         myCommunityFragment.setArguments(bundleall);
 
 
         MyCommunityFragment myCommunityFragmentOther = new MyCommunityFragment();
-        Bundle bundleOther = new Bundle();
+        Bundle              bundleOther              = new Bundle();
         bundleOther.putBoolean("myData", false);
         myCommunityFragmentOther.setArguments(bundleOther);
 
@@ -69,19 +84,22 @@ public class CommunityTabActivity extends AppCompatActivity {
 
     }
 
-    public void setupTabLayout(TabLayout tabLayout, final ViewPager mViewpager) {
+    public void setupTabLayout(TabLayout tabLayout, final ViewPager mViewpager)
+    {
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
 //        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
         tabLayout.setupWithViewPager(mViewpager);
 
     }
 
-    public void addCummunity(View view) {
+    public void addCummunity()
+    {
         startActivity(new Intent(CommunityTabActivity.this, CreateCommunity
                 .class));
     }
 
-    public void showMap(View view) {
+    public void showMap(View view)
+    {
 
         Intent intnt = new Intent(CommunityTabActivity.this, ShowFragmentActivity
                 .class);

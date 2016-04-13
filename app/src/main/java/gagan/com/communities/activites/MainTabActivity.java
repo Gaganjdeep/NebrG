@@ -58,7 +58,7 @@ public class MainTabActivity extends AppCompatActivity
         Adapter adapter = new Adapter(getSupportFragmentManager());
         adapter.addFragment(new HomeFragment(), "Home");
         adapter.addFragment(new MapViewTab(), "Map View");
-        adapter.addFragment(new NotificationTabFragment(), "Notification ");
+        adapter.addFragment(new NotificationTabFragment(), "Notification");
         adapter.addFragment(new MoreFragment(), "More");
         viewPager.setAdapter(adapter);
 
@@ -73,8 +73,7 @@ public class MainTabActivity extends AppCompatActivity
             @Override
             public void onPageSelected(int position)
             {
-
-            }
+                          }
 
             @Override
             public void onPageScrollStateChanged(int state)
@@ -102,7 +101,7 @@ public class MainTabActivity extends AppCompatActivity
             title.setText(selectedTitle[i]);
             tabLayout.getTabAt(i).setCustomView(tab);
 
-            tabLayout.getTabAt(i).setIcon(selectedIcons[i]);
+//            tabLayout.getTabAt(i).setIcon(selectedIcons[i]);
 
 
             tab.setSelected(i == 0);

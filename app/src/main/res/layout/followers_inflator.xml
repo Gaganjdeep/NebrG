@@ -46,13 +46,14 @@
 
     <TextView
         android:visibility="gone"
+        android:id="@+id/tvUnfolow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:background="@color/blue"
         android:gravity="right"
-        android:padding="10dp"
-        android:text="Following"
+        android:padding="7dp"
+        android:text="Un Follow"
         android:textColor="@color/white"
         android:textStyle="bold"/>
 

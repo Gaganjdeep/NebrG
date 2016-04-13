@@ -45,14 +45,16 @@ public class FollowersFragment extends BaseFragmentG
 
 
     List<UserDataModel> listG;
+
     public void setList(String json)
     {
         try
         {
+            listG = new ArrayList<>();
             isAlreadySet = true;
 
-            JSONArray           jsonarrayData = new JSONArray(json);
-             listG          = new ArrayList<>();
+            JSONArray jsonarrayData = new JSONArray(json);
+
 
             for (int g = 0; g < jsonarrayData.length(); g++)
             {
@@ -189,6 +191,8 @@ public class FollowersFragment extends BaseFragmentG
                 }
 
                 FollowerFollowingAdapter msgAdapter = new FollowerFollowingAdapter(getActivity(), list);
+                msgAdapter.setChatEnable(chatEnable);
+                msgAdapter.setShowUnfollow(showUnFollow);
                 recyclerList.setAdapter(msgAdapter);
 
             }
@@ -202,6 +206,22 @@ public class FollowersFragment extends BaseFragmentG
         {
             e.printStackTrace();
         }
+    }
+
+
+    private boolean chatEnable = false;
+
+    public void setChatEnable(boolean chat)
+    {
+        chatEnable = chat;
+    }
+
+
+    private boolean showUnFollow = false;
+
+    public void setShowUnFollow(boolean unFollow)
+    {
+        showUnFollow = unFollow;
     }
 
 

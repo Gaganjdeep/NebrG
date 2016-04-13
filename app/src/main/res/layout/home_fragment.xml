@@ -67,6 +67,16 @@
 
 
 
+        <TextView
+            android:visibility="gone"
+            android:textSize="26sp"
+            android:layout_gravity="center"
+            android:id="@+id/tvNoPost"
+            android:text="No Posts available"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
     </FrameLayout>
 
 </LinearLayout>

@@ -151,8 +151,8 @@ public class SettingsActivity extends BaseActivityG
 
                 JSONObject dataJ = new JSONObject();
                 dataJ.put("userid", sharedPrefHelper.getUserId());
-                dataJ.put("home_lat",place.getLatLng().latitude+"");
-                dataJ.put("home_long", place.getLatLng().longitude+"");
+                dataJ.put("home_lat", place.getLatLng().latitude + "");
+                dataJ.put("home_long", place.getLatLng().longitude + "");
 
                 new SuperWebServiceG(GlobalConstants.URL + "editProfile", dataJ, new CallBackWebService()
                 {
@@ -169,6 +169,12 @@ public class SettingsActivity extends BaseActivityG
 
                             if (jsonMainResult.getString("code").equals("200"))
                             {
+
+                                if (!jsonMainResult.optString("pincode_status").equals("1"))
+                                {
+                                    Utills.show_dialog_msg(SettingsActivity.this, "We are yet to enable our service in your area, however you can the view posts", null);
+                                }
+
                                 sharedPrefHelper.setPincodeStatus(jsonMainResult.optString("pincode_status").equals("1"));
                                 sharedPrefHelper.setHomeLocation(name.toString(), place.getLatLng().latitude + "", place.getLatLng().longitude + "");
 
@@ -194,7 +200,6 @@ public class SettingsActivity extends BaseActivityG
             {
                 e.printStackTrace();
             }
-
 
 
         }

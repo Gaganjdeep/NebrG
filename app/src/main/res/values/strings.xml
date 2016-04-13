@@ -33,6 +33,7 @@
 
 
     <string-array name="community_category">
+        <item>Select genre</item>
         <item>Residential Area</item>
         <item>Recreation Center</item>
         <item>Educational Institute</item>

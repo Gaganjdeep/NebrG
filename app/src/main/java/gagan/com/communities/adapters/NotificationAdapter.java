@@ -55,7 +55,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
         final NotificationModel currentData = dataList.get(position);
 
-        holder.tvName.setText(currentData.getName());
+//        holder.tvName.setText(currentData.getName());
         holder.tvmsg.setText(currentData.getMsg());
 
         holder.img_profilepic.setRadius(170);

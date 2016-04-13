@@ -60,7 +60,8 @@ public class EditProfileActivity extends BaseActivityG
     }
 
     RoundedCornersGaganImg imgvProfilePic;
-    EditText               edEmail, edLocation, edGender, edPhoneNumber, /*edHomeSociety,*/ edprofession, edName;
+    EditText               edEmail, edLocation, edGender, edPhoneNumber, /*edHomeSociety,*/
+            edprofession, edName;
     String Base64Image = "";
 
 
@@ -97,7 +98,8 @@ public class EditProfileActivity extends BaseActivityG
         imgvProfilePic.setImageUrl(EditProfileActivity.this, userData.getProfile_pic());
         edName.setText(userData.getName());
         edprofession.setText(userData.getProfession());
-        edLocation.setText(userData.getHome_society());
+
+        edLocation.setText(sharedPrefHelper.getHomeLocation().get(SharedPrefHelper.HOMELOC_NAME));
 
 //        edPhoneNumber.setText(userData.ge);
         edEmail.setText(userData.getEmail());
@@ -107,8 +109,6 @@ public class EditProfileActivity extends BaseActivityG
 
         Base64Image = userData.getProfile_pic();
     }
-
-
 
 
     private boolean validation()
@@ -160,11 +160,10 @@ public class EditProfileActivity extends BaseActivityG
 //            data.put("home_society", edLocation.getText().toString().trim());
             data.put("device_type", "android");
 
-            if(!Base64Image.contains("."))
+            if (!Base64Image.contains("."))
             {
                 data.put("image", Base64Image);
             }
-
 
 
             data.put("gender", edGender.getText().toString().trim());
@@ -270,7 +269,7 @@ public class EditProfileActivity extends BaseActivityG
             imgvProfilePic.setImageUrl(EditProfileActivity.this, uri.toString());
             Base64Image = BitmapDecoderG.getBytesImage(EditProfileActivity.this, uri);
         }
-        catch (Exception |Error e)
+        catch (Exception | Error e)
         {
             e.printStackTrace();
         }

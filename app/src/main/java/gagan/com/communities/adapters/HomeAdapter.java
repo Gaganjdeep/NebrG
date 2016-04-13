@@ -178,9 +178,19 @@ public class HomeAdapter extends BaseAdapter
             }
 
 
-            StringBuilder sb = new StringBuilder(data.getLocation());
-            sb.setCharAt(0, Character.toUpperCase(sb.charAt(0)));
-            String loc = sb.toString();
+            try
+            {
+                StringBuilder sb = new StringBuilder(data.getLocation());
+                sb.setCharAt(0, Character.toUpperCase(sb.charAt(0)));
+                String loc = sb.toString();
+                tvLocationGenre.setText(loc);
+                tvLocationGenre.setSelected(true);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
             try
             {
 
@@ -209,8 +219,6 @@ public class HomeAdapter extends BaseAdapter
             }
 
 
-            tvLocationGenre.setText(loc);
-            tvLocationGenre.setSelected(true);
             tvTitle.setText(data.getTitle());
 
             tvGenre.setText(data.getType());
@@ -553,7 +561,7 @@ public class HomeAdapter extends BaseAdapter
                                     DataList.get(DataList.indexOf(homeModel)).setIs_disliked(false);
 
 
-//                                    Utills.showToast("Marked as useful", con, true);
+                                    Utills.showToast("Marked as useful", con, true);
                                 }
                                 else if (likeDislike.equals("2"))
                                 {
@@ -568,7 +576,7 @@ public class HomeAdapter extends BaseAdapter
                                     DataList.get(DataList.indexOf(homeModel)).setIs_disliked(true);
                                     DataList.get(DataList.indexOf(homeModel)).setIs_liked(false);
 
-//                                    Utills.showToast("Marked as not useful", con, true);
+                                    Utills.showToast("Marked as not useful", con, true);
 
                                 }
                                 else

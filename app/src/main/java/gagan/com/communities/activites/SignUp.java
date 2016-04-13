@@ -109,7 +109,7 @@ public class SignUp extends CurrentLocActivityG
             data.put("email", edEmailS.getText().toString().trim());
             data.put("password", edPasswordS.getText().toString().trim());
             data.put("gender", maleFemale);
-            data.put("home_society","" /*edHomeSociety.getText().toString().trim()*/);
+            data.put("home_society", "" /*edHomeSociety.getText().toString().trim()*/);
             data.put("profession", edprofession.getText().toString().trim());
             data.put("location", tvLocation.getText().toString().trim());
             data.put("device_type", "android");
@@ -172,7 +172,7 @@ public class SignUp extends CurrentLocActivityG
                 userDataModel.setEmail(edEmailS.getText().toString().trim());
                 userDataModel.setName(edFullNameS.getText().toString().trim());
                 userDataModel.setGender(maleFemale);
-                userDataModel.setHome_society(edHomeSociety.getText().toString().trim());
+                userDataModel.setHome_society(tvLocation.getText().toString().trim());
                 userDataModel.setLocation(tvLocation.getText().toString().trim());
                 userDataModel.setPassword(edPasswordS.getText().toString().trim());
                 userDataModel.setProfession(edprofession.getText().toString().trim());
@@ -185,6 +185,8 @@ public class SignUp extends CurrentLocActivityG
                 sharedPrefHelper.setPincodeStatus(jsonMainResult.optString("pincode_status").equals("1"));
                 sharedPrefHelper.setPswd(edPasswordS.getText().toString());
 
+
+                sharedPrefHelper.setHomeLocation(tvLocation.getText().toString().trim(), locationCurrent.getLatitude() + "", locationCurrent.getLongitude() + "");
 
                 SharedPrefHelper.write(SignUp.this, userDataModel);
 

@@ -66,7 +66,7 @@ public class CommunitiesAdapter extends RecyclerView.Adapter<CommunitiesAdapter.
                 Intent intnt = new Intent(con, CommunityDetailsActivity.class);
                 intnt.putExtra("data", (CommunitiesListModel) v.getTag());
                 con.startActivity(intnt);
-                ((Activity) con).finish();
+//                ((Activity) con).finish();
 
 
             }

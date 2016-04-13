@@ -38,7 +38,8 @@ import gagan.com.communities.webserviceG.SuperWebServiceG;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MoreFragment extends BaseFragmentG implements View.OnClickListener {
+public class MoreFragment extends BaseFragmentG implements View.OnClickListener
+{
 
 
     LinearLayout layoutProfile, layoutAddPost, layoutCommunities, layoutBuisnessAds, layoutPersonalAds, layoutMyBuisness, layoutSettings, layoutHelp, layoutFeedback, layoutLogout;
@@ -46,7 +47,8 @@ public class MoreFragment extends BaseFragmentG implements View.OnClickListener 
     RoundedCornersGaganImg img_profilepic;
 
 
-    public MoreFragment() {
+    public MoreFragment()
+    {
         // Required empty public constructor
     }
 
@@ -55,7 +57,8 @@ public class MoreFragment extends BaseFragmentG implements View.OnClickListener 
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
-    ) {
+    )
+    {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_more, container, false);
 
@@ -64,10 +67,12 @@ public class MoreFragment extends BaseFragmentG implements View.OnClickListener 
     }
 
     TextView tvUserName;
-    private void findViewbyIds(View v) {
+
+    private void findViewbyIds(View v)
+    {
 
         img_profilepic = (RoundedCornersGaganImg) v.findViewById(R.id.img_profilepic);
-         tvUserName = (TextView) v.findViewById(R.id.tvUserName);
+        tvUserName = (TextView) v.findViewById(R.id.tvUserName);
 
 
         layoutProfile = (LinearLayout) v.findViewById(R.id.layoutProfile);
@@ -84,7 +89,6 @@ public class MoreFragment extends BaseFragmentG implements View.OnClickListener 
 
 
         img_profilepic.setRadius(200);
-
 
 
         layoutLogout.setOnClickListener(this);
@@ -111,8 +115,10 @@ public class MoreFragment extends BaseFragmentG implements View.OnClickListener 
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
+    public void onClick(View v)
+    {
+        switch (v.getId())
+        {
 
             case R.id.layoutProfile:
 
@@ -182,21 +188,26 @@ public class MoreFragment extends BaseFragmentG implements View.OnClickListener 
             case R.id.layoutLogout:
 
 
-                Utills.show_dialog_msg(getActivity(), "Are you sure you want to logout ?", new View.OnClickListener() {
+                Utills.show_dialog_msg(getActivity(), "Are you sure you want to logout ?", new View.OnClickListener()
+                {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(View v)
+                    {
 //                        {"":"3"}
 
-                        try {
+                        try
+                        {
 
                             showProgressDialog();
 
                             JSONObject data = new JSONObject();
                             data.put("userid", sharedPrefHelper.getUserId());
 
-                            new SuperWebServiceG(GlobalConstants.URL + "signout", data, new CallBackWebService() {
+                            new SuperWebServiceG(GlobalConstants.URL + "signout", data, new CallBackWebService()
+                            {
                                 @Override
-                                public void webOnFinish(String output) {
+                                public void webOnFinish(String output)
+                                {
 
 
                                     cancelDialog();
@@ -207,7 +218,8 @@ public class MoreFragment extends BaseFragmentG implements View.OnClickListener 
                                 }
                             }).execute();
                         }
-                        catch (Exception e) {
+                        catch (Exception e)
+                        {
                             e.printStackTrace();
                         }
                     }

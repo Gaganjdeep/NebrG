@@ -101,7 +101,7 @@ public class SelectUsersListActivity extends BaseActivityG
             }
 
 
-            resultIntent.putExtra("data",sb.toString());
+            resultIntent.putExtra("data", sb.toString());
 
 
             setResult(Activity.RESULT_OK, resultIntent);
@@ -124,24 +124,46 @@ public class SelectUsersListActivity extends BaseActivityG
     @Override
     void hitWebserviceG()
     {
+
+        hitWebAgain("1");
+    }
+
+
+    private void hitWebAgain(final String status)
+    {
         try
         {
+//            JSONObject data = new JSONObject();
+//            data.put("userid", sharedPrefHelper.getUserId());
+//
+//
+//            new SuperWebServiceG(GlobalConstants.URL + "getuserlist", data, new CallBackWebService()
+//            {
+//                @Override
+//                public void webOnFinish(String output)
+//                {
+//                    progressBar.setVisibility(View.GONE);
+//                    processOutput(output);
+//                }
+//            }).execute();
 
             progressBar.setVisibility(View.VISIBLE);
-
             JSONObject data = new JSONObject();
-            data.put("userid", sharedPrefHelper.getUserId());
+            data.put("user_id", sharedPrefHelper.getUserId());
+            data.put("f_status", status);  // 1 for followers 2 for following.
 
 
-            new SuperWebServiceG(GlobalConstants.URL + "getuserlist", data, new CallBackWebService()
+            new SuperWebServiceG(GlobalConstants.URL + "getfollowerList", data, new CallBackWebService()
             {
                 @Override
                 public void webOnFinish(String output)
                 {
                     progressBar.setVisibility(View.GONE);
-                    processOutput(output);
+                    processOutput(output, status);
                 }
             }).execute();
+
+
         }
         catch (Exception e)
         {
@@ -149,9 +171,92 @@ public class SelectUsersListActivity extends BaseActivityG
         }
     }
 
+
     List<SelectedUser> list;
 
-    private void processOutput(String output)
+    private void processOutput(String output, String status)
+    {
+        try
+        {
+
+            JSONObject jsonMain = new JSONObject(output);
+
+            JSONObject jsonMainResult = jsonMain.getJSONObject("result");
+
+            if (jsonMainResult.getString("code").contains("200"))
+            {
+
+                JSONArray jsonarrayData;
+
+                if (status.equals("1"))
+                {
+                    jsonarrayData = jsonMainResult.getJSONArray("followers");
+                }
+                else
+                {
+                    jsonarrayData = jsonMainResult.getJSONArray("following");
+                }
+
+
+                if (jsonarrayData == null)
+                {
+                    if (status.equals("1"))
+                    {
+                        hitWebAgain("2");
+                    }
+                    return;
+                }
+
+                if (list == null)
+                {
+                    list = new ArrayList<>();
+                }
+
+
+                for (int g = 0; g < jsonarrayData.length(); g++)
+                {
+
+                    JSONObject jobj = jsonarrayData.optJSONObject(g);
+
+                    SelectedUser homemodel = new SelectedUser();
+
+                    homemodel.setImage(jobj.optString("profile_pic"));
+                    homemodel.setUserid(jobj.optString("uId"));
+                    homemodel.setName(jobj.optString("name"));
+
+
+                    list.add(homemodel);
+                }
+
+                if (msgAdapter == null)
+                {
+                    msgAdapter = new ContactsAdapter(SelectUsersListActivity.this, list);
+
+                    listview.setAdapter(msgAdapter);
+
+                }
+                else
+                {
+                    msgAdapter.notifyDataSetChanged();
+                }
+
+            }
+
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        if (status.equals("1"))
+        {
+            hitWebAgain("2");
+        }
+    }
+
+    ContactsAdapter msgAdapter;
+   /* private void processOutput(String output)
     {
         try
         {
@@ -198,9 +303,7 @@ public class SelectUsersListActivity extends BaseActivityG
         {
             e.printStackTrace();
         }
-    }
-
-
+    }*/
 
 
     public class SelectedUser implements Serializable

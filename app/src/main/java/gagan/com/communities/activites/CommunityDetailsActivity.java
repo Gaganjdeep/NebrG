@@ -104,7 +104,14 @@ public class CommunityDetailsActivity extends BaseActivityG
         tvTitle.setText(communitiesListModel.getC_name());
 
         tvFollow.setVisibility(View.INVISIBLE);
-
+        tvFollow.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                follOw();
+            }
+        });
     }
 
 
@@ -192,7 +199,7 @@ public class CommunityDetailsActivity extends BaseActivityG
         startActivity(intnt);
     }
 
-    public void follOw(View view)
+    public void follOw()
     {
         try
         {

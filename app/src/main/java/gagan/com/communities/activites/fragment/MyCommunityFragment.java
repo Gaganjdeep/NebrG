@@ -52,16 +52,20 @@ public class MyCommunityFragment extends CurrentLocFragment {
 
         listview = (RecyclerView) v.findViewById(R.id.listview);
 
+
+        return v;
+
+    }
+
+
+    @Override
+    public void onResume()
+    {
         if(getArguments().getBoolean("myData"))
         {
             fetchData();
         }
-
-
-
-
-        return v;
-
+        super.onResume();
     }
 
     private void fetchData() {

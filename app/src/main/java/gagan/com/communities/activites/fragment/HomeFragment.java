@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.costum.android.widget.PullAndLoadListView;
 import com.costum.android.widget.PullToRefreshListView;
@@ -57,7 +58,7 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
     HomeAdapter         homeadapter;
     ProgressBar         progressBar;
 
-
+    TextView tvNoPost;
     public static HomeFragment homeFragment;
 
     @Override
@@ -76,6 +77,8 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
             settingActionBar(v);
 
             homeFragment = this;
+
+            tvNoPost = (TextView) v.findViewById(R.id.tvNoPost);
 
             progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
             progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.button_pink), PorterDuff.Mode.MULTIPLY);
@@ -195,7 +198,7 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
                 {
                     listViewNotiMsg.setOnLoadMoreListener(null);
                 }
-
+                tvNoPost.setVisibility(View.GONE);
                 for (int g = 0; g < jsonarrayData.length(); g++)
                 {
                     JSONObject jobj = jsonarrayData.optJSONObject(g);
@@ -261,12 +264,18 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
             }
             else
             {
+                tvNoPost.setVisibility(View.VISIBLE);
                 Utills.showToast("No post available", getActivity(), true);
             }
 
         }
         catch (Exception e)
         {
+            if (listHome == null || listHome.isEmpty())
+            {
+                tvNoPost.setVisibility(View.VISIBLE);
+            }
+
             e.printStackTrace();
 //            fetchHomeData(startId, limit);
         }
@@ -318,7 +327,7 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
                 @Override
                 public void onClick(View v)
                 {
-                 Utills.show_dialog_msg(getActivity(),"We are yet to enable our service in your area, however you can the view posts",null);
+                    Utills.show_dialog_msg(getActivity(), "We are yet to launch in your location. Please Change your Home location in Settings to Add post", null);
                 }
             });
         }
@@ -389,6 +398,12 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
 
     }
 
+    @Override
+    public void onDestroy()
+    {
+        sharedPrefHelper.setDistanceParamHome(20);
+        super.onDestroy();
+    }
 
     @Override
     public boolean onQueryTextSubmit(String query)
