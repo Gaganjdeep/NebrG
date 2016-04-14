@@ -12,6 +12,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -141,8 +145,20 @@ public class CreateCommunity extends CurrentLocActivityG
                     public void onMapClick(LatLng latLng)
                     {
 
-                        addMarker(latLng);
-                        latLngG = latLng;
+                        try
+                        {
+                            PlacePicker.IntentBuilder intentBuilder =
+                                    new PlacePicker.IntentBuilder();
+                            Intent intent = intentBuilder.build(CreateCommunity.this);
+                            startActivityForResult(intent, 77);
+
+                        }
+                        catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e)
+                        {
+                            e.printStackTrace();
+                        }
+//                        addMarker(latLng);
+//                        latLngG = latLng;
                     }
                 });
 
@@ -283,7 +299,7 @@ public class CreateCommunity extends CurrentLocActivityG
         }
         else if (tvGenre.getText().toString().trim().equals("Select genre"))
         {
-            Utills.showToast("Please select genre",CreateCommunity.this,true);
+            Utills.showToast("Please select genre", CreateCommunity.this, true);
             tvGenre.requestFocus();
             return false;
         }
@@ -317,6 +333,18 @@ public class CreateCommunity extends CurrentLocActivityG
 
             if (resultCode == RESULT_OK)
             {
+
+
+                if (requestCode == 77)
+                {
+                    final Place place = PlacePicker.getPlace(data, this);
+
+                    latLngG = place.getLatLng();
+                    addMarker(latLngG);
+
+                    return;
+                }
+
 
                 inviteUsers = data.getStringExtra("data");
 

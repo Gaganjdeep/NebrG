@@ -48,7 +48,7 @@
                     android:singleLine="true"
                     android:text="Chennai"
                     android:textColor="@color/greydefault"
-                    android:textSize="11sp"
+                    android:textSize="12sp"
                     android:textStyle="bold"/>
 
                 <View
@@ -67,7 +67,7 @@
                     android:layout_weight="1"
                     android:text="Social"
                     android:textColor="@color/greydefault"
-                    android:textSize="11sp"/>
+                    android:textSize="12sp"/>
 
 
                 <!--  <View
@@ -81,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@mipmap/ic_time"
                     android:gravity="center"
-                    android:paddingRight="10dp"
+                    android:paddingRight="5dp"
                     android:text="15min ago"
                     android:textSize="11sp"
                     />
@@ -167,7 +167,7 @@
                     android:layout_weight="1"
                     android:text="Android, Inc. was founded in Palo Alto, California in October 2003 by Andy Rubin (co-founder of Danger),[27] Rich Miner (co-founder of Wildfire Communications, Inc.),[28] Nick Sears[29] (once VP at T-Mobile),[30] and Chris White (headed design and interface development at WebTV)[13] to develop, in Rubin's words smarter mobile devices that are more aware of its owner's location and preferences"
                     android:textColor="@color/black"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     />
 
                 <ImageView
@@ -200,9 +200,10 @@
 
 
                 <TextView
+                    android:background="@drawable/default_selector"
                     android:id="@+id/tvLikes"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:drawableLeft="@mipmap/ic_like"
                     android:gravity="center"
@@ -222,9 +223,10 @@
 
 
                 <TextView
+                    android:background="@drawable/default_selector"
                     android:id="@+id/tvDislikes"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:drawableLeft="@mipmap/ic_dislike"
                     android:gravity="center"
@@ -243,9 +245,10 @@
 
 
                 <TextView
+                    android:background="@drawable/default_selector"
                     android:id="@+id/tvComments"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:drawableLeft="@mipmap/ic_cmnt"
                     android:gravity="center"

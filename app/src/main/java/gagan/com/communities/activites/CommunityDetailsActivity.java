@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -58,7 +60,7 @@ public class CommunityDetailsActivity extends BaseActivityG
     {
 
 
-       getSupportFragmentManager().beginTransaction().replace(R.id.container, myPost,"my_post").commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, myPost, "my_post").commit();
 
         super.onResume();
     }
@@ -67,7 +69,7 @@ public class CommunityDetailsActivity extends BaseActivityG
     protected void onPause()
     {
         Fragment f = getSupportFragmentManager().findFragmentByTag("my_post");
-        if(f!=null)
+        if (f != null)
         {
             getSupportFragmentManager().beginTransaction().remove(f).commit();
         }
@@ -103,7 +105,7 @@ public class CommunityDetailsActivity extends BaseActivityG
         tvMessage.setText(communitiesListModel.getC_description());
         tvTitle.setText(communitiesListModel.getC_name());
 
-        tvFollow.setVisibility(View.INVISIBLE);
+        tvFollow.setVisibility(View.GONE);
         tvFollow.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -129,6 +131,10 @@ public class CommunityDetailsActivity extends BaseActivityG
 
 
     String membersList;
+
+
+    boolean showDelete = false;
+
 
     @Override
     void hitWebserviceG()
@@ -164,7 +170,7 @@ public class CommunityDetailsActivity extends BaseActivityG
 
                             if (jobj.getString("is_user_following").equals("1"))
                             {
-                                tvFollow.setVisibility(View.INVISIBLE);
+                                tvFollow.setVisibility(View.GONE);
                             }
                             else
                             {
@@ -173,6 +179,10 @@ public class CommunityDetailsActivity extends BaseActivityG
 
 
                             membersList = jobj.getString("userinfo");
+
+
+                            showDelete = jobj.getString("user_id").equals(sharedPrefHelper.getUserId());
+                            supportInvalidateOptionsMenu();
 
                         }
 //                        Utills.showToast(jsonMainResult.getString("status"), CommunityDetailsActivity.this, true);
@@ -225,7 +235,7 @@ public class CommunityDetailsActivity extends BaseActivityG
 
                         if (jsonMainResult.getString("code").contains("200"))
                         {
-                            tvFollow.setVisibility(View.INVISIBLE);
+                            tvFollow.setVisibility(View.GONE);
                         }
                         Utills.showToast(jsonMainResult.getString("status"), CommunityDetailsActivity.this, true);
                     }
@@ -251,4 +261,98 @@ public class CommunityDetailsActivity extends BaseActivityG
         intnt.putExtra("data", membersList);
         startActivity(intnt);
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        if (showDelete)
+        {
+            getMenuInflater().inflate(R.menu.del_menu, menu);
+        }
+
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+
+        switch (item.getItemId())
+        {
+
+            case R.id.delete:
+
+                try
+                {
+
+
+                    View.OnClickListener onclick = new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
+                            try
+                            {
+                                showProgressDialog();
+
+                                JSONObject data = new JSONObject();
+                                data.put("userid", sharedPrefHelper.getUserId());
+                                data.put("c_id", dataModel.getCid());
+
+                                new SuperWebServiceG(GlobalConstants.URL + "deletecommunity", data, new CallBackWebService()
+                                {
+                                    @Override
+                                    public void webOnFinish(String output)
+                                    {
+                                        try
+                                        {
+
+                                            cancelDialog();
+                                            JSONObject jsonMain = new JSONObject(output);
+
+                                            JSONObject jsonMainResult = jsonMain.getJSONObject("result");
+
+                                            if (jsonMainResult.getString("code").contains("200"))
+                                            {
+                                                finish();
+                                            }
+                                            Utills.showToast(jsonMainResult.getString("status"), CommunityDetailsActivity.this, true);
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+                                }).execute();
+                            }
+                            catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
+                        }
+                    };
+
+
+                    Utills.show_dialog_msg(CommunityDetailsActivity.this, "Are you sure,you want to delete this community ?", onclick);
+
+
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+                break;
+
+
+        }
+
+        return super.onOptionsItemSelected(item);
+//        return true;
+    }
+
+
 }

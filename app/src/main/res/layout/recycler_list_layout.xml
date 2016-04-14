@@ -29,12 +29,12 @@
 
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/btnAddChat"
             android:visibility="gone"
+            android:id="@+id/btnAddChat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
-            android:layout_margin="10dp"
+            android:layout_margin="7dp"
             app:backgroundTint="@color/button_pink"
             app:elevation="4dp"
             app:fabSize="normal"
