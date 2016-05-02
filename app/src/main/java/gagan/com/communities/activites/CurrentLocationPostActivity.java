@@ -239,7 +239,10 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
             }
             else
             {
-                tvNoPost.setVisibility(View.VISIBLE);
+                if (listHome.isEmpty())
+                {
+                    tvNoPost.setVisibility(View.VISIBLE);
+                }
                 Utills.showToast("No post available", CurrentLocationPostActivity.this, true);
             }
 

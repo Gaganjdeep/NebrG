@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.location.Location;
+import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -15,6 +16,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -37,7 +39,7 @@ import gagan.com.communities.webserviceG.SuperWebServiceG;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyLocationChangeListener
+public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyLocationChangeListener, GoogleMap.OnCameraChangeListener
 
 {
 
@@ -69,6 +71,7 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
                 if (modelToSet == null)
                 {
                     googleMapPost.setOnMyLocationChangeListener(PostsFragment.this);
+                    googleMapPost.setOnCameraChangeListener(PostsFragment.this);
                 }
                 else
                 {
@@ -282,7 +285,7 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
 
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(locationToSearchP.getLatitude(), locationToSearchP.getLongitude()), 9);
         googleMapPost.animateCamera(cameraUpdate);
-        fetchHomeData(location);
+//        fetchHomeData(location);
 
         googleMapPost.setOnMyLocationChangeListener(null);
     }
@@ -291,6 +294,53 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
     //   =============================
     UpdatePostReceiver mReceiver;
     private boolean mIsReceiverRegistered = false;
+
+    @Override
+    public void onCameraChange(final CameraPosition cameraPosition)
+    {
+
+        if (locationToSearchP == null)
+        {
+            return;
+        }
+
+
+        if (ctimerP != null)
+        {
+            ctimerP.cancel();
+        }
+
+        ctimerP = new CountDownTimer(1500, 1500)
+        {
+            @Override
+            public void onTick(long millisUntilFinished)
+            {
+
+            }
+
+            @Override
+            public void onFinish()
+            {
+                if (MarkerData == null)
+                {
+                    MarkerData = new HashMap<>();
+                }
+                else
+                {
+                    MarkerData.clear();
+                }
+                locationToSearchP.setLatitude(cameraPosition.target.latitude);
+                locationToSearchP.setLongitude(cameraPosition.target.longitude);
+
+
+                fetchHomeData(locationToSearchP);
+            }
+        }.start();
+
+
+    }
+
+    CountDownTimer ctimerP;
 
     private class UpdatePostReceiver extends BroadcastReceiver
     {
@@ -317,12 +367,10 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
                 }
                 else
                 {
-                    googleMapPost.clear();
 
                     CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(locationToSearchP.getLatitude(), locationToSearchP.getLongitude()), 9);
                     googleMapPost.animateCamera(cameraUpdate);
 
-                    fetchHomeData(locationToSearchP);
 
                     googleMapPost.setOnMyLocationChangeListener(null);
                 }

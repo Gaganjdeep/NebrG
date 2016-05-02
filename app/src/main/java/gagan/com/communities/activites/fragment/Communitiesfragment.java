@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.location.Location;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -14,6 +16,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -37,7 +40,7 @@ import gagan.com.communities.webserviceG.SuperWebServiceG;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Communitiesfragment extends SupportMapFragment implements GoogleMap.OnMyLocationChangeListener
+public class Communitiesfragment extends SupportMapFragment implements GoogleMap.OnMyLocationChangeListener, GoogleMap.OnCameraChangeListener
 {
 
 
@@ -66,6 +69,7 @@ public class Communitiesfragment extends SupportMapFragment implements GoogleMap
                 if (communitiesListModelG == null)
                 {
                     googleMapCommunity.setOnMyLocationChangeListener(Communitiesfragment.this);
+                    googleMapCommunity.setOnCameraChangeListener(Communitiesfragment.this);
                 }
                 else
                 {
@@ -74,6 +78,7 @@ public class Communitiesfragment extends SupportMapFragment implements GoogleMap
                     googleMapCommunity.animateCamera(cameraUpdate);
 
                     setUpMap(communitiesListModelG);
+
                 }
 
 
@@ -151,6 +156,7 @@ public class Communitiesfragment extends SupportMapFragment implements GoogleMap
             mIsReceiverRegistered = true;
         }
     }
+
     @Override
     public void onDestroy()
     {
@@ -208,7 +214,7 @@ public class Communitiesfragment extends SupportMapFragment implements GoogleMap
 
             if (jsonMainResult.getString("code").contains("20") && !jsonMainResult.getString("code").equals("201"))
             {
-
+                googleMapCommunity.clear();
                 JSONArray jsonarrayData = jsonMainResult.getJSONArray("community");
 
                 for (int g = 0; g < jsonarrayData.length(); g++)
@@ -270,7 +276,7 @@ public class Communitiesfragment extends SupportMapFragment implements GoogleMap
 
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(locationToSearch.getLatitude(), locationToSearch.getLongitude()), 9);
         googleMapCommunity.animateCamera(cameraUpdate);
-        fetchDataNearby(locationToSearch);
+//        fetchDataNearby(locationToSearch);
 
         googleMapCommunity.setOnMyLocationChangeListener(null);
     }
@@ -280,6 +286,53 @@ public class Communitiesfragment extends SupportMapFragment implements GoogleMap
 
     UpdateCommunityReceiver mReceiver;
     private boolean mIsReceiverRegistered = false;
+
+    @Override
+    public void onCameraChange(final CameraPosition cameraPosition)
+    {
+
+        if (locationToSearch == null)
+        {
+            return;
+        }
+
+
+        if (ctimer != null)
+        {
+            ctimer.cancel();
+        }
+
+        ctimer = new CountDownTimer(1500, 1500)
+        {
+            @Override
+            public void onTick(long millisUntilFinished)
+            {
+
+            }
+
+            @Override
+            public void onFinish()
+            {
+                if (MarkerDataC == null)
+                {
+                    MarkerDataC = new HashMap<>();
+                }
+                else
+                {
+                    MarkerDataC.clear();
+                }
+                locationToSearch.setLatitude(cameraPosition.target.latitude);
+                locationToSearch.setLongitude(cameraPosition.target.longitude);
+
+
+                fetchDataNearby(locationToSearch);
+            }
+        }.start();
+
+
+    }
+
+    CountDownTimer ctimer;
 
 
     private class UpdateCommunityReceiver extends BroadcastReceiver
@@ -310,12 +363,12 @@ public class Communitiesfragment extends SupportMapFragment implements GoogleMap
                 }
                 else
                 {
-                    googleMapCommunity.clear();
+
                     CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(locationToSearch.getLatitude(), locationToSearch.getLongitude()), 9);
                     googleMapCommunity.animateCamera(cameraUpdate);
 
 
-                    fetchDataNearby(locationToSearch);
+//                    fetchDataNearby(locationToSearch);
 
                     googleMapCommunity.setOnMyLocationChangeListener(null);
                 }
