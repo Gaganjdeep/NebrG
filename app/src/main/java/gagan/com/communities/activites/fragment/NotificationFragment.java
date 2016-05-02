@@ -125,7 +125,7 @@ public class NotificationFragment extends BaseFragmentG
                                 listNOti.add(new NotificationModel(username,created_at,message,profile_pic));
                             }
 
-                            Collections.reverse(listNOti);
+//                            Collections.reverse(listNOti);
                             NotificationAdapter msgAdapter = new NotificationAdapter(getActivity(), listNOti);
                             recyclerList.setAdapter(msgAdapter);
 

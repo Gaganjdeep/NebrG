@@ -154,7 +154,43 @@
                             />
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/grey_stroke"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
 
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@mipmap/ic_paswd"/>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_margin="5dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/blue_grey"/>
+
+
+                        <EditText
+                            android:background="@android:color/transparent"
+                            android:id="@+id/edConfirmPasswordS"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="Retype Password"
+                            android:maxLength="20"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
+                            android:paddingLeft="5dp"
+                            android:password="true"
+                            android:singleLine="true"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/lt_grey"
+                            />
+                    </LinearLayout>
                     <TextView
                         android:visibility="gone"
                         android:layout_width="wrap_content"
@@ -350,7 +386,7 @@
                             android:textColor="@color/white"
                             />
 
-                        <TextView
+                        <Button
                             android:textStyle="bold"
                             android:id="@+id/tvloginBack"
                             android:layout_width="wrap_content"
@@ -360,7 +396,7 @@
                             android:text="Login Now "
                             android:textColor="@color/button_pink"
                             android:onClick="gotoLogin"
-
+                            android:background="@android:color/transparent"
                             />
 
                     </LinearLayout>

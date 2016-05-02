@@ -77,8 +77,8 @@ public class CommunityTabActivity extends AppCompatActivity
         myCommunityFragmentOther.setArguments(bundleOther);
 
         MainTabActivity.Adapter adapter = new MainTabActivity.Adapter(getSupportFragmentManager());
-        adapter.addFragment(myCommunityFragment, "My Community");
-        adapter.addFragment(myCommunityFragmentOther, "Community Around Me");
+        adapter.addFragment(myCommunityFragment, "My Communities");
+        adapter.addFragment(myCommunityFragmentOther, "Communities Around Me");
         viewPager.setAdapter(adapter);
 
 

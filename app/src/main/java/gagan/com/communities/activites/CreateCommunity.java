@@ -53,11 +53,11 @@ public class CreateCommunity extends CurrentLocActivityG
     public void getCurrentLocationG(Location currentLocation)
     {
 
-        if (googleMap != null)
-        {
-            latLngG = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-            addMarker(latLngG);
-        }
+//        if (googleMap != null)
+//        {
+//            latLngG = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+//            addMarker(latLngG);
+//        }
     }
 
     @Override
@@ -300,6 +300,12 @@ public class CreateCommunity extends CurrentLocActivityG
         else if (tvGenre.getText().toString().trim().equals("Select genre"))
         {
             Utills.showToast("Please select genre", CreateCommunity.this, true);
+            tvGenre.requestFocus();
+            return false;
+        }
+        else if (latLngG == null)
+        {
+            Utills.showToast("Please select a location", CreateCommunity.this, true);
             tvGenre.requestFocus();
             return false;
         }

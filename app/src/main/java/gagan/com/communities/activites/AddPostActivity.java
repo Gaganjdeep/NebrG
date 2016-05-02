@@ -3,6 +3,7 @@ package gagan.com.communities.activites;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,8 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -47,7 +50,7 @@ public class AddPostActivity extends BaseActivityG
 
     EditText edTitle, edMessage;
     RoundedCornersGaganImg imgImageSend, imgvUserimg;
-    TextView tvlocation, tvType, tvUserName;
+    TextView tvlocation, tvType, tvUserName, tvpickPhoto, tvpicklocation;
     String Base64String = "", anon_user = "0", COMMUNITY_ID = "";
 
 
@@ -84,6 +87,28 @@ public class AddPostActivity extends BaseActivityG
         edMessage = (EditText) findViewById(R.id.edMessage);
         imgImageSend = (RoundedCornersGaganImg) findViewById(R.id.imgImageSend);
         tvlocation = (TextView) findViewById(R.id.tvlocation);
+
+        tvpicklocation = (TextView) findViewById(R.id.tvpicklocation);
+        tvpickPhoto = (TextView) findViewById(R.id.tvpickPhoto);
+        tvpickPhoto.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                pickImage();
+            }
+        });
+        tvpicklocation.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                pickLocation();
+            }
+        });
+
+
+        tvlocation.setTag(null);
 
         tvType = (TextView) findViewById(R.id.tvType);
 
@@ -225,7 +250,7 @@ public class AddPostActivity extends BaseActivityG
         return super.onOptionsItemSelected(item);
     }
 
-    public void pickImage(View view)
+    public void pickImage()
     {
         BitmapDecoderG.selectImage(AddPostActivity.this, null);
     }
@@ -267,9 +292,28 @@ public class AddPostActivity extends BaseActivityG
                         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 70);
                         params.setMargins(5, 5, 5, 5);
                         imgImageSend.setLayoutParams(params);
-                        imgImageSend.setImageUrl(AddPostActivity.this, uri.toString());
 
-                        Base64String = BitmapDecoderG.getBytesImage(AddPostActivity.this, uri);
+
+//                        imgImageSend.setImageUrl(AddPostActivity.this, uri.toString());
+
+//                        Base64String = BitmapDecoderG.getBytesImage(AddPostActivity.this, uri);
+
+
+                        Picasso.with(AddPostActivity.this).load(uri.toString()).centerInside().resize(640,300).into(imgImageSend, new Callback()
+                        {
+                            @Override
+                            public void onSuccess()
+                            {
+                                Base64String = BitmapDecoderG.getBytesImageBItmap(AddPostActivity.this, ((BitmapDrawable)imgImageSend.getDrawable()).getBitmap());
+                            }
+
+                            @Override
+                            public void onError()
+                            {
+
+                            }
+                        });
+
 
                     }
                     catch (Exception | Error e)
@@ -290,7 +334,7 @@ public class AddPostActivity extends BaseActivityG
 
     final int REQUEST_PLACE_PICKER = 11;
 
-    public void pickLocation(View view)
+    public void pickLocation()
     {
         // Construct an intent for the place picker
         try

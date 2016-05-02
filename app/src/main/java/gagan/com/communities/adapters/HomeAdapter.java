@@ -158,23 +158,34 @@ public class HomeAdapter extends BaseAdapter
             }
             else
             {
-                imgUserPic.setTag(data.getUserid());
-                imgUserPic.setOnClickListener(new View.OnClickListener()
+
+
+                View.OnClickListener onclickShowProfile = new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
                     {
-                        Intent intnt = new Intent(con, OtherProfileActivity.class);
-                        intnt.putExtra("user_id", v.getTag().toString());
-                        con.startActivity(intnt);
+                        if (!(new SharedPrefHelper(con).getUserId().equals(v.getTag().toString())))
+                        {
+                            Intent intnt = new Intent(con, OtherProfileActivity.class);
+                            intnt.putExtra("user_id", v.getTag().toString());
+                            con.startActivity(intnt);
+                        }
                     }
-                });
+                };
 
 
                 imgUserPic.setVisibility(View.VISIBLE);
                 imgUserPic.setImageUrl(con, data.getProfile_pic());
                 tvUsername.setText(data.getUsername());
                 tvAvatar.setVisibility(View.GONE);
+
+
+                imgUserPic.setTag(data.getUserid());
+                imgUserPic.setOnClickListener(onclickShowProfile);
+                tvUsername.setTag(data.getUserid());
+                tvUsername.setOnClickListener(onclickShowProfile);
+
             }
 
 

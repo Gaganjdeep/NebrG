@@ -10,27 +10,34 @@ import gagan.com.communities.R;
 import gagan.com.communities.utills.SharedPrefHelper;
 import gagan.com.communities.utills.Utills;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends AppCompatActivity
+{
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
 
-        new Handler().postDelayed(new Runnable() {
+        final SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(SplashActivity.this);
+
+
+        new Handler().postDelayed(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
 
 //                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                if(new SharedPrefHelper(SplashActivity.this).isLoggedIn())
+                if (sharedPrefHelper.isLoggedIn() && sharedPrefHelper.getEmailVerified())
                 {
                     startActivity(new Intent(SplashActivity.this, MainTabActivity.class));
 
                 }
                 else
                 {
-                    Utills.transitionToActivity(SplashActivity.this, LoginActivity.class, (ImageView)findViewById(R.id.imgLogo), "logo");
+                    Utills.transitionToActivity(SplashActivity.this, LoginActivity.class, (ImageView) findViewById(R.id.imgLogo), "logo");
                 }
 
 

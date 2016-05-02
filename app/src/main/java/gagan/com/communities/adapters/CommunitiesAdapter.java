@@ -50,7 +50,7 @@ public class CommunitiesAdapter extends RecyclerView.Adapter<CommunitiesAdapter.
 
         final CommunitiesListModel currentData = dataList.get(position);
 
-        holder.tvGenre.setText(" " + currentData.getC_genre());
+        holder.tvGenre.setText(currentData.getC_genre());
         holder.name.setText(currentData.getC_name());
         holder.description.setText(currentData.getC_description());
 

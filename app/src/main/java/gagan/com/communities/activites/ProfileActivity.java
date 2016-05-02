@@ -159,7 +159,12 @@ public class ProfileActivity extends BaseActivityG
         switch (item.getItemId())
         {
             case R.id.edit_profile:
-                startActivity(new Intent(ProfileActivity.this, EditProfileActivity.class));
+
+                Intent intent= new Intent(ProfileActivity.this, EditProfileActivity.class);
+                intent.putExtra("startmain",false);
+                startActivity(intent);
+
+
 
                 break;
 

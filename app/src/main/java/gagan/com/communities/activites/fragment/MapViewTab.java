@@ -1,7 +1,11 @@
 package gagan.com.communities.activites.fragment;
 
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -13,9 +17,16 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 import gagan.com.communities.R;
 import gagan.com.communities.activites.AddBuisness;
@@ -23,6 +34,7 @@ import gagan.com.communities.activites.AddPostActivity;
 import gagan.com.communities.activites.CreateClassified;
 import gagan.com.communities.activites.CreateCommunity;
 import gagan.com.communities.activites.MainTabActivity;
+import gagan.com.communities.utills.GlobalConstants;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -96,25 +108,94 @@ public class MapViewTab extends Fragment
             @Override
             public void onClick(View v)
             {
-
                 Intent i = new Intent(getActivity(), classes[viewPagerG.getCurrentItem()]);
                 i.putExtra("Cid", "");
                 startActivity(i);
 
-
             }
         });
 
+
+        searchView = (AutoCompleteTextView) toolbar.findViewById(R.id.searchView);
+        searchView.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                if (event.getAction() == MotionEvent.ACTION_UP)
+                {
+                    try
+                    {
+                        PlacePicker.IntentBuilder intentBuilder =
+                                new PlacePicker.IntentBuilder();
+                        Intent intent = intentBuilder.build(getActivity());
+                        startActivityForResult(intent, 77);
+
+                    }
+                    catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+
+
+                return false;
+            }
+        });
     }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK)
+        {
+
+            if (requestCode == 77)
+            {
+                // The user has selected a place. Extract the name and address.
+                final Place place = PlacePicker.getPlace(data, getActivity());
+
+                final CharSequence name    = place.getName();
+                final CharSequence address = place.getAddress();
+
+                searchView.setText(name);
+
+//
+//                communitiesfragment.OnFinishG(place.getLatLng());
+//                postsFragment.OnFinishG(place.getLatLng());
+                Location l = new Location("");
+                l.setLatitude(place.getLatLng().latitude);
+                l.setLongitude(place.getLatLng().longitude);
+                Communitiesfragment.locationToSearch = l;
+                PostsFragment.locationToSearchP = l;
+
+
+                Intent intent = new Intent(GlobalConstants.UPDATE_MAPTAB);
+                getActivity().sendBroadcast(intent);
+
+            }
+        }
+    }
+
+    AutoCompleteTextView searchView;
 
     TabLayout tabLayoutG;
     ViewPager viewPagerG;
 
+
+    Communitiesfragment communitiesfragment;
+    PostsFragment       postsFragment;
+
     private void setupViewPager(ViewPager viewPager)
     {
+
+        communitiesfragment = new Communitiesfragment();
+        postsFragment = new PostsFragment();
         MainTabActivity.Adapter adapter = new MainTabActivity.Adapter(getChildFragmentManager());
-        adapter.addFragment(new Communitiesfragment(), "Communities");
-        adapter.addFragment(new PostsFragment(), "Posts");
+        adapter.addFragment(communitiesfragment, "Communities");
+        adapter.addFragment(postsFragment, "Posts");
 //        adapter.addFragment(new BuisnessCenterMapFragment(), "Business Center");
 //        adapter.addFragment(new PersonalAdsMapFragment(), "Personal Ads");
         viewPager.setAdapter(adapter);
@@ -128,4 +209,5 @@ public class MapViewTab extends Fragment
         tabLayout.setupWithViewPager(mViewpager);
 
     }
+
 }

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:gagan="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    xmlns:gagan="http://schemas.android.com/apk/res-auto"
     >
 
 
@@ -22,20 +22,40 @@
             style="@style/headingtext_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_marginRight="20dp"
+            android:gravity="center"
             android:text="Posts in Current Location"/>
 
 
     </android.support.v7.widget.Toolbar>
 
 
-    <com.costum.android.widget.PullAndLoadListView
-        android:id="@+id/listViewHomeList"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/lt_grey"
-        android:divider="@android:color/transparent"
         android:layout_gravity="center_vertical"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:background="@color/lt_grey"
+        android:divider="@android:color/transparent">
+
+
+        <com.costum.android.widget.PullAndLoadListView
+            android:id="@+id/listViewHomeList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/lt_grey"
+            android:divider="@android:color/transparent"/>
+
+
+        <TextView
+            android:id="@+id/tvNoPost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="No Posts available"
+            android:textSize="26sp"
+            android:visibility="gone"/>
+
+    </FrameLayout>
+
 </LinearLayout>

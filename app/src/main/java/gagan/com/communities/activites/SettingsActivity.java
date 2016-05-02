@@ -2,7 +2,6 @@ package gagan.com.communities.activites;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -15,13 +14,11 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 
 import gagan.com.communities.R;
-import gagan.com.communities.models.UserDataModel;
 import gagan.com.communities.utills.GlobalConstants;
 import gagan.com.communities.utills.SharedPrefHelper;
 import gagan.com.communities.utills.Utills;
@@ -218,5 +215,70 @@ public class SettingsActivity extends BaseActivityG
     public void changeSociety(View view)
     {
         startActivity(new Intent(SettingsActivity.this, ChangeSocietyActivity.class));
+    }
+
+    public void deActivate(View view)
+    {
+
+        Utills.show_dialog_msg(SettingsActivity.this, "Are you sure you want to Deactivate your account ?", new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                try
+                {
+                    showProgressDialog();
+
+                    JSONObject dataJ = new JSONObject();
+                    dataJ.put("userid", sharedPrefHelper.getUserId());
+                    dataJ.put("status", "0");
+
+                    new SuperWebServiceG(GlobalConstants.URL + "editProfile", dataJ, new CallBackWebService()
+                    {
+                        @Override
+                        public void webOnFinish(String response)
+                        {
+                            try
+                            {
+                                cancelDialog();
+
+                                JSONObject jsonMain = new JSONObject(response);
+
+                                JSONObject jsonMainResult = jsonMain.getJSONObject("result");
+
+                                if (jsonMainResult.getString("code").equals("200"))
+                                {
+                                    cancelDialog();
+
+                                    sharedPrefHelper.logOut();
+                                    startActivity(new Intent(SettingsActivity.this, LoginActivity.class));
+                                    finish();
+
+                                }
+                                else
+                                {
+                                    Utills.showToast(jsonMainResult.optString("status"), SettingsActivity.this, true);
+                                }
+
+
+                            }
+                            catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }).execute();
+
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+
     }
 }

@@ -177,13 +177,13 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
             @Override
             public void onCancel()
             {
-                Log.e("onCancel", "Hello");
+//                loginButton.performClick();
             }
 
             @Override
             public void onError(FacebookException error)
             {
-
+                loginButton.performClick();
             }
 
 
@@ -374,26 +374,34 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
                 sharedPrefHelper.setPincodeStatus(jsonMainResult.optString("pincode_status").equals("1"));
 
 
-                if (locationCurrent != null)
-                {
-                    if(jsonarrayData.getJSONObject(0).optString("home_society").equals(""))
-                    {
-                        sharedPrefHelper.setHomeLocation(jsonarrayData.getJSONObject(0).optString("location"), locationCurrent.getLatitude() + "", locationCurrent.getLongitude() + "");
-                    }
-                    else {
-                        sharedPrefHelper.setHomeLocation(jsonarrayData.getJSONObject(0).optString("home_society"), locationCurrent.getLatitude() + "", locationCurrent.getLongitude() + "");
-                    }
+                SharedPrefHelper.write(LoginActivity.this, userDataModel);
 
+                sharedPrefHelper.setHomeLocation(jsonarrayData.getJSONObject(0).optString("location"), jsonarrayData.getJSONObject(0).optString("home_lat") + "", jsonarrayData.getJSONObject(0).optString("home_long") + "");
+                if (sharedPrefHelper.getlogInFrom().equals(SharedPrefHelper.loginWith.manual.toString()))
+                {
+
+
+//                    if (locationCurrent != null)
+//                    {
+
+
+//
+//                    }
+//                    else
+//                    {
+//                        sharedPrefHelper.setHomeLocation(jsonarrayData.getJSONObject(0).optString("home_society"), "", "");
+//                    }
+
+                    startActivity(new Intent(LoginActivity.this, MainTabActivity.class));
                 }
                 else
                 {
-                    sharedPrefHelper.setHomeLocation(jsonarrayData.getJSONObject(0).optString("home_society"), "", "");
+                    Intent intent = new Intent(LoginActivity.this, EditProfileActivity.class);
+                    intent.putExtra("startmain", true);
+                    startActivity(intent);
                 }
 
 
-                SharedPrefHelper.write(LoginActivity.this, userDataModel);
-
-                startActivity(new Intent(LoginActivity.this, MainTabActivity.class));
                 finish();
             }
             else
@@ -510,6 +518,42 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
     @Override
     public void onConnected(Bundle bundle)
     {
+        displayLocation();
+        googleAfterConnect();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i)
+    {
+        Log.e("==gPlus conn ===", "connection " + "suspended");
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult result)
+    {
+        Log.e("====gPlus FAILED===", "onConnectionFailed: " +
+                "ConnectionResult" +
+                ".getErrorCode() = " +
+                "" + result.getErrorCode());
+        if (result.getErrorCode() == ConnectionResult.API_UNAVAILABLE)
+        {
+            Log.w("google", "API Unavailable.");
+        }
+        else if (mSignInProgress != STATE_IN_PROGRESS)
+        {
+            mSignInIntent = result.getResolution();
+            mSignInError = result.getErrorCode();
+            if (mSignInProgress == STATE_SIGN_IN)
+            {
+                resolveSignInError();
+            }
+        }
+    }
+
+
+    private void googleAfterConnect()
+    {
 
 
         try
@@ -518,6 +562,11 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
 
             if (!mGoogleApiClient.isConnected())
             {
+//                if (!mGoogleApiClient.isConnecting())
+//                {
+//                    mSignInProgress = STATE_SIGN_IN;
+//                    mGoogleApiClient.connect();
+//                }
                 return;
             }
 
@@ -549,6 +598,13 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
             if (locationCurrent == null)
             {
                 displayLocation();
+
+                if (!mGoogleApiClient.isConnecting())
+                {
+                    mSignInProgress = STATE_SIGN_IN;
+                    mGoogleApiClient.connect();
+                }
+
                 return;
             }
 
@@ -586,38 +642,14 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
         }
         catch (Exception e)
         {
+            if (!mGoogleApiClient.isConnecting())
+            {
+                mSignInProgress = STATE_SIGN_IN;
+                mGoogleApiClient.connect();
+            }
             e.printStackTrace();
         }
         mSignInProgress = STATE_DEFAULT;
-    }
-
-    @Override
-    public void onConnectionSuspended(int i)
-    {
-        Log.e("==gPlus conn ===", "connection " + "suspended");
-        mGoogleApiClient.connect();
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult result)
-    {
-        Log.e("====gPlus FAILED===", "onConnectionFailed: " +
-                "ConnectionResult" +
-                ".getErrorCode() = " +
-                "" + result.getErrorCode());
-        if (result.getErrorCode() == ConnectionResult.API_UNAVAILABLE)
-        {
-            Log.w("google", "API Unavailable.");
-        }
-        else if (mSignInProgress != STATE_IN_PROGRESS)
-        {
-            mSignInIntent = result.getResolution();
-            mSignInError = result.getErrorCode();
-            if (mSignInProgress == STATE_SIGN_IN)
-            {
-                resolveSignInError();
-            }
-        }
     }
 
 
@@ -625,10 +657,18 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
     {
 //        resolveSignInError();
 
+
         if (!mGoogleApiClient.isConnecting())
         {
             mSignInProgress = STATE_SIGN_IN;
             mGoogleApiClient.connect();
+        }
+        else
+        {
+            if (mGoogleApiClient.isConnected())
+            {
+                googleAfterConnect();
+            }
         }
 
     }

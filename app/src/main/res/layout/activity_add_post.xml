@@ -143,24 +143,23 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tvpickPhoto"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:drawableLeft="@mipmap/ic_photo"
                         android:gravity="center_vertical"
-                        android:onClick="pickImage"
                         android:paddingLeft="10dp"
                         android:text="Photo"/>
 
                     <TextView
-
+                        android:id="@+id/tvpicklocation"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:drawableLeft="@mipmap/ic_loc_grey"
                         android:drawablePadding="5dp"
                         android:gravity="center_vertical"
-                        android:onClick="pickLocation"
                         android:text="Location"/>
 
 

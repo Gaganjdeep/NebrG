@@ -32,6 +32,9 @@
             android:textSize="@dimen/title"
             android:textStyle="bold"/>
 
+
+
+
         <TextView
             android:id="@+id/tvText"
             android:layout_width="wrap_content"
@@ -40,6 +43,17 @@
             android:gravity="right"
             android:text="time"
             android:textStyle="bold"/>
+
+        <TextView
+            android:visibility="gone"
+            android:layout_gravity="right"
+            android:id="@+id/tvtime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="time"
+            android:gravity="left"
+            android:textSize="9sp"
+            android:textStyle="italic"/>
 
 
     </LinearLayout>

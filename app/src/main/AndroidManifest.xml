@@ -176,6 +176,8 @@
         </activity>
         <activity android:name=".activites.CommunityDetailsActivity">
         </activity>
+        <activity android:name=".activites.CodeVerificationActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -2,6 +2,7 @@ package gagan.com.communities.activites;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -25,7 +26,9 @@ import android.widget.TextView;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import gagan.com.communities.R;
@@ -179,13 +182,15 @@ public class CommentsListActivity extends AppCompatActivity
                                 JSONObject jobj = jsonarrayData.optJSONObject(g);
 
 
-                                String name    = jobj.optString("user_name");
-                                String cmntmsg = jobj.optString("comments");
-                                String comntId = jobj.optString("id");
+                                String name        = jobj.optString("user_name");
+                                String cmntmsg     = jobj.optString("comments");
+                                String comntId     = jobj.optString("id");
+                                String userid      = jobj.optString("userid");
+                                String create_date = jobj.optString("create_date");
 
                                 boolean ismyComment = jobj.optString("is_user_comment").equals("1");
 
-                                CommentsModel data = new CommentsModel(name, cmntmsg, comntId, jobj.optString("profile_pic"), ismyComment);
+                                CommentsModel data = new CommentsModel(name, cmntmsg, comntId, jobj.optString("profile_pic"), userid, create_date, ismyComment);
 
                                 listData.add(data);
                             }
@@ -215,7 +220,8 @@ public class CommentsListActivity extends AppCompatActivity
         }
     }
 
-    String postID = "";
+    String           postID = "";
+    SimpleDateFormat sdf    = new SimpleDateFormat(GlobalConstants.SEVER_FORMAT);
 
     public void postComment(View view)
     {
@@ -258,7 +264,7 @@ public class CommentsListActivity extends AppCompatActivity
                             String comntId = jsonMainResult.optString("postId");
 
 
-                            CommentsModel data = new CommentsModel(name, cmntmsg, comntId, img, true);
+                            CommentsModel data = new CommentsModel(name, cmntmsg, comntId, img, sharedPrefHelper.getUserId(), sdf.format(new Date(System.currentTimeMillis())), true);
 
                             listData.add(0, data);
 
@@ -298,22 +304,34 @@ public class CommentsListActivity extends AppCompatActivity
 
     public class CommentsModel
     {
-        private String name, commentmsg, commentid, imgUrl;
+        private String name, commentmsg, commentid, imgUrl, userid, create_date;
 
         private boolean isMyComment;
 
-        public CommentsModel(String name, String commentmsg, String commentid, String imgUrl, boolean isMyComment)
+        public CommentsModel(String name, String commentmsg, String commentid, String imgUrl, String userid, String create_date, boolean isMyComment)
         {
             this.name = name;
             this.commentmsg = commentmsg;
             this.commentid = commentid;
             this.imgUrl = imgUrl;
+            this.userid = userid;
+            this.create_date = create_date;
             this.isMyComment = isMyComment;
         }
 
         public String getImgUrl()
         {
             return imgUrl;
+        }
+
+        public String getUserid()
+        {
+            return userid;
+        }
+
+        public String getCreate_date()
+        {
+            return create_date;
         }
 
         public String getName()
@@ -381,6 +399,26 @@ public class CommentsListActivity extends AppCompatActivity
             holder.imgUserPic.setImageUrl(con, currentData.getImgUrl());
 
 
+            try
+            {
+                holder.tvtime.setVisibility(View.VISIBLE);
+                SimpleDateFormat sdf       = new SimpleDateFormat(GlobalConstants.SEVER_FORMAT);
+                SimpleDateFormat sdfDesire = new SimpleDateFormat("dd MMM hh:mm a");
+                Date             date      = sdf.parse(currentData.getCreate_date());
+                holder.tvtime.setText(sdfDesire.format(date));
+
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
+            holder.imgUserPic.setTag(currentData.getUserid());
+            holder.tvName.setTag(currentData.getUserid());
+            holder.imgUserPic.setOnClickListener(onClickListenerShowProfile);
+            holder.tvName.setOnClickListener(onClickListenerShowProfile);
+
+
             holder.view.setTag(currentData);
             holder.view.setOnLongClickListener(new View.OnLongClickListener()
             {
@@ -414,7 +452,24 @@ public class CommentsListActivity extends AppCompatActivity
                     return false;
                 }
             });
+
+
         }
+
+
+        View.OnClickListener onClickListenerShowProfile = new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if (!sharedPrefHelper.getUserId().equals(v.getTag().toString()))
+                {
+                    Intent intnt = new Intent(con, OtherProfileActivity.class);
+                    intnt.putExtra("user_id", v.getTag().toString());
+                    con.startActivity(intnt);
+                }
+            }
+        };
 
 
         @Override
@@ -426,13 +481,14 @@ public class CommentsListActivity extends AppCompatActivity
 
         class MyViewHolderG extends RecyclerView.ViewHolder
         {
-            TextView tvName, tvText;
+            TextView tvName, tvText, tvtime;
             View                   view;
             RoundedCornersGaganImg imgUserPic;
 
             public MyViewHolderG(View itemView)
             {
                 super(itemView);
+                tvtime = (TextView) itemView.findViewById(R.id.tvtime);
                 tvText = (TextView) itemView.findViewById(R.id.tvText);
                 tvName = (TextView) itemView.findViewById(R.id.tvName);
                 imgUserPic = (RoundedCornersGaganImg) itemView.findViewById(R.id.imgUserPic);

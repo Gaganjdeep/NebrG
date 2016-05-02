@@ -1,6 +1,7 @@
 package gagan.com.communities.activites.fragment;
 
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -51,6 +52,11 @@ public class PostProfileFragment extends BaseFragmentG
 
         listViewPost = (ListView) v.findViewById(R.id.listViewPost);
 
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        {
+            listViewPost.setNestedScrollingEnabled(true);
+        }
 
         if (getArguments().getString("userid").equals("g"))
         {
@@ -168,7 +174,7 @@ public class PostProfileFragment extends BaseFragmentG
 
                     HomeModel homemodel = new HomeModel();
                     homemodel.setId(jobj.optString("id"));
-                    homemodel.setLocation(jobj.optString("location"));
+                    homemodel.setLocation(jobj.optString("home_location"));
                     homemodel.setComments_count(jobj.optString("comments_count"));
                     homemodel.setCreate_date(jobj.optString("create_date"));
                     homemodel.setImage(jobj.optString("image"));

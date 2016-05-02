@@ -44,29 +44,30 @@ public class ShowPostActivity extends AppCompatActivity
         settingActionBar();
 
 
-        try{
+        try
+        {
 
             dataHome = (HomeModel) getIntent().getSerializableExtra("data");
 
 
-        RoundedCornersGaganImg imgUserPic = (RoundedCornersGaganImg) findViewById(R.id.imgUserPic);
-        RoundedCornersGaganImg imgMessage = (RoundedCornersGaganImg) findViewById(R.id.imgMessage);
-        imgMessage.setImageResource(R.drawable.grey_bg);
+            RoundedCornersGaganImg imgUserPic = (RoundedCornersGaganImg) findViewById(R.id.imgUserPic);
+            RoundedCornersGaganImg imgMessage = (RoundedCornersGaganImg) findViewById(R.id.imgMessage);
+            imgMessage.setImageResource(R.drawable.grey_bg);
 
-        TextView  tvTitle         = (TextView) findViewById(R.id.tvTitle);
-        TextView  tvLocationGenre = (TextView) findViewById(R.id.tvLocationGenre);
-        TextView  tvGenre         = (TextView) findViewById(R.id.tvGenre);
-        ImageView imgOptions      = (ImageView) findViewById(R.id.imgOptions);
+            TextView  tvTitle         = (TextView) findViewById(R.id.tvTitle);
+            TextView  tvLocationGenre = (TextView) findViewById(R.id.tvLocationGenre);
+            TextView  tvGenre         = (TextView) findViewById(R.id.tvGenre);
+            ImageView imgOptions      = (ImageView) findViewById(R.id.imgOptions);
 
-        TextView tvUsername = (TextView) findViewById(R.id.tvUsername);
-        TextView tvTime     = (TextView) findViewById(R.id.tvTime);
-        TextView tvMessage  = (TextView) findViewById(R.id.tvMessage);
-        TextView tvLikes    = (TextView) findViewById(R.id.tvLikes);
-        TextView tvDislikes = (TextView) findViewById(R.id.tvDislikes);
-        TextView tvComments = (TextView) findViewById(R.id.tvComments);
+            TextView tvUsername = (TextView) findViewById(R.id.tvUsername);
+            TextView tvTime     = (TextView) findViewById(R.id.tvTime);
+            TextView tvMessage  = (TextView) findViewById(R.id.tvMessage);
+            TextView tvLikes    = (TextView) findViewById(R.id.tvLikes);
+            TextView tvDislikes = (TextView) findViewById(R.id.tvDislikes);
+            TextView tvComments = (TextView) findViewById(R.id.tvComments);
 
             ImageView tvShowOnMap = (ImageView) findViewById(R.id.tvShowOnMap);
-            if (dataHome.getLatLng().longitude * dataHome.getLatLng().latitude != 0)
+          /*  if (dataHome.getLatLng().longitude * dataHome.getLatLng().latitude != 0)
             {
                 tvShowOnMap.setVisibility(View.VISIBLE);
                 tvShowOnMap.setOnClickListener(new View.OnClickListener()
@@ -88,202 +89,196 @@ public class ShowPostActivity extends AppCompatActivity
             else
             {
                 tvShowOnMap.setVisibility(View.GONE);
+            }*/
+
+            tvShowOnMap.setVisibility(View.GONE);
+
+
+
+            imgUserPic.setRadius(120);
+            if (!dataHome.isAnon_user())
+            {
+                imgUserPic.setImageUrl(ShowPostActivity.this, dataHome.getProfile_pic());
             }
 
 
-        imgUserPic.setRadius(120);
-        if (!dataHome.isAnon_user())
-        {
-            imgUserPic.setImageUrl(ShowPostActivity.this, dataHome.getProfile_pic());
+            tvTitle.setText(dataHome.getTitle());
+
+
+            try
+            {
+
+                SimpleDateFormat sdf       = new SimpleDateFormat(GlobalConstants.SEVER_FORMAT);
+                SimpleDateFormat sdfDesire = new SimpleDateFormat("dd.MMM hh:mm a");
+                Date             date      = sdf.parse(dataHome.getCreate_date());
+                tvTime.setText(sdfDesire.format(date));
+
+
+                StringBuilder sb = new StringBuilder(dataHome.getLocation());
+                sb.setCharAt(0, Character.toUpperCase(sb.charAt(0)));
+                String loc = sb.toString();
+
+                tvLocationGenre.setText(loc);
+                tvLocationGenre.setSelected(true);
+
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
+            tvGenre.setText(dataHome.getType());
+            tvUsername.setText(dataHome.getUsername());
+            tvMessage.setText(dataHome.getMessage());
+            tvComments.setText(dataHome.getComments_count() + " comments");
+
+            tvLikes.setText(dataHome.getLike_count() + " useful");
+            tvDislikes.setText(dataHome.getDislike_count() + " not useful");
+
+
+            tvComments.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+
+                    Intent intnt = new Intent(ShowPostActivity.this, CommentsListActivity
+                            .class);
+                    intnt.putExtra("postID", dataHome.getId());
+                    intnt.putExtra("index", 0);
+                    startActivity(intnt);
+                }
+            });
+
+
+            if (dataHome.is_liked())
+            {
+                tvLikes.setTextColor(getResources().getColor(R.color.blue));
+                tvLikes.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.mipmap.ic_like_sel), null, null, null);
+            }
+            else
+            {
+                tvLikes.setTextColor(getResources().getColor(R.color.greydefault));
+                tvLikes.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.mipmap.ic_like), null, null, null);
+            }
+
+
+            if (dataHome.is_disliked())
+            {
+                tvDislikes.setTextColor(getResources().getColor(R.color.blue));
+                tvDislikes.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.mipmap.ic_dislike_sel), null, null, null);
+
+            }
+            else
+            {
+                tvDislikes.setTextColor(getResources().getColor(R.color.greydefault));
+                tvDislikes.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.mipmap.ic_dislike), null, null, null);
+
+            }
+
+
+            if (!dataHome.getImage().equals(""))
+            {
+                imgMessage.setVisibility(View.VISIBLE);
+                imgMessage.setImageUrl(ShowPostActivity.this, dataHome.getImage());
+            }
+            else
+            {
+                imgMessage.setVisibility(View.GONE);
+            }
+
+
+            tvLikes.setTag(dataHome);
+            tvLikes.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+
+                    if (((HomeModel) v.getTag()).is_liked())
+                    {
+//                    Utills.showToast("Already marked as useful", ShowPostActivity.this, true);
+                        like_dislike("0", (HomeModel) v.getTag());
+                    }
+                    else
+                    {
+                        like_dislike("1", (HomeModel) v.getTag());
+                    }
+
+
+                }
+            });
+            tvDislikes.setTag(dataHome);
+            tvDislikes.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    if (((HomeModel) v.getTag()).is_disliked())
+                    {
+//                    Utills.showToast("Already marked as not useful", ShowPostActivity.this, true);
+                        like_dislike("0", (HomeModel) v.getTag());
+                    }
+                    else
+                    {
+                        like_dislike("2", (HomeModel) v.getTag());
+                    }
+                }
+            });
+
+            imgOptions.setTag(dataHome);
+            imgOptions.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+
+                    final HomeModel homeModel = (HomeModel) v.getTag();
+
+
+                    final String title = (new SharedPrefHelper(ShowPostActivity.this).getUserId()).equals(homeModel.getUserid()) ? "Delete post" : "Report Abuse";
+
+
+                    PopupMenu popup = new PopupMenu(ShowPostActivity.this, v);
+
+                    SpannableString s = new SpannableString(title);
+                    s.setSpan(new ForegroundColorSpan(Color.BLACK), 0, s.length(), 0);
+                    popup.getMenu().add(s);
+
+
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
+                    {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item)
+                        {
+
+                            if (title.equals("Report Abuse"))
+                            {
+                                reportAbuse(homeModel.getId(), homeModel, false);
+                            }
+                            else
+                            {
+                                reportAbuse(homeModel.getId(), homeModel, true);
+                            }
+
+
+                            return false;
+                        }
+                    });
+                    popup.show();
+                }
+            });
+
+
         }
 
-
-        StringBuilder sb = new StringBuilder(dataHome.getLocation());
-        sb.setCharAt(0, Character.toUpperCase(sb.charAt(0)));
-        String loc = sb.toString();
-
-        tvTitle.setText(dataHome.getTitle());
-
-
-        try
-        {
-
-            SimpleDateFormat sdf       = new SimpleDateFormat(GlobalConstants.SEVER_FORMAT);
-            SimpleDateFormat sdfDesire = new SimpleDateFormat("dd.MMM hh:mm a");
-            Date             date      = sdf.parse(dataHome.getCreate_date());
-            tvTime.setText(sdfDesire.format(date));
-
-        }
         catch (Exception e)
+
         {
             e.printStackTrace();
         }
 
-
-        tvLocationGenre.setText(loc);
-        tvLocationGenre.setSelected(true);
-
-        tvGenre.setText(dataHome.getType());
-        tvUsername.setText(dataHome.getUsername());
-        tvMessage.setText(dataHome.getMessage());
-        tvComments.setText(dataHome.getComments_count() + " comments");
-
-        tvLikes.setText(dataHome.getLike_count() + " useful");
-        tvDislikes.setText(dataHome.getDislike_count() + " not useful");
-
-
-        tvComments.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-
-                Intent intnt = new Intent(ShowPostActivity.this, CommentsListActivity
-                        .class);
-                intnt.putExtra("postID", dataHome.getId());
-                intnt.putExtra("index", 0);
-                startActivity(intnt);
-            }
-        });
-
-
-        if (dataHome.is_liked())
-        {
-            tvLikes.setTextColor(getResources().getColor(R.color.blue));
-            tvLikes.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.mipmap.ic_like_sel), null, null, null);
-        }
-        else
-        {
-            tvLikes.setTextColor(getResources().getColor(R.color.greydefault));
-            tvLikes.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.mipmap.ic_like), null, null, null);
-        }
-
-
-        if (dataHome.is_disliked())
-        {
-            tvDislikes.setTextColor(getResources().getColor(R.color.blue));
-            tvDislikes.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.mipmap.ic_dislike_sel), null, null, null);
-
-        }
-        else
-        {
-            tvDislikes.setTextColor(getResources().getColor(R.color.greydefault));
-            tvDislikes.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.mipmap.ic_dislike), null, null, null);
-
-        }
-
-
-        if (!dataHome.getImage().equals(""))
-        {
-            imgMessage.setVisibility(View.VISIBLE);
-            imgMessage.setImageUrl(ShowPostActivity.this, dataHome.getImage());
-        }
-        else
-        {
-            imgMessage.setVisibility(View.GONE);
-        }
-
-
-        tvLikes.setTag(dataHome);
-        tvLikes.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-
-                if (((HomeModel) v.getTag()).is_liked())
-                {
-//                    Utills.showToast("Already marked as useful", ShowPostActivity.this, true);
-                    like_dislike("0", (HomeModel) v.getTag());
-                }
-                else
-                {
-                    like_dislike("1", (HomeModel) v.getTag());
-                }
-
-
-            }
-        });
-        tvDislikes.setTag(dataHome);
-        tvDislikes.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                if (((HomeModel) v.getTag()).is_disliked())
-                {
-//                    Utills.showToast("Already marked as not useful", ShowPostActivity.this, true);
-                    like_dislike("0", (HomeModel) v.getTag());
-                }
-                else
-                {
-                    like_dislike("2", (HomeModel) v.getTag());
-                }
-            }
-        });
-
-        imgOptions.setTag(dataHome);
-        imgOptions.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-
-                final HomeModel homeModel = (HomeModel) v.getTag();
-
-
-                final String title = (new SharedPrefHelper(ShowPostActivity.this).getUserId()).equals(homeModel.getUserid()) ? "Delete post" : "Report Abuse";
-
-
-                PopupMenu popup = new PopupMenu(ShowPostActivity.this, v);
-
-                SpannableString s = new SpannableString(title);
-                s.setSpan(new ForegroundColorSpan(Color.BLACK), 0, s.length(), 0);
-                popup.getMenu().add(s);
-
-
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
-                {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item)
-                    {
-
-                        if (title.equals("Report Abuse"))
-                        {
-                            reportAbuse(homeModel.getId(), homeModel, false);
-                        }
-                        else
-                        {
-                            reportAbuse(homeModel.getId(), homeModel, true);
-                        }
-
-
-                        return false;
-                    }
-                });
-                popup.show();
-            }
-        });
-
-
     }
-
-    catch(Exception e)
-
-    {
-        e.printStackTrace();
-    }
-
-}
-
-
-
-
-
-
-
-
-
 
 
     private void reportAbuse(String postID, final HomeModel homeModel, boolean delete)
@@ -463,21 +458,6 @@ public class ShowPostActivity extends AppCompatActivity
     }
 
 
-        
-        
-        
-        
-        
-        
-
-
-
-
-
-
-
-
-
     private void settingActionBar()
     {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -498,8 +478,6 @@ public class ShowPostActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
-
-
 
 
 }

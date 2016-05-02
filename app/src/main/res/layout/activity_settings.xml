@@ -158,7 +158,9 @@
         android:layout_weight="1"
         android:gravity="bottom">
 
-        <TextView
+        <Button
+            android:textAllCaps="false"
+            android:onClick="deActivate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"

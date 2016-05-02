@@ -192,8 +192,6 @@ public class SharedPrefHelper
 // distance end
 
 
-
-
 // set distance
 
     public void setDistanceParamHome(int km)
@@ -210,7 +208,6 @@ public class SharedPrefHelper
     }
 
 // distance end
-
 
 
     // set distance
@@ -245,7 +242,6 @@ public class SharedPrefHelper
     }
 
 
-
     public void setPswd(String login)
     {
         SharedPreferences.Editor ed = sharedPreferences.edit();
@@ -256,6 +252,33 @@ public class SharedPrefHelper
     public String getPswd()
     {
         return sharedPreferences.getString("pswd", "");
+    }
+
+
+    public void setDeviceToken(String login)
+    {
+        SharedPreferences.Editor ed = sharedPreferences.edit();
+        ed.putString("devicetoken", login);
+        ed.apply();
+    }
+
+    public String getDeviceToken()
+    {
+        return sharedPreferences.getString("devicetoken", "");
+    }
+
+
+
+    public void setEmailVerified(boolean emailVerified)
+    {
+        SharedPreferences.Editor ed = sharedPreferences.edit();
+        ed.putBoolean("emailVerified", emailVerified);
+        ed.apply();
+    }
+
+    public boolean getEmailVerified()
+    {
+        return sharedPreferences.getBoolean("emailVerified", true);
     }
 
 

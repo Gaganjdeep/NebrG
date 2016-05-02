@@ -144,7 +144,8 @@
                     android:textColor="@color/white"
                     />
 
-                <TextView
+                <Button
+                    android:background="@android:color/transparent"
                     android:id="@+id/tvSignUpNow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

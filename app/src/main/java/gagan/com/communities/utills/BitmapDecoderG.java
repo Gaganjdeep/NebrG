@@ -78,6 +78,36 @@ public class BitmapDecoderG
         }
     }
 
+    public static String getBytesImageBItmap(Context context, Bitmap imageUri)
+    {
+        try
+        {
+            Bitmap                bm   = imageUri;
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bm.compress(Bitmap.CompressFormat.JPEG, 70, baos); //bm is the bitmap object
+            byte[] b = baos.toByteArray();
+            return Base64.encodeToString(b, Base64.DEFAULT);
+
+
+        }
+        catch (Exception | Error e)
+        {
+            e.printStackTrace();
+            try
+            {
+                Bitmap                bm   = imageUri;
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bm.compress(Bitmap.CompressFormat.JPEG, 50, baos); //bm is the bitmap object
+                byte[] b = baos.toByteArray();
+                return Base64.encodeToString(b, Base64.DEFAULT);
+            }
+            catch (Exception e1)
+            {
+                e1.printStackTrace();
+            }
+            return "";
+        }
+    }
 //    ========================================================
 
 

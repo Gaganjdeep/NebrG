@@ -26,36 +26,37 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        android:padding="7dp"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/button_pink"
         android:elevation="4dp"
-        app:popupTheme="@style/MyMaterialTheme.G"
-        android:focusableInTouchMode="true">
+        android:focusableInTouchMode="true"
+        android:padding="7dp"
+        app:popupTheme="@style/MyMaterialTheme.G">
 
         <ImageView
             android:id="@+id/btnAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="7dp"
             android:src="@mipmap/add_btn"/>
 
         <AutoCompleteTextView
-            android:textSize="12sp"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="10dp"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp"
-            android:textColorHint="@color/white"
-            android:hint="Search..."
-            android:drawableRight="@mipmap/ic_search"
             android:id="@+id/searchView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
             android:background="@drawable/search_back"
-            android:layout_gravity="center_horizontal"/>
+            android:drawableRight="@mipmap/ic_search"
+            android:hint="Search..."
+            android:paddingBottom="2dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="2dp"
+            android:textColorHint="@color/white"
+            android:textSize="12sp"/>
 
     </android.support.v7.widget.Toolbar>
 
@@ -66,8 +67,8 @@
         android:layout_height="wrap_content"
         android:background="@color/button_pink"
         android:theme="@style/tab_style_notification"
-        app:tabTextAppearance="@style/tab_heading_upper"
         app:tabSelectedTextColor="@color/black"
+        app:tabTextAppearance="@style/tab_heading_upper"
         app:tabTextColor="@color/white"
         />
 

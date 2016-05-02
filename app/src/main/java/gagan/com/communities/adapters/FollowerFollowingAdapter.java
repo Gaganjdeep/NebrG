@@ -112,7 +112,7 @@ public class FollowerFollowingAdapter extends RecyclerView.Adapter<FollowerFollo
             );
 //            }
         }
-        else if (con instanceof ProfileActivity)
+        else if (con instanceof ProfileActivity || con instanceof OtherProfileActivity)
         {
             holder.view.setTag(currentData.getuId());
             holder.view.setOnClickListener(
@@ -121,9 +121,12 @@ public class FollowerFollowingAdapter extends RecyclerView.Adapter<FollowerFollo
                         @Override
                         public void onClick(View v)
                         {
-                            Intent intnt = new Intent(con, OtherProfileActivity.class);
-                            intnt.putExtra("user_id", v.getTag().toString());
-                            con.startActivity(intnt);
+                            if (!(new SharedPrefHelper(con).getUserId().equals(v.getTag().toString())))
+                            {
+                                Intent intnt = new Intent(con, OtherProfileActivity.class);
+                                intnt.putExtra("user_id", v.getTag().toString());
+                                con.startActivity(intnt);
+                            }
                         }
                     }
             );

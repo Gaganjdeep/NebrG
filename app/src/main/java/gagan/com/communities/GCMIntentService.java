@@ -131,8 +131,18 @@ public class GCMIntentService extends GCMBaseIntentService
         }
         catch (Exception | Error e)
         {
+            showNotification(context, "new notification");
             e.printStackTrace();
         }
+        try
+        {
+            sendBroadcast(new Intent(GlobalConstants.UPDATE_MSG_FRAGMENT));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
     }
 
     @Override

@@ -1,13 +1,24 @@
 package gagan.com.communities.activites;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -27,12 +38,19 @@ import gagan.com.communities.webserviceG.SuperWebServiceG;
 public class EditProfileActivity extends BaseActivityG
 {
 
+
+    boolean startMain = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
         settingActionBar();
+
+
+        startMain = getIntent().getBooleanExtra("startmain", false);
+
 
         findViewByID();
     }
@@ -49,12 +67,24 @@ public class EditProfileActivity extends BaseActivityG
     }
 
     @Override
+    public void onBackPressed()
+    {
+
+        if (!startMain)
+        {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
 
 
-        finish();
-
+        if (!startMain)
+        {
+            finish();
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -64,6 +94,7 @@ public class EditProfileActivity extends BaseActivityG
             edprofession, edName;
     String Base64Image = "";
 
+    LatLng selectedLocationLatlng;
 
     @Override
     protected void onResume()
@@ -108,6 +139,40 @@ public class EditProfileActivity extends BaseActivityG
 
 
         Base64Image = userData.getProfile_pic();
+
+
+        edLocation.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+
+                if (event.getAction() == MotionEvent.ACTION_UP)
+                {
+                    openMapPicker();
+                }
+                return false;
+            }
+        });
+
+    }
+
+
+    public void openMapPicker()
+    {
+        // Construct an intent for the place picker
+        try
+        {
+            PlacePicker.IntentBuilder intentBuilder =
+                    new PlacePicker.IntentBuilder();
+            Intent intent = intentBuilder.build(EditProfileActivity.this);
+            startActivityForResult(intent, 11);
+
+        }
+        catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e)
+        {
+            e.printStackTrace();
+        }
     }
 
 
@@ -166,6 +231,13 @@ public class EditProfileActivity extends BaseActivityG
             }
 
 
+            if (selectedLocationLatlng != null)
+            {
+                data.put("home_lat", selectedLocationLatlng.latitude + "");
+                data.put("home_long", selectedLocationLatlng.longitude + "");
+            }
+
+
             data.put("gender", edGender.getText().toString().trim());
 //        {"userid":"1","company_name":"comany name","email":"email","image":"base64 codeed mage","image_name":"testimage.jpg",
 //                "location":"chandigarh","description":"description","category":"category"}
@@ -221,9 +293,26 @@ public class EditProfileActivity extends BaseActivityG
                 sharedPrefHelper.setUserPhone(edPhoneNumber.getText().toString());
 
 
+                sharedPrefHelper.setPincodeStatus(jsonMainResult.optString("pincode_status").equals("1"));
+
+                if (selectedLocationLatlng != null)
+                {
+                    sharedPrefHelper.setHomeLocation(edLocation.getText().toString(), selectedLocationLatlng.latitude + "", selectedLocationLatlng.longitude + "");
+                }
+
+
                 SharedPrefHelper.write(EditProfileActivity.this, userDataModel);
                 Utills.showToast("Profile updated", EditProfileActivity.this, true);
+
+
+                if (startMain)
+                {
+                    startActivity(new Intent(EditProfileActivity.this, MainTabActivity.class));
+
+                }
+
                 finish();
+
             }
             else
             {
@@ -262,12 +351,48 @@ public class EditProfileActivity extends BaseActivityG
 
         try
         {
-            imgvProfilePic.setRadius(120);
+            if (requestCode == 11 && resultCode == Activity.RESULT_OK)
+            {
 
-            Uri uri = BitmapDecoderG.getFromData(requestCode, resultCode, data);
+                // The user has selected a place. Extract the name and address.
+                final Place place = PlacePicker.getPlace(data, this);
 
-            imgvProfilePic.setImageUrl(EditProfileActivity.this, uri.toString());
-            Base64Image = BitmapDecoderG.getBytesImage(EditProfileActivity.this, uri);
+                final CharSequence name    = place.getName();
+                final CharSequence address = place.getAddress();
+
+                selectedLocationLatlng = place.getLatLng();
+
+                edLocation.setText(name);
+
+            }
+            else
+            {
+                imgvProfilePic.setRadius(120);
+
+                Uri uri = BitmapDecoderG.getFromData(requestCode, resultCode, data);
+
+//                imgvProfilePic.setImageUrl(EditProfileActivity.this, uri.toString());
+
+
+                Picasso.with(EditProfileActivity.this).load(uri.toString()).resize(200, 200).centerCrop().into(imgvProfilePic, new Callback()
+                {
+                    @Override
+                    public void onSuccess()
+                    {
+                        Base64Image = BitmapDecoderG.getBytesImageBItmap(EditProfileActivity.this, ((BitmapDrawable) imgvProfilePic.getDrawable()).getBitmap());
+                    }
+
+                    @Override
+                    public void onError()
+                    {
+
+                    }
+                });
+
+
+//                Base64Image = BitmapDecoderG.getBytesImage(EditProfileActivity.this, uri);
+            }
+
         }
         catch (Exception | Error e)
         {

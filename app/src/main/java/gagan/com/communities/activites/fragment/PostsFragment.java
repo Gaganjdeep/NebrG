@@ -1,7 +1,11 @@
 package gagan.com.communities.activites.fragment;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.support.v4.app.Fragment;
 
@@ -23,6 +27,7 @@ import java.util.HashMap;
 import gagan.com.communities.R;
 import gagan.com.communities.activites.ShowPostActivity;
 import gagan.com.communities.models.HomeModel;
+import gagan.com.communities.utills.CallBackG;
 import gagan.com.communities.utills.GlobalConstants;
 import gagan.com.communities.utills.SharedPrefHelper;
 import gagan.com.communities.utills.Utills;
@@ -39,10 +44,10 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
 
     private GoogleMap googleMapPost;
 
-
     public PostsFragment()
     {
         // Required empty public constructor
+
     }
 
 
@@ -134,10 +139,26 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
         {
             initializeMapFragment();
         }
-
-
+        if (!mIsReceiverRegistered)
+        {
+            if (mReceiver == null)
+                mReceiver = new UpdatePostReceiver();
+            getActivity().registerReceiver(mReceiver, new IntentFilter(GlobalConstants.UPDATE_MAPTAB));
+            mIsReceiverRegistered = true;
+        }
     }
 
+    @Override
+    public void onDestroy()
+    {
+        if (mIsReceiverRegistered)
+        {
+            getActivity().unregisterReceiver(mReceiver);
+            mReceiver = null;
+            mIsReceiverRegistered = false;
+        }
+        super.onDestroy();
+    }
 
     private void fetchHomeData(Location location)
     {
@@ -150,6 +171,7 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
             data.put("start", "0");
             data.put("lat", location.getLatitude() + "");
             data.put("long", location.getLongitude() + "");
+            data.put("distance", "50");
 
             new SuperWebServiceG(GlobalConstants.URL + "mynearpost", data, new CallBackWebService()
             {
@@ -202,7 +224,7 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
 
                     HomeModel homemodel = new HomeModel();
                     homemodel.setId(jobj.optString("id"));
-                    homemodel.setLocation(jobj.optString("location"));
+                    homemodel.setLocation(jobj.optString("home_location"));
                     homemodel.setComments_count(jobj.optString("comments_count"));
                     homemodel.setCreate_date(jobj.optString("create_date"));
                     homemodel.setImage(jobj.optString("image"));
@@ -245,10 +267,20 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
 
     }
 
+
+    public static Location locationToSearchP;
+
     @Override
     public void onMyLocationChange(Location location)
     {
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 9);
+
+        if (locationToSearchP == null)
+        {
+            locationToSearchP = location;
+        }
+
+
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(locationToSearchP.getLatitude(), locationToSearchP.getLongitude()), 9);
         googleMapPost.animateCamera(cameraUpdate);
         fetchHomeData(location);
 
@@ -256,7 +288,53 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
     }
 
 
-//   =============================
+    //   =============================
+    UpdatePostReceiver mReceiver;
+    private boolean mIsReceiverRegistered = false;
+
+    private class UpdatePostReceiver extends BroadcastReceiver
+    {
+
+        @Override
+        public void onReceive(Context context, Intent intent)
+        {
+            try
+            {
+
+
+                if (MarkerData == null)
+                {
+                    MarkerData = new HashMap<>();
+                }
+                else
+                {
+                    MarkerData.clear();
+                }
+
+                if (googleMapPost == null)
+                {
+                    onResume();
+                }
+                else
+                {
+                    googleMapPost.clear();
+
+                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(locationToSearchP.getLatitude(), locationToSearchP.getLongitude()), 9);
+                    googleMapPost.animateCamera(cameraUpdate);
+
+                    fetchHomeData(locationToSearchP);
+
+                    googleMapPost.setOnMyLocationChangeListener(null);
+                }
+
+
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
 
 
 }

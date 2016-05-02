@@ -2,6 +2,7 @@ package gagan.com.communities.activites;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
@@ -59,10 +60,27 @@ public class CommunityDetailsActivity extends BaseActivityG
     protected void onResume()
     {
 
+        Fragment f = getSupportFragmentManager().findFragmentByTag("my_post");
+        if (f==null)
+        {
+            try
+            {
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, myPost, "my_post").commitAllowingStateLoss();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, myPost, "my_post").commit();
+        }
 
         super.onResume();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState)
+    {
+//        super.onSaveInstanceState(outState, outPersistentState);
     }
 
     @Override
@@ -71,16 +89,19 @@ public class CommunityDetailsActivity extends BaseActivityG
         Fragment f = getSupportFragmentManager().findFragmentByTag("my_post");
         if (f != null)
         {
-            getSupportFragmentManager().beginTransaction().remove(f).commit();
+            getSupportFragmentManager().beginTransaction().remove(f).commitAllowingStateLoss();
         }
         super.onPause();
     }
+
+    ImageView imgvisible;
 
     private void settingActionBar()
     {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        imgvisible = (ImageView) toolbar.findViewById(R.id.imgvisible);
 
         ImageView txtvAddPost = (ImageView) toolbar.findViewById(R.id.txtvAddPost);
 
@@ -268,7 +289,12 @@ public class CommunityDetailsActivity extends BaseActivityG
     {
         if (showDelete)
         {
+            imgvisible.setVisibility(View.GONE);
             getMenuInflater().inflate(R.menu.del_menu, menu);
+        }
+        else
+        {
+            imgvisible.setVisibility(View.INVISIBLE);
         }
 
 

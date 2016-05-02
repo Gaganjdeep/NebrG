@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_background"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="20dp"
+    tools:context="gagan.com.communities.activites.CodeVerificationActivity">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Please enter 6 digit code ,sent to your email."
+        android:textColor="@color/white"
+        android:textSize="21sp"/>
+
+
+    <gagan.com.communities.entercode.CodeInput
+        android:id="@+id/codeView"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        app:codes="6"
+        app:hint_color="@color/button_pink_dark"
+        app:hint_text="Enter code"
+        app:text_color="@color/button_pink"
+        app:underline_color="@color/white"
+        app:underline_selected_color="@color/button_pink"/>
+
+
+    <Button
+        android:onClick="dOne"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/btn_selector"
+        android:text="Done"/>
+
+
+    <!-- <com.github.glomadrian.codeinputlib.CodeInput
+         app:codes="8"
+         app:hint_color="#ce1087"
+         app:hint_text="Cheat code"
+         app:text_color="#5c282c"
+         app:underline_color="#d19385"
+         app:underline_selected_color="#ce3a47"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="20dp"/>
+
+     <com.github.glomadrian.codeinputlib.CodeInput
+         app:codes="10"
+         app:hint_color="#03A9F4"
+         app:hint_text="Hash code"
+         app:text_color="#212121"
+         app:underline_color="#03A9F4"
+         app:underline_selected_color="#3F51B5"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="20dp"/>
+ -->
+
+</LinearLayout>

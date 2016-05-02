@@ -24,6 +24,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
+import com.squareup.picasso.Picasso;
 
 import gagan.com.communities.R;
 
@@ -188,6 +189,7 @@ public class RoundedCornersGaganImg extends ImageView
 
         if (!URL.isEmpty())
         {
+//            Picasso.with(con).load(URL).placeholder(drawable).error(drawable).into(this);
 
             options = new DisplayImageOptions.Builder().cacheInMemory(true)
                     .cacheOnDisc(true).resetViewBeforeLoading(true)

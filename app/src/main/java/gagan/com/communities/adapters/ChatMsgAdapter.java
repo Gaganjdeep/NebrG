@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -155,18 +157,33 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MyViewHo
 
         if (currentData.isLastMsg())
         {
-            holder.chatbubble.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
-            holder.chatbubble.requestLayout();
-            Utills.collapse_expand(holder.chatbubble, 1500, holder.view.getWidth() / 2);
+//            holder.chatbubble.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
+//            holder.chatbubble.requestLayout();
+//            Utills.collapse_expand(holder.chatbubble, 1500, holder.view.getWidth() / 2);
+
+//            animZoomin(holder.chatbubble);
 
             dataList.get(position).setLastMsg(false);
         }
-        else
-        {
-            holder.chatbubble.getLayoutParams().width = LinearLayout.LayoutParams.WRAP_CONTENT;
-        }
+//        else
+//        {
+//            holder.chatbubble.getLayoutParams().width = LinearLayout.LayoutParams.WRAP_CONTENT;
+//        }
 
 
+    }
+
+
+    public void animZoomin(View v)
+    {
+        Animation anim = new ScaleAnimation(
+                0f, 1f,
+                0f, 1f,
+                Animation.RELATIVE_TO_SELF, 0f,
+                Animation.RELATIVE_TO_SELF, 1f
+        );
+        anim.setFillAfter(true);
+        v.startAnimation(anim);
     }
 
 

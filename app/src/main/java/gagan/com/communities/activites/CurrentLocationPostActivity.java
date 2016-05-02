@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.costum.android.widget.PullAndLoadListView;
 import com.costum.android.widget.PullToRefreshListView;
@@ -42,6 +44,8 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
     PullAndLoadListView listViewNotiMsg;
     HomeAdapter         homeadapter;
 
+    TextView tvNoPost;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -50,6 +54,7 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
         settingActionBar();
 
 
+        tvNoPost = (TextView) findViewById(R.id.tvNoPost);
         listViewNotiMsg = (PullAndLoadListView) findViewById(R.id.listViewHomeList);
 
         if (listHome != null)
@@ -68,7 +73,6 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
         startId = 0;
 
     }
-
 
 
 //
@@ -125,6 +129,7 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
         }
         catch (Exception e)
         {
+            tvNoPost.setVisibility(View.VISIBLE);
             e.printStackTrace();
         }
 
@@ -166,7 +171,7 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
 
                     HomeModel homemodel = new HomeModel();
                     homemodel.setId(jobj.optString("id"));
-                    homemodel.setLocation(jobj.optString("location"));
+                    homemodel.setLocation(jobj.optString("home_location"));
                     homemodel.setComments_count(jobj.optString("comments_count"));
                     homemodel.setCreate_date(jobj.optString("create_date"));
                     homemodel.setImage(jobj.optString("image"));
@@ -184,12 +189,10 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
                     homemodel.setAnon_user(jobj.optString("anon_user").equals("1"));
 
 
-
                     double lat = Double.parseDouble(jobj.optString("lat"));
                     double lng = Double.parseDouble(jobj.optString("lng"));
 
                     homemodel.setLatLng(new LatLng(lat, lng));
-
 
 
                     listHome.add(homemodel);
@@ -210,10 +213,11 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
                 if (listHome.isEmpty()
                         )
                 {
+                    tvNoPost.setVisibility(View.VISIBLE);
                     Utills.showToast("No post available", CurrentLocationPostActivity.this, true);
                     return;
                 }
-
+                tvNoPost.setVisibility(View.INVISIBLE);
                 if (homeadapter == null)
                 {
                     homeadapter = new HomeAdapter(CurrentLocationPostActivity.this, listHome);
@@ -235,12 +239,14 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
             }
             else
             {
+                tvNoPost.setVisibility(View.VISIBLE);
                 Utills.showToast("No post available", CurrentLocationPostActivity.this, true);
             }
 
         }
         catch (Exception e)
         {
+            tvNoPost.setVisibility(View.VISIBLE);
             e.printStackTrace();
 //            fetchHomeData(startId, limit);
         }
@@ -290,7 +296,7 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
 
             case R.id.set_distance:
 
-                Utills.ShowDialogProgress(CurrentLocationPostActivity.this,this);
+                Utills.ShowDialogProgress(CurrentLocationPostActivity.this, this);
 
 
                 break;

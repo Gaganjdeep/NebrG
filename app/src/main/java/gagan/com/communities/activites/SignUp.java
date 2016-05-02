@@ -4,16 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -21,12 +15,11 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 import gagan.com.communities.R;
 import gagan.com.communities.models.UserDataModel;
@@ -44,13 +37,15 @@ public class SignUp extends CurrentLocActivityG
 
     final int REQUEST_PLACE_PICKER = 11;
     TextView tvLocation;
-    EditText edFullNameS, edEmailS, edPasswordS, edHomeSociety, edprofession;
+    EditText edFullNameS, edEmailS, edPasswordS, edHomeSociety, edprofession, edConfirmPasswordS;
     Button btnMaleS, btnFemaleS;
 
 
     String maleFemale = "male";
 
     Location locationCurrent = null;
+
+    LatLng locationCurrentHome = null;
 
 
     @Override
@@ -74,7 +69,7 @@ public class SignUp extends CurrentLocActivityG
 
         edEmailS = (EditText) findViewById(R.id.edEmailS);
         edPasswordS = (EditText) findViewById(R.id.edPasswordS);
-
+        edConfirmPasswordS = (EditText) findViewById(R.id.edConfirmPasswordS);
         edFullNameS = (EditText) findViewById(R.id.edFullNameS);
         edHomeSociety = (EditText) findViewById(R.id.edHomeSociety);
 
@@ -90,11 +85,8 @@ public class SignUp extends CurrentLocActivityG
 
     void hitWebserviceG()
     {
-
-
         try
         {
-
             if (locationCurrent == null)
             {
                 displayLocation();
@@ -115,10 +107,18 @@ public class SignUp extends CurrentLocActivityG
             data.put("device_type", "android");
             data.put("device_token", DeviceID);
 
-
 //            data.put("home_pincode", "android");
-            data.put("home_lat", locationCurrent.getLatitude() + "");
-            data.put("home_long", locationCurrent.getLongitude() + "");
+
+            if (locationCurrentHome != null)
+            {
+                data.put("home_lat", locationCurrentHome.latitude + "");
+                data.put("home_long", locationCurrentHome.longitude + "");
+            }
+            else
+            {
+                data.put("home_lat", locationCurrent.getLatitude() + "");
+                data.put("home_long", locationCurrent.getLongitude() + "");
+            }
 
             new SuperWebServiceG(GlobalConstants.URL + "signup", data, new CallBackWebService()
             {
@@ -156,18 +156,6 @@ public class SignUp extends CurrentLocActivityG
 
             if (jsonMainResult.optString("code").equals("200"))
             {
-
-//                JSONObject data = new JSONObject();
-//                data.put("name", edFullNameS.getText().toString().trim());
-//                data.put("email", edEmailS.getText().toString().trim());
-//                data.put("password", edPasswordS.getText().toString().trim());
-//                data.put("gender", maleFemale);
-//                data.put("home_society", edHomeSociety.getText().toString().trim());
-//                data.put("profession", edprofession.getText().toString().trim());
-//                data.put("location", tvLocation.getText().toString().trim());
-//                data.put("device_type", "android");
-//                data.put("device_token", DeviceID);
-
                 UserDataModel userDataModel = new UserDataModel();
                 userDataModel.setEmail(edEmailS.getText().toString().trim());
                 userDataModel.setName(edFullNameS.getText().toString().trim());
@@ -190,7 +178,11 @@ public class SignUp extends CurrentLocActivityG
 
                 SharedPrefHelper.write(SignUp.this, userDataModel);
 
-                startActivity(new Intent(SignUp.this, MainTabActivity.class));
+                sharedPrefHelper.setDeviceToken(DeviceID);
+                sharedPrefHelper.setEmailVerified(false);
+
+
+                startActivity(new Intent(SignUp.this, CodeVerificationActivity.class));
                 finish();
             }
 
@@ -230,7 +222,6 @@ public class SignUp extends CurrentLocActivityG
 
         if (validation())
         {
-
             hitWebserviceG();
         }
 
@@ -277,6 +268,8 @@ public class SignUp extends CurrentLocActivityG
             final CharSequence name    = place.getName();
             final CharSequence address = place.getAddress();
 
+            locationCurrentHome = place.getLatLng();
+
             tvLocation.setText(name);
 
         }
@@ -313,12 +306,12 @@ public class SignUp extends CurrentLocActivityG
             edPasswordS.setError("Password length should more than 5");
             return false;
         }
-       /* else if (edHomeSociety.getText().toString().trim().isEmpty())
+        else if (!edPasswordS.getText().toString().trim().equals(edConfirmPasswordS.getText().toString().trim()))
         {
-            edHomeSociety.setError("Please select a home society");
+            edConfirmPasswordS.setError("Password not matched");
             return false;
-        }*/
-        else if (tvLocation.getText().toString().trim().isEmpty())
+        }
+        else if (tvLocation.getText().toString().equals("Location"))
         {
             Utills.showToast("Please select a location", SignUp.this, true);
             return false;
