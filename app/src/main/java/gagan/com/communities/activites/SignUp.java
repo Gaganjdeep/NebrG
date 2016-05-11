@@ -172,9 +172,19 @@ public class SignUp extends CurrentLocActivityG
 
                 sharedPrefHelper.setPincodeStatus(jsonMainResult.optString("pincode_status").equals("1"));
                 sharedPrefHelper.setPswd(edPasswordS.getText().toString());
+                String location = tvLocation.getText().toString().trim();
+
+                try
+                {
+                    location = jsonMainResult.optString("pincode_society").equals("null") ? location : jsonMainResult.optString("pincode_society");
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
 
 
-                sharedPrefHelper.setHomeLocation(tvLocation.getText().toString().trim(), locationCurrent.getLatitude() + "", locationCurrent.getLongitude() + "");
+                sharedPrefHelper.setHomeLocation(location, locationCurrent.getLatitude() + "", locationCurrent.getLongitude() + "");
 
                 SharedPrefHelper.write(SignUp.this, userDataModel);
 

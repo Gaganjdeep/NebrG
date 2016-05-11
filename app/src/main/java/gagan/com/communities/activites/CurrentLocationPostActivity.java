@@ -61,6 +61,7 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
         {
             homeadapter = new HomeAdapter(CurrentLocationPostActivity.this, listHome);
             listViewNotiMsg.setAdapter(homeadapter);
+            tvNoPost.setVisibility(View.INVISIBLE);
         }
 
 
@@ -249,7 +250,10 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
         }
         catch (Exception e)
         {
-            tvNoPost.setVisibility(View.VISIBLE);
+            if (listHome.isEmpty())
+            {
+                tvNoPost.setVisibility(View.VISIBLE);
+            }
             e.printStackTrace();
 //            fetchHomeData(startId, limit);
         }

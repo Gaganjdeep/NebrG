@@ -10,6 +10,7 @@ public class GlobalConstants
     public static final String SENDER_ID = "679103909775";
 
     public static final String UPDATE_MSG_FRAGMENT = "com.j.gagan.msgFragment";
+    public static final String UPDATE_CHAT = "com.j.gagan.chat";
 
     public static final String UPDATE_MAPTAB= "com.j.gagan.MAP";
 

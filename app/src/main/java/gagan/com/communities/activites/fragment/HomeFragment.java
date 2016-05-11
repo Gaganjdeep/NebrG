@@ -94,15 +94,9 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
 
 
             listHome = new ArrayList<>();
-            listHome.clear();
+
             listViewNotiMsg.setOnLoadMoreListener(this);
             listViewNotiMsg.setOnRefreshListener(this);
-
-            limit = 10;
-            startId = 0;
-
-
-            fetchHomeData(startId, limit);
 
 
             setHasOptionsMenu(true);
@@ -116,6 +110,23 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
         return v;
     }
 
+
+    @Override
+    public void onResume()
+    {
+
+        listHome.clear();
+        limit = 10;
+        startId = 0;
+
+        index = 0;
+        top = 0;
+
+        fetchHomeData(startId, limit);
+
+
+        super.onResume();
+    }
 
     int limit = 10, startId = 0;
 
@@ -144,8 +155,6 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
                 {
 
 
-                    startId = limit;
-                    limit = limit + 10;
 
 
                     processOutput(output);
@@ -187,6 +196,11 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
 
             if (jsonMainResult.getString("code").contains("20") && !jsonMainResult.getString("code").equals("201"))
             {
+
+
+                startId = limit;
+                limit = limit + 10;
+
 
                 JSONArray jsonarrayData = jsonMainResult.getJSONArray("feedData");
 
@@ -329,7 +343,7 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
                 @Override
                 public void onClick(View v)
                 {
-                    Utills.show_dialog_msg(getActivity(), "We are yet to launch in your location. Please Change your Home location in Settings to Add post", null);
+                    Utills.show_dialog_msg(getActivity(), "We are yet to launch in your location. Please change your home location in Settings to add post", null);
                 }
             });
         }

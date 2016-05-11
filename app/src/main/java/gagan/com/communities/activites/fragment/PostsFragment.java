@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
@@ -29,10 +28,8 @@ import java.util.HashMap;
 import gagan.com.communities.R;
 import gagan.com.communities.activites.ShowPostActivity;
 import gagan.com.communities.models.HomeModel;
-import gagan.com.communities.utills.CallBackG;
 import gagan.com.communities.utills.GlobalConstants;
 import gagan.com.communities.utills.SharedPrefHelper;
-import gagan.com.communities.utills.Utills;
 import gagan.com.communities.webserviceG.CallBackWebService;
 import gagan.com.communities.webserviceG.SuperWebServiceG;
 
@@ -70,13 +67,19 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
 
                 if (modelToSet == null)
                 {
-                    googleMapPost.setOnMyLocationChangeListener(PostsFragment.this);
+//                    googleMapPost.setOnMyLocationChangeListener(PostsFragment.this);
                     googleMapPost.setOnCameraChangeListener(PostsFragment.this);
+
+
+                    if (locationToSearchP!=null)
+                    {
+                        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(locationToSearchP.getLatitude(), locationToSearchP.getLongitude()), 12);
+                        googleMapPost.animateCamera(cameraUpdate);
+                    }
                 }
                 else
                 {
-
-                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(modelToSet.getLatLng(), 9);
+                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(modelToSet.getLatLng(), 12);
                     googleMapPost.animateCamera(cameraUpdate);
 
                     setUpMap(modelToSet.getTitle(), modelToSet.getType(), modelToSet.getLatLng(), modelToSet);
@@ -137,6 +140,7 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
     {
         super.onResume();
 
+        SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(getActivity());
 
         if (googleMapPost == null)
         {
@@ -149,6 +153,27 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
             getActivity().registerReceiver(mReceiver, new IntentFilter(GlobalConstants.UPDATE_MAPTAB));
             mIsReceiverRegistered = true;
         }
+
+
+
+
+        if (locationToSearchP == null)
+        {
+            try
+            {
+                locationToSearchP = new Location("");
+                locationToSearchP.setLatitude(Double.parseDouble(sharedPrefHelper.getHomeLocation().get(SharedPrefHelper.HOME_LAT)));
+                locationToSearchP.setLongitude(Double.parseDouble(sharedPrefHelper.getHomeLocation().get(SharedPrefHelper.HOME_LNG)));
+
+            }
+            catch (Exception e)
+            {
+                googleMapPost.setOnMyLocationChangeListener(PostsFragment.this);
+                locationToSearchP = null;
+                e.printStackTrace();
+            }
+        }
+
     }
 
     @Override
@@ -170,11 +195,11 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
         {
             JSONObject data = new JSONObject();
             data.put("userid", new SharedPrefHelper(getActivity()).getUserId());
-            data.put("limit", "100");
+            data.put("limit", "15");
             data.put("start", "0");
             data.put("lat", location.getLatitude() + "");
             data.put("long", location.getLongitude() + "");
-            data.put("distance", "50");
+            data.put("distance", "100");
 
             new SuperWebServiceG(GlobalConstants.URL + "mynearpost", data, new CallBackWebService()
             {
@@ -256,9 +281,9 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
             }
             else
             {
-                Utills.showToast("No post available", getActivity(), true);
+//                Utills.showToast("No post available", getActivity(), true);
 
-                googleMapPost.setOnMyLocationChangeListener(PostsFragment.this);
+//                googleMapPost.setOnMyLocationChangeListener(PostsFragment.this);
             }
 
         }
@@ -283,7 +308,7 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
         }
 
 
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(locationToSearchP.getLatitude(), locationToSearchP.getLongitude()), 9);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(locationToSearchP.getLatitude(), locationToSearchP.getLongitude()), 12);
         googleMapPost.animateCamera(cameraUpdate);
 //        fetchHomeData(location);
 
@@ -368,7 +393,7 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
                 else
                 {
 
-                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(locationToSearchP.getLatitude(), locationToSearchP.getLongitude()), 9);
+                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(locationToSearchP.getLatitude(), locationToSearchP.getLongitude()), 12);
                     googleMapPost.animateCamera(cameraUpdate);
 
 

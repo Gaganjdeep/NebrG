@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.location.Location;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -31,16 +30,15 @@ import java.util.List;
 import gagan.com.communities.R;
 import gagan.com.communities.activites.CommunityDetailsActivity;
 import gagan.com.communities.models.CommunitiesListModel;
-import gagan.com.communities.utills.CallBackG;
 import gagan.com.communities.utills.GlobalConstants;
-import gagan.com.communities.utills.Utills;
+import gagan.com.communities.utills.SharedPrefHelper;
 import gagan.com.communities.webserviceG.CallBackWebService;
 import gagan.com.communities.webserviceG.SuperWebServiceG;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Communitiesfragment extends SupportMapFragment implements GoogleMap.OnMyLocationChangeListener, GoogleMap.OnCameraChangeListener
+public class Communitiesfragment extends SupportMapFragment implements GoogleMap.OnCameraChangeListener, GoogleMap.OnMyLocationChangeListener
 {
 
 
@@ -68,13 +66,22 @@ public class Communitiesfragment extends SupportMapFragment implements GoogleMap
 
                 if (communitiesListModelG == null)
                 {
-                    googleMapCommunity.setOnMyLocationChangeListener(Communitiesfragment.this);
+//                    googleMapCommunity.setOnMyLocationChangeListener(Communitiesfragment.this);
                     googleMapCommunity.setOnCameraChangeListener(Communitiesfragment.this);
+
+
+                    if (locationToSearch!=null)
+                    {
+                        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(locationToSearch.getLatitude(), locationToSearch.getLongitude()), 12);
+                        googleMapCommunity.animateCamera(cameraUpdate);
+                    }
+
+
                 }
                 else
                 {
-
-                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(communitiesListModelG.getLatLng(), 9);
+                    googleMapCommunity.setOnCameraChangeListener(null);
+                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(communitiesListModelG.getLatLng(), 12);
                     googleMapCommunity.animateCamera(cameraUpdate);
 
                     setUpMap(communitiesListModelG);
@@ -87,7 +94,6 @@ public class Communitiesfragment extends SupportMapFragment implements GoogleMap
 
 
     }
-
 
     public void setGoogleMapCommunity(CommunitiesListModel data)
     {
@@ -143,6 +149,8 @@ public class Communitiesfragment extends SupportMapFragment implements GoogleMap
     {
         super.onResume();
 
+        SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(getActivity());
+
 
         if (googleMapCommunity == null)
         {
@@ -155,6 +163,26 @@ public class Communitiesfragment extends SupportMapFragment implements GoogleMap
             getActivity().registerReceiver(mReceiver, new IntentFilter(GlobalConstants.UPDATE_MAPTAB));
             mIsReceiverRegistered = true;
         }
+
+
+        if (locationToSearch == null)
+        {
+            try
+            {
+                locationToSearch = new Location("");
+                locationToSearch.setLatitude(Double.parseDouble(sharedPrefHelper.getHomeLocation().get(SharedPrefHelper.HOME_LAT)));
+                locationToSearch.setLongitude(Double.parseDouble(sharedPrefHelper.getHomeLocation().get(SharedPrefHelper.HOME_LNG)));
+
+            }
+            catch (Exception e)
+            {
+                googleMapCommunity.setOnMyLocationChangeListener(Communitiesfragment.this);
+                locationToSearch = null;
+                e.printStackTrace();
+            }
+        }
+
+
     }
 
     @Override
@@ -179,7 +207,7 @@ public class Communitiesfragment extends SupportMapFragment implements GoogleMap
             data.put("long", currentLocation.getLongitude());
             data.put("start", "0");
             data.put("limit", "100");
-            data.put("distance", "50");
+            data.put("distance", "100");
 
 
             new SuperWebServiceG(GlobalConstants.URL + "mynearcommunity", data, new CallBackWebService()
@@ -249,8 +277,8 @@ public class Communitiesfragment extends SupportMapFragment implements GoogleMap
             }
             else
             {
-                googleMapCommunity.setOnMyLocationChangeListener(Communitiesfragment.this);
-                Utills.showToast("No communities available", getActivity(), true);
+//                googleMapCommunity.setOnMyLocationChangeListener(Communitiesfragment.this);
+//                Utills.showToast("No communities available", getActivity(), true);
             }
 
         }
@@ -274,7 +302,7 @@ public class Communitiesfragment extends SupportMapFragment implements GoogleMap
         }
 
 
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(locationToSearch.getLatitude(), locationToSearch.getLongitude()), 9);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(locationToSearch.getLatitude(), locationToSearch.getLongitude()), 12);
         googleMapCommunity.animateCamera(cameraUpdate);
 //        fetchDataNearby(locationToSearch);
 
@@ -364,7 +392,7 @@ public class Communitiesfragment extends SupportMapFragment implements GoogleMap
                 else
                 {
 
-                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(locationToSearch.getLatitude(), locationToSearch.getLongitude()), 9);
+                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(locationToSearch.getLatitude(), locationToSearch.getLongitude()), 12);
                     googleMapCommunity.animateCamera(cameraUpdate);
 
 

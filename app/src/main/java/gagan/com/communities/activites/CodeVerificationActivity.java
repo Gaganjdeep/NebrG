@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import gagan.com.communities.R;
 import gagan.com.communities.entercode.CodeInput;
 import gagan.com.communities.utills.GlobalConstants;
+import gagan.com.communities.utills.Utills;
 import gagan.com.communities.webserviceG.CallBackWebService;
 import gagan.com.communities.webserviceG.SuperWebServiceG;
 
@@ -58,7 +59,7 @@ public class CodeVerificationActivity extends BaseActivityG
 
             for (int i = 0; i < codeView.getCode().length; i++)
             {
-                code.append(codeView.getCode()[i]) ;
+                code.append(codeView.getCode()[i]);
             }
 
 
@@ -88,6 +89,10 @@ public class CodeVerificationActivity extends BaseActivityG
 
                             startActivity(new Intent(CodeVerificationActivity.this, MainTabActivity.class));
                             finish();
+                        }
+                        else
+                        {
+                            Utills.showToast("Wrong OTP entered.", CodeVerificationActivity.this, true);
                         }
                     }
                     catch (Exception e)

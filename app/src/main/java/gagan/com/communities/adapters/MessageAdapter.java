@@ -87,6 +87,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
                         .class);
                 intnt.putExtra("id", data.getRecipient_userid());
                 intnt.putExtra("pic", data.getProfile_pic());
+                intnt.putExtra("name", data.getUsername());
                 con.startActivity(intnt);
             }
         });

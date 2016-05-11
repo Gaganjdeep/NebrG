@@ -54,6 +54,8 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
     LoginButton     loginButton;
 
 
+    private String ProfilePic = "";
+
     //    =====google +
     private GoogleApiClient mGoogleApiClient;
     private int             mSignInProgress;
@@ -128,6 +130,8 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
                                 return;
                             }
 
+
+                            ProfilePic = fb_profile_image;
 
                             JSONObject data = new JSONObject();
                             data.put("email", loginData.get("email"));
@@ -365,7 +369,24 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
                 userDataModel.setLocation(jsonarrayData.getJSONObject(0).optString("location"));
                 userDataModel.setPassword(jsonarrayData.getJSONObject(0).optString("password"));
                 userDataModel.setProfession(jsonarrayData.getJSONObject(0).optString("profession"));
-                userDataModel.setProfile_pic(jsonarrayData.getJSONObject(0).optString("profile_pic"));
+
+
+                if (sharedPrefHelper.getlogInFrom().equals(SharedPrefHelper.loginWith.manual.toString()))
+                {
+                    userDataModel.setProfile_pic(jsonarrayData.getJSONObject(0).optString("profile_pic"));
+                }
+                else
+                {
+                    if (jsonarrayData.getJSONObject(0).optString("is_social_uploaded").equals("1"))
+                    {
+                        userDataModel.setProfile_pic(jsonarrayData.getJSONObject(0).optString("profile_pic"));
+                    }
+                    else
+                    {
+                        userDataModel.setProfile_pic(ProfilePic);
+                    }
+                }
+
                 userDataModel.setuId(jsonarrayData.getJSONObject(0).optString("uId"));
 
                 sharedPrefHelper.setUserId(jsonMainResult.optString("userId"));
@@ -376,7 +397,13 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
 
                 SharedPrefHelper.write(LoginActivity.this, userDataModel);
 
-                sharedPrefHelper.setHomeLocation(jsonarrayData.getJSONObject(0).optString("location"), jsonarrayData.getJSONObject(0).optString("home_lat") + "", jsonarrayData.getJSONObject(0).optString("home_long") + "");
+
+                String location = jsonMainResult.optString("pincode_society").equals("null") ? jsonarrayData.getJSONObject(0).optString("location") : jsonMainResult.optString("pincode_society");
+
+                sharedPrefHelper.setEmailVerified(true);
+                sharedPrefHelper.setHomeLocation(location, jsonarrayData.getJSONObject(0).optString("home_lat") + "", jsonarrayData.getJSONObject(0).optString("home_long") + "");
+
+
                 if (sharedPrefHelper.getlogInFrom().equals(SharedPrefHelper.loginWith.manual.toString()))
                 {
 
@@ -622,7 +649,7 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
             data.put("home_lat", locationCurrent.getLatitude() + "");
             data.put("home_long", locationCurrent.getLongitude() + "");
 
-
+            ProfilePic = currentUser.getImage().getUrl();
             sharedPrefHelper.logInWith(SharedPrefHelper.loginWith.google.toString());
 
 

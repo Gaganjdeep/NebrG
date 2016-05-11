@@ -172,8 +172,14 @@ public class SettingsActivity extends BaseActivityG
                                     Utills.show_dialog_msg(SettingsActivity.this, "We are yet to enable our service in your area, however you can the view posts", null);
                                 }
 
+                                String location;
+
+
+                                location=jsonMainResult.optString("pincode_society").equals("null") ?name.toString() :jsonMainResult.optString("pincode_society");
+
+
                                 sharedPrefHelper.setPincodeStatus(jsonMainResult.optString("pincode_status").equals("1"));
-                                sharedPrefHelper.setHomeLocation(name.toString(), place.getLatLng().latitude + "", place.getLatLng().longitude + "");
+                                sharedPrefHelper.setHomeLocation(location, place.getLatLng().latitude + "", place.getLatLng().longitude + "");
 
                                 tvCurrentLocation.setText(name);
                             }

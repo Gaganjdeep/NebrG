@@ -13,15 +13,20 @@ import android.text.Html;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gagan.com.communities.R;
 import gagan.com.communities.activites.fragment.FollowersFragment;
 import gagan.com.communities.activites.fragment.MessageFragment;
 import gagan.com.communities.activites.fragment.PostProfileFragment;
+import gagan.com.communities.adapters.FollowerFollowingAdapter;
 import gagan.com.communities.models.UserDataModel;
 import gagan.com.communities.utills.CallBackG;
 import gagan.com.communities.utills.GlobalConstants;
@@ -31,7 +36,8 @@ import gagan.com.communities.utills.Utills;
 import gagan.com.communities.webserviceG.CallBackWebService;
 import gagan.com.communities.webserviceG.SuperWebServiceG;
 
-public class OtherProfileActivity extends BaseActivityG {
+public class OtherProfileActivity extends BaseActivityG
+{
 
     TabLayout tabLayoutG;
     ViewPager viewPagerG;
@@ -41,10 +47,11 @@ public class OtherProfileActivity extends BaseActivityG {
     TextView tvUserName, tvProfession, tvLocation;
 
     AppBarLayout appbar;
-    String user_id="";
+    String user_id = "";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
@@ -52,10 +59,11 @@ public class OtherProfileActivity extends BaseActivityG {
         settingActionBar();
 
 
-        user_id=getIntent().getStringExtra("user_id");
+        user_id = getIntent().getStringExtra("user_id");
 
         viewPagerG = (ViewPager) findViewById(R.id.viewpager);
-        if (viewPagerG != null) {
+        if (viewPagerG != null)
+        {
             setupViewPager(viewPagerG);
         }
 
@@ -74,19 +82,101 @@ public class OtherProfileActivity extends BaseActivityG {
 
     @Override
     void findViewByID()
-    {   imgvProfilePic = (RoundedCornersGaganImg) findViewById(R.id.imgvProfilePic);
+    {
+        imgvProfilePic = (RoundedCornersGaganImg) findViewById(R.id.imgvProfilePic);
         tvLocation = (TextView) findViewById(R.id.tvLocation);
         tvUserName = (TextView) findViewById(R.id.tvUserName);
         tvProfession = (TextView) findViewById(R.id.tvProfession);
         appbar = (AppBarLayout) findViewById(R.id.appbar);
 
         hitWebserviceG();
+
+        ifFollowedByMe();
     }
+
+
+    private void ifFollowedByMe()
+    {
+        try
+        {
+
+            JSONObject data = new JSONObject();
+            data.put("user_id", sharedPrefHelper.getUserId());
+            data.put("f_status", "2");  // 1 for followers 2 for following.
+
+
+            new SuperWebServiceG(GlobalConstants.URL + "getfollowerList", data, new CallBackWebService()
+            {
+                @Override
+                public void webOnFinish(String output)
+                {
+                    try
+                    {
+                        JSONObject jsonMain = new JSONObject(output);
+
+                        JSONObject jsonMainResult = jsonMain.getJSONObject("result");
+
+                        if (jsonMainResult.getString("code").contains("200"))
+                        {
+
+
+                            JSONArray jsonarrayData;
+//
+//                            if (getArguments().getString("follower").equals("1"))
+//                            {
+//                                jsonarrayData = jsonMainResult.getJSONArray("followers");
+//                            }
+//                            else
+//                            {
+                            jsonarrayData = jsonMainResult.getJSONArray("following");
+//                            }
+
+
+                            if (jsonarrayData == null)
+                            {
+                                return;
+                            }
+
+                            for (int g = 0; g < jsonarrayData.length(); g++)
+                            {
+                                JSONObject jobj = jsonarrayData.optJSONObject(g);
+//                                UserDataModel homemodel = new UserDataModel();
+//                                homemodel.setProfile_pic(jobj.optString("profile_pic"));
+//                                homemodel.setuId(jobj.optString("uId"));
+//                                homemodel.setName(jobj.optString("name"));
+//                                homemodel.setProfession(jobj.optString("profession"));
+
+                                if(user_id.equals(jobj.optString("uId")))
+                                {
+                                    FOLLOW="Un Follow";
+                                    FOLLOW_UNFOLLOW="1";
+                                   break;
+                                }
+                            }
+
+                        }
+
+
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+            }).execute();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     void hitWebserviceG()
     {
-        try {
+        try
+        {
 
 
             showProgressDialog();
@@ -95,18 +185,22 @@ public class OtherProfileActivity extends BaseActivityG {
             data.put("userid", user_id);
 //            data.put("f_user_id", user_id);
 
-            new SuperWebServiceG(GlobalConstants.URL + "userProfile", data, new CallBackWebService() {
+            new SuperWebServiceG(GlobalConstants.URL + "userProfile", data, new CallBackWebService()
+            {
                 @Override
-                public void webOnFinish(String output) {
+                public void webOnFinish(String output)
+                {
                     cancelDialog();
 
-                    try {
+                    try
+                    {
 
                         JSONObject jsonMain = new JSONObject(output);
 
                         JSONObject jsonMainResult = jsonMain.getJSONObject("result");
 
-                        if (jsonMainResult.getString("code").contains("20") && !jsonMainResult.getString("code").equals("201")) {
+                        if (jsonMainResult.getString("code").contains("20") && !jsonMainResult.getString("code").equals("201"))
+                        {
 
                             JSONObject jsonarrayData = jsonMainResult.getJSONObject("userinfo");
 
@@ -137,7 +231,7 @@ public class OtherProfileActivity extends BaseActivityG {
 
                                         Bitmap         bmp            = output;
                                         BitmapDrawable bitmapDrawable = new BitmapDrawable(bmp);
-                                        bitmapDrawable.setGravity(Gravity.CENTER| Gravity.FILL);
+                                        bitmapDrawable.setGravity(Gravity.CENTER | Gravity.FILL);
                                         appbar.setBackground(bitmapDrawable);
                                     }
                                     catch (Exception e)
@@ -150,14 +244,11 @@ public class OtherProfileActivity extends BaseActivityG {
                         }
 
 
-
-
-
                     }
-                    catch (Exception e) {
+                    catch (Exception e)
+                    {
                         e.printStackTrace();
                     }
-
 
 
                 }
@@ -165,12 +256,14 @@ public class OtherProfileActivity extends BaseActivityG {
 
 
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-    private void settingActionBar() {
+    private void settingActionBar()
+    {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -178,40 +271,85 @@ public class OtherProfileActivity extends BaseActivityG {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         getMenuInflater().inflate(R.menu.other_profile_menu, menu);
 
-        menu.findItem(R.id.follow).setTitle(Html.fromHtml("<font color='#0000'>Follow</font>"));
+        menu.findItem(R.id.follow).setTitle(Html.fromHtml("<font color='#0000'>" + FOLLOW + "</font>"));
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()) {
+    private String FOLLOW = "Follow";
+
+
+    private String FOLLOW_UNFOLLOW = "0";
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+
+        switch (item.getItemId())
+        {
             case R.id.follow:
 
 
-                try {
+                try
+                {
                     showProgressDialog();
 
                     JSONObject data = new JSONObject();
                     data.put("user_id", sharedPrefHelper.getUserId());
                     data.put("f_user_id", user_id);
-                    data.put("remove", "0");
+                    data.put("remove", FOLLOW_UNFOLLOW);
 
 
-                    new SuperWebServiceG(GlobalConstants.URL + "managefollower", data, new CallBackWebService() {
+                    new SuperWebServiceG(GlobalConstants.URL + "managefollower", data, new CallBackWebService()
+                    {
                         @Override
-                        public void webOnFinish(String output) {
+                        public void webOnFinish(String output)
+                        {
+                            try
+                            {
+                                cancelDialog();
 
+                                JSONObject jsonMain = new JSONObject(output);
 
-                            cancelDialog();
+                                JSONObject jsonMainResult = jsonMain.getJSONObject("result");
+
+                                if (jsonMainResult.getString("code").equals("200"))
+                                {
+                                    if (FOLLOW_UNFOLLOW.equals("0"))
+                                    {
+                                        Utills.showToast("Followed", OtherProfileActivity.this, true);
+                                        FOLLOW = "Un Follow";
+                                        FOLLOW_UNFOLLOW = "1";
+                                    }
+                                    else
+                                    {
+                                        Utills.showToast("Un Followed", OtherProfileActivity.this, true);
+                                        FOLLOW = "Follow";
+                                        FOLLOW_UNFOLLOW = "0";
+                                    }
+                                    supportInvalidateOptionsMenu();
+                                }
+                                else
+                                {
+                                    Utills.showToast(jsonMainResult.optString("status"), OtherProfileActivity.this, true);
+                                }
+
+                            }
+                            catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
 
                         }
                     }).execute();
                 }
-                catch (Exception e) {
+                catch (Exception e)
+                {
                     e.printStackTrace();
                 }
 
@@ -223,7 +361,8 @@ public class OtherProfileActivity extends BaseActivityG {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setupViewPager(ViewPager viewPager) {
+    private void setupViewPager(ViewPager viewPager)
+    {
         FollowersFragment myFollowers = new FollowersFragment();
         Bundle            bundleall   = new Bundle();
         bundleall.putString("follower", "1");
@@ -238,9 +377,8 @@ public class OtherProfileActivity extends BaseActivityG {
         myFollowings.setArguments(bundleOther);
 
 
-
-        PostProfileFragment myPost = new PostProfileFragment();
-        Bundle            bundlePost  = new Bundle();
+        PostProfileFragment myPost     = new PostProfileFragment();
+        Bundle              bundlePost = new Bundle();
         bundlePost.putString("userid", user_id);
         myPost.setArguments(bundleOther);
 
@@ -256,7 +394,8 @@ public class OtherProfileActivity extends BaseActivityG {
         viewPager.setOffscreenPageLimit(2);
     }
 
-    public void setupTabLayout(TabLayout tabLayout, final ViewPager mViewpager) {
+    public void setupTabLayout(TabLayout tabLayout, final ViewPager mViewpager)
+    {
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
 //        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
         tabLayout.setupWithViewPager(mViewpager);

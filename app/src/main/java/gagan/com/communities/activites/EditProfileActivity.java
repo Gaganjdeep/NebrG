@@ -126,7 +126,10 @@ public class EditProfileActivity extends BaseActivityG
         edPhoneNumber.setText(sharedPrefHelper.getUserPhone());
         UserDataModel userData = SharedPrefHelper.read(EditProfileActivity.this);
         imgvProfilePic.setRadius(120);
+
         imgvProfilePic.setImageUrl(EditProfileActivity.this, userData.getProfile_pic());
+
+
         edName.setText(userData.getName());
         edprofession.setText(userData.getProfession());
 
@@ -228,6 +231,12 @@ public class EditProfileActivity extends BaseActivityG
             if (!Base64Image.contains("."))
             {
                 data.put("image", Base64Image);
+
+
+                if(!sharedPrefHelper.getlogInFrom().equals(SharedPrefHelper.loginWith.manual.toString()))
+                {
+                    data.put("is_social_uploaded", "1");
+                }
             }
 
 
@@ -236,6 +245,9 @@ public class EditProfileActivity extends BaseActivityG
                 data.put("home_lat", selectedLocationLatlng.latitude + "");
                 data.put("home_long", selectedLocationLatlng.longitude + "");
             }
+
+
+
 
 
             data.put("gender", edGender.getText().toString().trim());
@@ -293,11 +305,23 @@ public class EditProfileActivity extends BaseActivityG
                 sharedPrefHelper.setUserPhone(edPhoneNumber.getText().toString());
 
 
+
                 sharedPrefHelper.setPincodeStatus(jsonMainResult.optString("pincode_status").equals("1"));
 
                 if (selectedLocationLatlng != null)
                 {
-                    sharedPrefHelper.setHomeLocation(edLocation.getText().toString(), selectedLocationLatlng.latitude + "", selectedLocationLatlng.longitude + "");
+
+//                    "pincode_exist": "no",
+//                        "pincode_status": 0,
+//                        "userId": "12",
+//                        "pincode_city": null,
+//                        "pincode_society": null,
+                        String location;
+
+
+                     location=jsonMainResult.optString("pincode_society").equals("null") ?jsonarrayData.getJSONObject(0).optString("location") :jsonMainResult.optString("pincode_society");
+
+                    sharedPrefHelper.setHomeLocation(location, selectedLocationLatlng.latitude + "", selectedLocationLatlng.longitude + "");
                 }
 
 

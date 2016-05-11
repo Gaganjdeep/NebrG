@@ -1,6 +1,9 @@
 package gagan.com.communities.activites;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -28,6 +31,7 @@ import gagan.com.communities.activites.fragment.HomeFragment;
 import gagan.com.communities.adapters.ChatMsgAdapter;
 import gagan.com.communities.models.MsgDataModel;
 import gagan.com.communities.models.UserDataModel;
+import gagan.com.communities.utills.EndlessRecyclerOnScrollListener;
 import gagan.com.communities.utills.GlobalConstants;
 import gagan.com.communities.utills.SharedPrefHelper;
 import gagan.com.communities.webserviceG.CallBackWebService;
@@ -46,7 +50,7 @@ public class ChatActivity extends BaseActivityG
 
     ProgressBar progressBar;
 
-    String otherUserID = "", profilePicOther = "";
+    String otherUserID = "", profilePicOther = "", otherUserName = "";
 
     UserDataModel userData;
     Intent        intnt;
@@ -54,6 +58,7 @@ public class ChatActivity extends BaseActivityG
 
     LinearLayout layoutAddRecipients;
     SimpleDateFormat sdf = new SimpleDateFormat(GlobalConstants.SEVER_FORMAT);
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -96,7 +101,7 @@ public class ChatActivity extends BaseActivityG
         layoutAddRecipients.setVisibility(View.GONE);
 
         profilePicOther = intnt.getStringExtra("pic");
-
+        otherUserName = intnt.getStringExtra("name");
         userData = SharedPrefHelper.read(ChatActivity.this);
         hitWebserviceG();
     }
@@ -146,9 +151,24 @@ public class ChatActivity extends BaseActivityG
 
 
         recyclerList.setAdapter(chatMsgAdapter);
-
-
+        endlessRecyclerOnScrollListener = new EndlessRecyclerOnScrollListener(linearLayoutManager)
+        {
+            @Override
+            public void onLoadMore(int current_page)
+            {
+                if (listData.size() > 14)
+                {
+                    hitWebserviceG();
+                }
+            }
+        };
+        recyclerList.setOnScrollListener(endlessRecyclerOnScrollListener);
     }
+
+    EndlessRecyclerOnScrollListener endlessRecyclerOnScrollListener;
+    int start   = 0;
+    int limit   = 15;
+    int maxSize = 15;
 
     @Override
     void hitWebserviceG()
@@ -162,6 +182,8 @@ public class ChatActivity extends BaseActivityG
             JSONObject data = new JSONObject();
             data.put("sender_userid", sharedPrefHelper.getUserId());
             data.put("recipient_userid", otherUserID);
+            data.put("start", start);
+            data.put("limit", limit);
 
             new SuperWebServiceG(
                     GlobalConstants.URL + "usermessage", data, new CallBackWebService()
@@ -182,7 +204,19 @@ public class ChatActivity extends BaseActivityG
                         {
 
 
+                            if (start == 0)
+                            {
+                                listData.clear();
+                            }
+
+
                             JSONArray jsonarrayData = jsonMainResult.getJSONArray("message");
+
+                            if (jsonarrayData.length() > 0)
+                            {
+                                start = limit;
+                                limit = maxSize + limit;
+                            }
 
                             for (int g = 0; g < jsonarrayData.length(); g++)
                             {
@@ -196,14 +230,18 @@ public class ChatActivity extends BaseActivityG
                                 String username         = jobj.optString("username");
 
 
-                                String profile_pic = sender_userid.equals(userData.getuId()) ? userData.getProfile_pic() : profilePicOther;
-
-                                listData.add(new MsgDataModel(false,id, sender_userid, recipient_userid, message, created_at, username, profile_pic));
+                                String       profile_pic  = sender_userid.equals(userData.getuId()) ? userData.getProfile_pic() : profilePicOther;
+                                MsgDataModel msgDataModel = new MsgDataModel(false, id, sender_userid, recipient_userid, message, created_at, username, profile_pic);
+                                if (!listData.contains(msgDataModel))
+                                {
+                                    listData.add(msgDataModel);
+                                }
 
                             }
 
 
 //                            Collections.reverse(listData);
+
 
                             chatMsgAdapter.notifyDataSetChanged();
 
@@ -274,21 +312,20 @@ public class ChatActivity extends BaseActivityG
                             String recipient_userid = otherUserID;
                             String message          = edComment.getText().toString();
 
-                            String created_at       = sdf.format(new Date(System.currentTimeMillis()));
+                            String created_at = sdf.format(new Date(System.currentTimeMillis()));
 
 
-
-                            String username         = userData.getName();
+                            String username = userData.getName();
 
 
                             String profile_pic = userData.getProfile_pic();
 
-                            listData.add(0, new MsgDataModel(true,id, sender_userid, recipient_userid, message, created_at, username, profile_pic));
+                            listData.add(0, new MsgDataModel(true, id, sender_userid, recipient_userid, message, created_at, username, profile_pic));
 
 
                             edComment.setText("");
 
-
+                            endlessRecyclerOnScrollListener.setPreviousTotal();
                             chatMsgAdapter.notifyDataSetChanged();
 
 
@@ -324,80 +361,69 @@ public class ChatActivity extends BaseActivityG
         intnt.putExtra("title", "Select User");
         startActivity(intnt);
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //  @Override
-    // public void onResume()
-    // {
-    //     super.onResume();
-
-    //     if (!mIsReceiverRegistered)
-    //     {
-    //         if (mReceiver == null)
-    //             mReceiver = new UpdateMessageListReceiver();
-    //         getActivity().registerReceiver(mReceiver, new IntentFilter(GlobalConstants.UPDATE_MSG_FRAGMENT));
-    //         mIsReceiverRegistered = true;
-    //     }
-    // }
 
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
+        if (!mIsReceiverRegistered)
+        {
+            if (mReceiver == null)
+                mReceiver = new UpdateMessageListReceiver();
+            registerReceiver(mReceiver, new IntentFilter(GlobalConstants.UPDATE_CHAT));
+            mIsReceiverRegistered = true;
+        }
+    }
 
 
-    // @Override
-    // public void onDestroy()
-    // {
-    //     if (mIsReceiverRegistered)
-    //     {
-    //         getActivity().unregisterReceiver(mReceiver);
-    //         mReceiver = null;
-    //         mIsReceiverRegistered = false;
-    //     }
-    //     super.onDestroy();
-    // }
-
-   
-    // UpdateMessageListReceiver mReceiver;
-    // private boolean mIsReceiverRegistered = false;
+    @Override
+    public void onDestroy()
+    {
+        if (mIsReceiverRegistered)
+        {
+            unregisterReceiver(mReceiver);
+            mReceiver = null;
+            mIsReceiverRegistered = false;
+        }
+        super.onDestroy();
+    }
 
 
+    UpdateMessageListReceiver mReceiver;
+    private boolean mIsReceiverRegistered = false;
 
 
+    private class UpdateMessageListReceiver extends BroadcastReceiver
+    {
 
-    // private class UpdateMessageListReceiver extends BroadcastReceiver
-    // {
+        @Override
+        public void onReceive(Context context, Intent intent)
+        {
 
-    //     @Override
-    //     public void onReceive(Context context, Intent intent)
-    //     {
 
-    //         hitWebserviceG();
-    //     }
-    // }
+//            if (intent.getStringExtra("message_id").equals(otherUserID))
+//            {
+//                String id               = intent.getString("message_id");
+//                String sender_userid    = otherUserID;
+//                String recipient_userid = sharedPrefHelper.getUserId();
+//                String message          = intent.getString("message_id");
+//
+//                String created_at = sdf.format(new Date(System.currentTimeMillis()));
+//
+//
+//                String username = otherUserName;
+//
+//
+//                String profile_pic = profilePicOther;
+//
+//                listData.add(0, new MsgDataModel(true, id, sender_userid, recipient_userid, message, created_at, username, profile_pic));
+//            }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+            //         hitWebserviceG();
+        }
+    }
+
+
 }

@@ -221,6 +221,8 @@
                 android:onClick="fbLogIn"
                 />
                 <com.facebook.login.widget.LoginButton
+
+                    android:padding="7dp"
                     android:id="@+id/login_button"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
@@ -233,6 +235,7 @@
 
 
                 <ImageButton
+                    android:padding="7dp"
                     android:layout_marginLeft="10dp"
                     android:id="@+id/ingbtn_googlelogin"
                     android:layout_width="50dp"

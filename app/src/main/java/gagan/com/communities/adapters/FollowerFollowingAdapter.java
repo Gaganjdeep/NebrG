@@ -104,6 +104,7 @@ public class FollowerFollowingAdapter extends RecyclerView.Adapter<FollowerFollo
                                     .class);
                             intnt.putExtra("id", data.getuId());
                             intnt.putExtra("pic", data.getProfile_pic());
+                            intnt.putExtra("name", data.getName());
                             con.startActivity(intnt);
 //                                ((Activity)con).finish();
 
