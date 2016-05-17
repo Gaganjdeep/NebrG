@@ -113,7 +113,7 @@ public class FollowerFollowingAdapter extends RecyclerView.Adapter<FollowerFollo
             );
 //            }
         }
-        else if (con instanceof ProfileActivity || con instanceof OtherProfileActivity)
+        else if (con instanceof ProfileActivity || con instanceof OtherProfileActivity || con instanceof ShowFragmentActivity)
         {
             holder.view.setTag(currentData.getuId());
             holder.view.setOnClickListener(

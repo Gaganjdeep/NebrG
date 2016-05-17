@@ -41,6 +41,8 @@ public class SignUp extends CurrentLocActivityG
     Button btnMaleS, btnFemaleS;
 
 
+
+
     String maleFemale = "male";
 
     Location locationCurrent = null;

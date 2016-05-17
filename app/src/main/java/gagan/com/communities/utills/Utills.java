@@ -7,7 +7,10 @@ import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.view.Gravity;
 import android.view.View;
@@ -25,6 +28,7 @@ import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 import java.util.Locale;
 
 import gagan.com.communities.R;
@@ -371,6 +375,54 @@ public class Utills
         valueAnimator.setInterpolator(new DecelerateInterpolator());
         valueAnimator.setDuration(duration);
         valueAnimator.start();
+    }
+
+
+    public static void getLocationName(final Context context, final LatLng latLng, final CallBackG<String> callBackG)
+    {
+
+        new AsyncTask<Void, Void, String>()
+        {
+
+            @Override
+            protected String doInBackground(Void... params)
+            {
+                try
+                {
+
+                    Geocoder      geo       = new Geocoder(context, Locale.getDefault());
+                    List<Address> addresses = geo.getFromLocation(latLng.latitude, latLng.longitude, 1);
+                    if (addresses.isEmpty())
+                    {
+
+                        return "Unknown Location";
+                    }
+                    else
+                    {
+                        if (addresses.size() > 0)
+                        {
+                            return addresses.get(0).getLocality();
+
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+                return "Unknown Location";
+            }
+
+            @Override
+            protected void onPostExecute(String s)
+            {
+
+                callBackG.OnFinishG(s);
+                super.onPostExecute(s);
+            }
+        }.execute();
+
+
     }
 
 

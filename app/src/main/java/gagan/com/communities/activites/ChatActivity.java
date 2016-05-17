@@ -280,7 +280,7 @@ public class ChatActivity extends BaseActivityG
             }
 
 
-//            showProgressDialog();
+            showProgressDialog();
             view.setEnabled(false);
 
             JSONObject data = new JSONObject();
@@ -295,7 +295,7 @@ public class ChatActivity extends BaseActivityG
                 public void webOnFinish(String output)
                 {
 
-//                    cancelDialog();
+                    cancelDialog();
 
                     try
                     {
@@ -401,6 +401,13 @@ public class ChatActivity extends BaseActivityG
         @Override
         public void onReceive(Context context, Intent intent)
         {
+
+
+            start = 0;
+            limit = 15;
+            maxSize = 15;
+
+            hitWebserviceG();
 
 
 //            if (intent.getStringExtra("message_id").equals(otherUserID))

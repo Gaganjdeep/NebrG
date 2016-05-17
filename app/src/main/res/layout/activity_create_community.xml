@@ -98,9 +98,9 @@
                         android:background="@color/blue_grey"/>
 
                     <ImageView
-                        android:layout_gravity="center_vertical"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginLeft="7dp"
                         android:src="@mipmap/drop_btn"/>
                 </LinearLayout>
@@ -111,16 +111,45 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="20dp"
                 android:text="Locate the community"
                 android:textColor="@color/button_pink"
                 android:textStyle="bold"/>
 
+            <LinearLayout
+                android:id="@+id/layoutAddLoc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/grey_stroke"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/tvLocation"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:text="Select Location"
+                    android:textColorHint="@color/white"
+                    />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:src="@mipmap/ic_location"
+                    />
+
+            </LinearLayout>
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp">
+                android:layout_height="200dp"
+                android:visibility="gone">
 
                 <fragment
                     android:id="@+id/map"
@@ -144,14 +173,14 @@
             <EditText
                 android:id="@+id/edDescription"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="90dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/grey_stroke"
                 android:gravity="left"
                 android:hint="Type your text"
                 android:inputType="textCapSentences"
-                android:minLines="2"
+                android:minLines="5"
                 android:padding="10dp"
                 android:textColor="@color/black"/>
 
@@ -190,7 +219,6 @@
 
 
             <LinearLayout
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -198,7 +226,8 @@
                 android:background="@color/lt_grey"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="10dp">
+                android:padding="10dp"
+                android:visibility="gone">
 
 
                 <Button

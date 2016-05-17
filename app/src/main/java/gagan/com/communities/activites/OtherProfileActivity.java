@@ -150,6 +150,7 @@ public class OtherProfileActivity extends BaseActivityG
                                 {
                                     FOLLOW="Un Follow";
                                     FOLLOW_UNFOLLOW="1";
+                                    supportInvalidateOptionsMenu();
                                    break;
                                 }
                             }

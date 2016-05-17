@@ -95,7 +95,7 @@ public class PostProfileFragment extends BaseFragmentG
                 public void webOnFinish(String output)
                 {
 
-                    processOutput(output,false);
+                    processOutput(output, false);
 
                 }
             }).execute();
@@ -127,7 +127,7 @@ public class PostProfileFragment extends BaseFragmentG
                 public void webOnFinish(String output)
                 {
 
-                    processOutput(output,true);
+                    processOutput(output, true);
 
                 }
             }).execute();
@@ -143,7 +143,7 @@ public class PostProfileFragment extends BaseFragmentG
     List<HomeModel> listHome;
 
     //   ==============process output++++
-    private void processOutput(String response,boolean Iscommunitypost)
+    private void processOutput(String response, boolean Iscommunitypost)
     {
 
         try
@@ -156,16 +156,16 @@ public class PostProfileFragment extends BaseFragmentG
             if (jsonMainResult.getString("code").contains("20") && !jsonMainResult.getString("code").equals("201"))
             {
 
-                JSONArray jsonarrayData ;
+                JSONArray jsonarrayData;
 
 
                 if (Iscommunitypost)
                 {
-                    jsonarrayData  = jsonMainResult.getJSONArray("groupData");
+                    jsonarrayData = jsonMainResult.getJSONArray("groupData");
                 }
                 else
                 {
-                    jsonarrayData  = jsonMainResult.getJSONArray("feedData");
+                    jsonarrayData = jsonMainResult.getJSONArray("feedData");
                 }
 
                 for (int g = 0; g < jsonarrayData.length(); g++)
@@ -192,11 +192,23 @@ public class PostProfileFragment extends BaseFragmentG
                     homemodel.setAnon_user(jobj.optString("anon_user").equals("1"));
 
 
-                    double lat = Double.parseDouble(jobj.optString("lat"));
-                    double lng = Double.parseDouble(jobj.optString("lng"));
+                    if (jobj.optString("tag_status").equals("1"))
+                    {
+                        double lat = Double.parseDouble(jobj.optString("tag_lat"));
+                        double lng = Double.parseDouble(jobj.optString("tag_long"));
 
-                    homemodel.setLatLng(new LatLng(lat, lng));
+                        homemodel.setLatLng(new LatLng(lat, lng));
+                    }
+                    else
+                    {
+                        homemodel.setLatLng(new LatLng(0, 0));
+                    }
 
+
+//                    "tag_lat": "0",
+//                        "tag_long": "0",
+//                        "tag_pincode": "0",
+//                        "tag_status": "0",
 
 
                     listHome.add(homemodel);

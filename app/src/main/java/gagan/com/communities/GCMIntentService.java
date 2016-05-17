@@ -13,9 +13,6 @@ import android.util.Log;
 
 import com.google.android.gcm.GCMBaseIntentService;
 
-import org.json.JSONObject;
-
-import gagan.com.communities.R;
 import gagan.com.communities.activites.SplashActivity;
 import gagan.com.communities.utills.GlobalConstants;
 
@@ -107,17 +104,15 @@ public class GCMIntentService extends GCMBaseIntentService
 
     }
 
-    public static boolean infoUpdated = false;
 
     @Override
     protected void onMessage(Context context, Intent intent)
     {
         try
         {
-
             bun = intent.getExtras();
             final String message = intent.getStringExtra("message");
-            Log.e("++++GCM message++++", message);
+//            Log.e("++++GCM message++++", message);
 
 
 //            {"message":"You have successfully liked the post title: \"for liki dislike test post\"",
@@ -136,6 +131,7 @@ public class GCMIntentService extends GCMBaseIntentService
         }
         try
         {
+            sendBroadcast(new Intent(GlobalConstants.UPDATE_CHAT));
             sendBroadcast(new Intent(GlobalConstants.UPDATE_MSG_FRAGMENT));
         }
         catch (Exception e)

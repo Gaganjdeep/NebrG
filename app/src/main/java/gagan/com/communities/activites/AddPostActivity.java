@@ -156,12 +156,14 @@ public class AddPostActivity extends BaseActivityG
 //            data.put("post_pincode", );
             if (tvlocation.getTag() != null)
             {
-                data.put("lat", ((LatLng) tvlocation.getTag()).latitude + "");
-                data.put("lng", ((LatLng) tvlocation.getTag()).longitude + "");
+                data.put("tag_lat", ((LatLng) tvlocation.getTag()).latitude + "");
+                data.put("tag_long", ((LatLng) tvlocation.getTag()).longitude + "");
                 data.put("location", tvlocation.getText().toString().trim());
             }
             else
             {
+//                data.put("lat", "0");
+//                data.put("lng", "0");
                 data.put("location", dataUser.getHome_society() + "");
             }
 
@@ -189,9 +191,14 @@ public class AddPostActivity extends BaseActivityG
 
                         if (jsonMainResult.getString("code").contains("200"))
                         {
+                            Utills.showToast("Post added successfully.", AddPostActivity.this, true);
                             finish();
                         }
-                        Utills.showToast(jsonMainResult.getString("status"), AddPostActivity.this, true);
+                        else
+                        {
+                            Utills.showToast(jsonMainResult.getString("status"), AddPostActivity.this, true);
+                        }
+
                     }
                     catch (Exception e)
                     {
@@ -272,6 +279,7 @@ public class AddPostActivity extends BaseActivityG
                 final CharSequence address = place.getAddress();
 
 
+
                 tvlocation.setVisibility(View.VISIBLE);
                 tvlocation.setText(name);
 
@@ -299,12 +307,12 @@ public class AddPostActivity extends BaseActivityG
 //                        Base64String = BitmapDecoderG.getBytesImage(AddPostActivity.this, uri);
 
 
-                        Picasso.with(AddPostActivity.this).load(uri.toString()).centerInside().resize(640,300).into(imgImageSend, new Callback()
+                        Picasso.with(AddPostActivity.this).load(uri.toString()).centerInside().resize(640, 300).into(imgImageSend, new Callback()
                         {
                             @Override
                             public void onSuccess()
                             {
-                                Base64String = BitmapDecoderG.getBytesImageBItmap(AddPostActivity.this, ((BitmapDrawable)imgImageSend.getDrawable()).getBitmap());
+                                Base64String = BitmapDecoderG.getBytesImageBItmap(AddPostActivity.this, ((BitmapDrawable) imgImageSend.getDrawable()).getBitmap());
                             }
 
                             @Override

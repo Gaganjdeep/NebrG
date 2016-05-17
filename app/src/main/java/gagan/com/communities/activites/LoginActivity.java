@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -43,7 +44,7 @@ import gagan.com.communities.webserviceG.SuperWebServiceG;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends CurrentLocActivityG implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
+public class LoginActivity extends BaseActivityG implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
 
 {
 
@@ -70,13 +71,13 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
 
 
     //======================
-    Location locationCurrent = null;
+//    Location locationCurrent = null;
 
-    @Override
-    public void getCurrentLocationG(Location currentLocation)
-    {
-        locationCurrent = currentLocation;
-    }
+//    @Override
+//    public void getCurrentLocationG(Location currentLocation)
+//    {
+//        locationCurrent = currentLocation;
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -106,6 +107,12 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
                         try
                         {
 
+                            if (DeviceID.isEmpty())
+                            {
+                                getRegisterationID();
+                                return;
+                            }
+
                             String fb_profile_image = "http://graph.facebook.com/" + object.optString("id") + "/picture";
 //                                editor.commit();
                             HashMap<String, String> loginData = new HashMap<String, String>();
@@ -124,11 +131,11 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
                             loginData.put("fb_id", object.getString("id"));
 
 
-                            if (locationCurrent == null)
-                            {
-                                displayLocation();
-                                return;
-                            }
+//                            if (locationCurrent == null)
+//                            {
+//                                displayLocation();
+//                                return;
+//                            }
 
 
                             ProfilePic = fb_profile_image;
@@ -142,9 +149,11 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
                             data.put("fb_profile_pic", fb_profile_image);
                             data.put("name", loginData.get("full_name"));
 
-
-                            data.put("home_lat", locationCurrent.getLatitude() + "");
-                            data.put("home_long", locationCurrent.getLongitude() + "");
+//                            if (locationCurrent != null)
+//                            {
+//                                data.put("home_lat", locationCurrent.getLatitude() + "");
+//                                data.put("home_long", locationCurrent.getLongitude() + "");
+//                            }
 
 
                             sharedPrefHelper.logInWith(SharedPrefHelper.loginWith.facebook.toString());
@@ -301,6 +310,14 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
         loginButton.setReadPermissions("email,user_friends");
 
 
+        ((ImageButton) findViewById(R.id.ingbtn_googlelogin)).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                googleLogIn();
+            }
+        });
     }
 
 
@@ -392,7 +409,9 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
                 sharedPrefHelper.setUserId(jsonMainResult.optString("userId"));
                 sharedPrefHelper.setUserName(jsonarrayData.getJSONObject(0).optString("name"));
 
-                sharedPrefHelper.setPincodeStatus(jsonMainResult.optString("pincode_status").equals("1"));
+                boolean status = jsonMainResult.optString("pincode_status").equals("1");
+
+                sharedPrefHelper.setPincodeStatus(status);
 
 
                 SharedPrefHelper.write(LoginActivity.this, userDataModel);
@@ -423,9 +442,17 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
                 }
                 else
                 {
-                    Intent intent = new Intent(LoginActivity.this, EditProfileActivity.class);
-                    intent.putExtra("startmain", true);
-                    startActivity(intent);
+                    if (jsonarrayData.getJSONObject(0).optString("is_social_uploaded").equals("1") || sharedPrefHelper.getPincodeStatus())
+                    {
+                        startActivity(new Intent(LoginActivity.this, MainTabActivity.class));
+                    }
+                    else
+                    {
+                        Intent intent = new Intent(LoginActivity.this, EditProfileActivity.class);
+                        intent.putExtra("startmain", true);
+                        startActivity(intent);
+                    }
+
                 }
 
 
@@ -466,12 +493,10 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
 
     public void logIn(View view)
     {
-
         if (validation())
         {
             hitWebserviceG();
         }
-
     }
 
     public void gotoSignup(View view)
@@ -502,7 +527,6 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
                         gcm = GoogleCloudMessaging.getInstance(LoginActivity.this);
                     }
                     DeviceID = gcm.register(GlobalConstants.SENDER_ID);
-
 
                     // try
                     msg = "Device registered, registration ID=" + DeviceID;
@@ -545,7 +569,6 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
     @Override
     public void onConnected(Bundle bundle)
     {
-        displayLocation();
         googleAfterConnect();
     }
 
@@ -581,10 +604,13 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
 
     private void googleAfterConnect()
     {
-
-
         try
         {
+            if (DeviceID.isEmpty())
+            {
+                getRegisterationID();
+                return;
+            }
 
 
             if (!mGoogleApiClient.isConnected())
@@ -622,19 +648,6 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
 //            registerInBackground();
 //            GlobalUtils.show_ToastCenter("Please " + "check network", con);
 //        }
-            if (locationCurrent == null)
-            {
-                displayLocation();
-
-                if (!mGoogleApiClient.isConnecting())
-                {
-                    mSignInProgress = STATE_SIGN_IN;
-                    mGoogleApiClient.connect();
-                }
-
-                return;
-            }
-
 
             JSONObject data = new JSONObject();
             data.put("email", Plus.AccountApi.getAccountName(mGoogleApiClient));
@@ -646,8 +659,8 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
             data.put("name", currentUser.getDisplayName());
 
 
-            data.put("home_lat", locationCurrent.getLatitude() + "");
-            data.put("home_long", locationCurrent.getLongitude() + "");
+//            data.put("home_lat", locationCurrent.getLatitude() + "");
+//            data.put("home_long", locationCurrent.getLongitude() + "");
 
             ProfilePic = currentUser.getImage().getUrl();
             sharedPrefHelper.logInWith(SharedPrefHelper.loginWith.google.toString());
@@ -680,10 +693,9 @@ public class LoginActivity extends CurrentLocActivityG implements GoogleApiClien
     }
 
 
-    public void googleLogIn(View view)
+    public void googleLogIn()
     {
 //        resolveSignInError();
-
 
         if (!mGoogleApiClient.isConnecting())
         {

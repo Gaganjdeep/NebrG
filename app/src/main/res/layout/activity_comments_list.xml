@@ -68,6 +68,7 @@
 
 
         <EditText
+            android:inputType="textCapSentences"
             android:textColor="@color/black"
             android:id="@+id/edComment"
             android:layout_width="0dp"

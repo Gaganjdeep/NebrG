@@ -95,6 +95,18 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
 
             listHome = new ArrayList<>();
 
+
+            limit = 10;
+            startId = 0;
+
+            index = 0;
+            top = 0;
+
+            fetchHomeData(startId, limit);
+
+
+
+
             listViewNotiMsg.setOnLoadMoreListener(this);
             listViewNotiMsg.setOnRefreshListener(this);
 
@@ -115,18 +127,13 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
     public void onResume()
     {
 
-        listHome.clear();
-        limit = 10;
-        startId = 0;
-
-        index = 0;
-        top = 0;
-
-        fetchHomeData(startId, limit);
-
 
         super.onResume();
     }
+
+
+
+
 
     int limit = 10, startId = 0;
 
@@ -239,10 +246,24 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
                     homemodel.setAnon_user(jobj.optString("anon_user").equals("1"));
 
 
-                    double lat = Double.parseDouble(jobj.optString("lat"));
-                    double lng = Double.parseDouble(jobj.optString("lng"));
+//                    double lat = Double.parseDouble(jobj.optString("lat"));
+//                    double lng = Double.parseDouble(jobj.optString("lng"));
+//
+//                    homemodel.setLatLng(new LatLng(lat, lng));
+//
 
-                    homemodel.setLatLng(new LatLng(lat, lng));
+
+                    if (jobj.optString("tag_status").equals("1"))
+                    {
+                        double lat = Double.parseDouble(jobj.optString("tag_lat"));
+                        double lng = Double.parseDouble(jobj.optString("tag_long"));
+
+                        homemodel.setLatLng(new LatLng(lat, lng));
+                    }
+                    else
+                    {
+                        homemodel.setLatLng(new LatLng(0, 0));
+                    }
 
 
                     listHome.add(homemodel);

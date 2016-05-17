@@ -3,6 +3,7 @@ package gagan.com.communities.activites;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -33,7 +35,7 @@ import gagan.com.communities.utills.Utills;
 import gagan.com.communities.webserviceG.CallBackWebService;
 import gagan.com.communities.webserviceG.SuperWebServiceG;
 
-public class CreateCommunity extends CurrentLocActivityG
+public class CreateCommunity extends BaseActivityG
 {
 
 
@@ -41,24 +43,17 @@ public class CreateCommunity extends CurrentLocActivityG
 
     AppCompatSpinner spinner;
     EditText         edDescription, edCommunityName;
-    TextView tvGenre;
+    TextView tvGenre, tvLocation;
     private MapFragment mapFragment;
 
-    GoogleMap googleMap;
+//    GoogleMap googleMap;
 
+
+    LinearLayout layoutAddLoc;
 
     String inviteUsers = "";
 
-    @Override
-    public void getCurrentLocationG(Location currentLocation)
-    {
 
-//        if (googleMap != null)
-//        {
-//            latLngG = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-//            addMarker(latLngG);
-//        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -73,14 +68,19 @@ public class CreateCommunity extends CurrentLocActivityG
 
     void findViewByID()
     {
+
+        layoutAddLoc = (LinearLayout) findViewById(R.id.layoutAddLoc);
         btnpublic = (Button) findViewById(R.id.btnpublic);
         btnprivate = (Button) findViewById(R.id.btnprivate);
-
+        tvLocation = (TextView) findViewById(R.id.tvLocation);
         tvGenre = (TextView) findViewById(R.id.tvGenre);
         edDescription = (EditText) findViewById(R.id.edDescription);
         edCommunityName = (EditText) findViewById(R.id.edCommunityName);
 
         spinner = (AppCompatSpinner) findViewById(R.id.spinner);
+
+//        spinner.setScrollbarFadingEnabled(false);
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             @Override
@@ -99,7 +99,28 @@ public class CreateCommunity extends CurrentLocActivityG
         });
 
 
-        initializeMapFragment();
+        layoutAddLoc.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                try
+                {
+                    PlacePicker.IntentBuilder intentBuilder =
+                            new PlacePicker.IntentBuilder();
+                    Intent intent = intentBuilder.build(CreateCommunity.this);
+                    startActivityForResult(intent, 77);
+
+                }
+                catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+//        initializeMapFragment();
 
 
     }
@@ -108,7 +129,7 @@ public class CreateCommunity extends CurrentLocActivityG
     private LatLng latLngG = null;
 
 
-    private void initializeMapFragment()
+   /* private void initializeMapFragment()
     {
 
         try
@@ -166,17 +187,17 @@ public class CreateCommunity extends CurrentLocActivityG
         });
 
 
-    }
+    }*/
 
 
-    private void addMarker(LatLng latLng)
+/*    private void addMarker(LatLng latLng)
     {
         googleMap.clear();
         googleMap.addMarker(new MarkerOptions()
                 .position(latLng));
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 6);
         googleMap.animateCamera(cameraUpdate);
-    }
+    }*/
 
 
     void hitWebserviceG()
@@ -306,7 +327,7 @@ public class CreateCommunity extends CurrentLocActivityG
         else if (latLngG == null)
         {
             Utills.showToast("Please select a location", CreateCommunity.this, true);
-            tvGenre.requestFocus();
+            tvLocation.requestFocus();
             return false;
         }
         return true;
@@ -346,7 +367,9 @@ public class CreateCommunity extends CurrentLocActivityG
                     final Place place = PlacePicker.getPlace(data, this);
 
                     latLngG = place.getLatLng();
-                    addMarker(latLngG);
+//                    addMarker(latLngG);
+
+                    tvLocation.setText(place.getName());
 
                     return;
                 }
