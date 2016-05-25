@@ -28,6 +28,7 @@ import java.util.HashMap;
 import gagan.com.communities.R;
 import gagan.com.communities.models.UserDataModel;
 import gagan.com.communities.utills.BitmapDecoderG;
+import gagan.com.communities.utills.CallBackG;
 import gagan.com.communities.utills.GlobalConstants;
 import gagan.com.communities.utills.RoundedCornersGaganImg;
 import gagan.com.communities.utills.SharedPrefHelper;
@@ -90,7 +91,7 @@ public class EditProfileActivity extends BaseActivityG
     }
 
     RoundedCornersGaganImg imgvProfilePic;
-    EditText               edEmail, edLocation, edGender, edPhoneNumber, /*edHomeSociety,*/
+    private EditText edEmail, edLocation, edGender, edPhoneNumber, /*edHomeSociety,*/
             edprofession, edName;
     String Base64Image = "";
 
@@ -387,7 +388,25 @@ public class EditProfileActivity extends BaseActivityG
 
                 selectedLocationLatlng = place.getLatLng();
 
-                edLocation.setText(name);
+
+                if (name.toString().contains("("))
+                {
+                    showProgressDialog();
+                    Utills.getLocationName(EditProfileActivity.this, place.getLatLng(), new CallBackG<String>()
+                    {
+                        @Override
+                        public void OnFinishG(String output)
+                        {
+                            cancelDialog();
+                            edLocation.setText(output);
+                        }
+                    });
+                }
+                else
+                {
+                    edLocation.setText(name.toString());
+                }
+
 
             }
             else

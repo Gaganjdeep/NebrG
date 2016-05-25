@@ -408,7 +408,7 @@ public class ChatActivity extends BaseActivityG
             maxSize = 15;
 
             hitWebserviceG();
-
+            sharedPrefHelper.SetbadgeCount(0);
 
 //            if (intent.getStringExtra("message_id").equals(otherUserID))
 //            {

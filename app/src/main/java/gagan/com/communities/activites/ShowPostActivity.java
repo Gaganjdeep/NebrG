@@ -96,7 +96,7 @@ public class ShowPostActivity extends AppCompatActivity
 
 
             imgUserPic.setRadius(120);
-            if (!dataHome.isAnon_user())
+            if (!dataHome.isAnon_user() && !dataHome.getProfile_pic().isEmpty())
             {
                 imgUserPic.setImageUrl(ShowPostActivity.this, dataHome.getProfile_pic());
             }

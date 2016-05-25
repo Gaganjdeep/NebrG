@@ -34,12 +34,14 @@ import gagan.com.communities.activites.AddPostActivity;
 import gagan.com.communities.activites.CreateClassified;
 import gagan.com.communities.activites.CreateCommunity;
 import gagan.com.communities.activites.MainTabActivity;
+import gagan.com.communities.utills.CallBackG;
 import gagan.com.communities.utills.GlobalConstants;
+import gagan.com.communities.utills.Utills;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MapViewTab extends Fragment
+public class MapViewTab extends BaseFragmentG
 {
 
 
@@ -108,6 +110,8 @@ public class MapViewTab extends Fragment
             @Override
             public void onClick(View v)
             {
+
+
                 Intent i = new Intent(getActivity(), classes[viewPagerG.getCurrentItem()]);
                 i.putExtra("Cid", "");
                 startActivity(i);
@@ -160,7 +164,27 @@ public class MapViewTab extends Fragment
                 final CharSequence name    = place.getName();
                 final CharSequence address = place.getAddress();
 
-                searchView.setText(name);
+//                searchView.setText(name);
+
+
+                if (name.toString().contains("("))
+                {
+                    showProgressDialog();
+                    Utills.getLocationName(getActivity(), place.getLatLng(), new CallBackG<String>()
+                    {
+                        @Override
+                        public void OnFinishG(String output)
+                        {
+                            cancelDialog();
+                            searchView.setText(output);
+                        }
+                    });
+                }
+                else
+                {
+                    searchView.setText(name.toString());
+                }
+
 
 //
 //                communitiesfragment.OnFinishG(place.getLatLng());

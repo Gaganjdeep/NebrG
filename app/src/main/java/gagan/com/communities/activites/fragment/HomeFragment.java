@@ -58,7 +58,7 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
     HomeAdapter         homeadapter;
     ProgressBar         progressBar;
 
-    TextView tvNoPost;
+    TextView tvNoPost,tvNewPost;
     public static HomeFragment homeFragment;
 
     @Override
@@ -79,6 +79,8 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
             homeFragment = this;
 
             tvNoPost = (TextView) v.findViewById(R.id.tvNoPost);
+
+            tvNewPost = (TextView) v.findViewById(R.id.tvNewPost);
 
             progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
             progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.button_pink), PorterDuff.Mode.MULTIPLY);
@@ -477,15 +479,40 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
     }
 
     @Override
-    public void notifier(int index, String count)
+    public void notifier(int indexg, String count)
     {
-
-        if (listHome.size() >= index)
+        if(count.equals("0"))
         {
-            listHome.get(index).setComments_count(count);
-            homeadapter.notifyDataSetChanged();
+            if(tvNewPost!=null)
+            {
+                tvNewPost.setVisibility(View.VISIBLE);
+                tvNewPost.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        tvNewPost.setVisibility(View.GONE);
+                        homeadapter = null;
+                        if (listHome != null)
+                        {
+                            listHome.clear();
+                        }
+                        index = 0;
+                        limit = 10;
+                        startId = 0;
+                        fetchHomeData(startId, limit);
+                    }
+                });
+            }
         }
-
+        else
+        {
+            if (listHome.size() >= indexg)
+            {
+                listHome.get(indexg).setComments_count(count);
+                homeadapter.notifyDataSetChanged();
+            }
+        }
     }
 
     @Override

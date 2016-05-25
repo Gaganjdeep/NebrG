@@ -15,6 +15,7 @@ import com.google.android.gcm.GCMBaseIntentService;
 
 import gagan.com.communities.activites.SplashActivity;
 import gagan.com.communities.utills.GlobalConstants;
+import gagan.com.communities.utills.SharedPrefHelper;
 
 public class GCMIntentService extends GCMBaseIntentService
 {
@@ -112,9 +113,9 @@ public class GCMIntentService extends GCMBaseIntentService
         {
             bun = intent.getExtras();
             final String message = intent.getStringExtra("message");
-//            Log.e("++++GCM message++++", message);
+            Log.e("++++GCM message++++", message);
 
-
+//            Bundle[{content=28, message=Gagan Deep sent you a message, title=message recieved, collapse_key=do_not_collapse, status=9, sound=1, senderID=13, message_id=524, vibrate=1, from=679103909775, datetime=2016-05-25 22:45:16}]
 //            {"message":"You have successfully liked the post title: \"for liki dislike test post\"",
 //                    "title":"Post Liked","status":2,"vibrate":1,"sound":1,"post_id":"45"}
 
@@ -122,6 +123,11 @@ public class GCMIntentService extends GCMBaseIntentService
 
 
             showNotification(context, message);
+
+            SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(context);
+
+            sharedPrefHelper.SetbadgeCount(sharedPrefHelper.GetbadgeCount() + 1);
+
 
         }
         catch (Exception | Error e)
@@ -131,8 +137,12 @@ public class GCMIntentService extends GCMBaseIntentService
         }
         try
         {
-            sendBroadcast(new Intent(GlobalConstants.UPDATE_CHAT));
-            sendBroadcast(new Intent(GlobalConstants.UPDATE_MSG_FRAGMENT));
+            if (intent.getStringExtra("title").equals("message recieved"))
+            {
+                sendBroadcast(new Intent(GlobalConstants.UPDATE_CHAT));
+                sendBroadcast(new Intent(GlobalConstants.UPDATE_MSG_FRAGMENT));
+            }
+
         }
         catch (Exception e)
         {

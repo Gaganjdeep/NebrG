@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import gagan.com.communities.activites.fragment.HomeFragment;
 import gagan.com.communities.activites.fragment.MapViewTab;
 import gagan.com.communities.activites.fragment.MoreFragment;
 import gagan.com.communities.activites.fragment.NotificationTabFragment;
+import gagan.com.communities.utills.SharedPrefHelper;
 
 
 public class MainTabActivity extends AppCompatActivity
@@ -31,6 +33,10 @@ public class MainTabActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_tab);
+
+
+        sharedPrefHelper = new SharedPrefHelper(MainTabActivity.this);
+
 
         viewPagerG = (ViewPager) findViewById(R.id.viewpager);
         if (viewPagerG != null)
@@ -53,7 +59,7 @@ public class MainTabActivity extends AppCompatActivity
     TabLayout tabLayoutG;
     ViewPager viewPagerG;
 
-    private void setupViewPager(ViewPager viewPager)
+    private void setupViewPager(final ViewPager viewPager)
     {
         Adapter adapter = new Adapter(getSupportFragmentManager());
         adapter.addFragment(new HomeFragment(), "Home");
@@ -73,7 +79,15 @@ public class MainTabActivity extends AppCompatActivity
             @Override
             public void onPageSelected(int position)
             {
-                          }
+                if (position == 2)
+                {
+                    if (sharedPrefHelper.GetbadgeCount() > 0)
+                    {
+                        sharedPrefHelper.SetbadgeCount(0);
+                        setBAdge();
+                    }
+                }
+            }
 
             @Override
             public void onPageScrollStateChanged(int state)
@@ -82,6 +96,28 @@ public class MainTabActivity extends AppCompatActivity
             }
         });
     }
+
+
+    private void setBAdge()
+    {
+        if (tvBadgeCount != null)
+        {
+            if (sharedPrefHelper.GetbadgeCount() == 0)
+            {
+                tvBadgeCount.setVisibility(View.GONE);
+            }
+            else
+            {
+                tvBadgeCount.setVisibility(View.VISIBLE);
+                tvBadgeCount.setText(sharedPrefHelper.GetbadgeCount()+"");
+            }
+        }
+    }
+
+
+    TextView tvBadgeCount;
+
+    SharedPrefHelper sharedPrefHelper;
 
     public void setupTabLayout(TabLayout tabLayout, final ViewPager mViewpager)
     {
@@ -96,6 +132,15 @@ public class MainTabActivity extends AppCompatActivity
 
             ImageView icon  = (ImageView) tab.findViewById(R.id.icon);
             TextView  title = (TextView) tab.findViewById(R.id.title);
+
+
+            if (i == 2)
+            {
+                tvBadgeCount = (TextView) tab.findViewById(R.id.tvBadgeCount);
+                setBAdge();
+
+            }
+
 
             icon.setBackgroundResource(selectedIcons[i]);
             title.setText(selectedTitle[i]);

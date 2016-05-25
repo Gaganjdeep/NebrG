@@ -26,6 +26,7 @@ import gagan.com.communities.activites.ShowFragmentActivity;
 import gagan.com.communities.adapters.MessageAdapter;
 import gagan.com.communities.models.MsgDataModel;
 import gagan.com.communities.utills.GlobalConstants;
+import gagan.com.communities.utills.SharedPrefHelper;
 import gagan.com.communities.webserviceG.CallBackWebService;
 import gagan.com.communities.webserviceG.SuperWebServiceG;
 
@@ -89,17 +90,14 @@ public class MessageFragment extends BaseFragmentG implements View.OnClickListen
                 @Override
                 public void webOnFinish(String output)
                 {
-
                     try
                     {
-
                         JSONObject jsonMain = new JSONObject(output);
 
                         JSONObject jsonMainResult = jsonMain.getJSONObject("result");
 
                         if (jsonMainResult.getString("code").equals("200"))
                         {
-
                             JSONArray jsonarrayData = jsonMainResult.getJSONArray("alluserdata");
 
                             if (listMsg == null)
@@ -113,34 +111,36 @@ public class MessageFragment extends BaseFragmentG implements View.OnClickListen
 
                             for (int g = 0; g < jsonarrayData.length(); g++)
                             {
-
-
-//    "id": "12",
-//            "sender_userid": "24",
-//            "recipient_userid": "1",
-//            "message": "hi",
-//            "created_at": "2016-03-20 22:33:21",
-//            "updated_date": "2016-03-20 10:03:21",
-//            "status": "0",
-//            "username": "vimajl",
-//            "profile_pic": "http://orasisdata.com/Neiber/images/1454321304431.jpg"
-
-
                                 JSONObject jobj = jsonarrayData.optJSONObject(g);
 
-
                                 String id               = jobj.optString("id");
-                                String sender_userid    = jobj.optString("sender_userid");
-                                String recipient_userid = jobj.optString("recipient_userid");
+
+                                String sender_userid;
+                                String recipient_userid;
+
+                                if(jobj.optString("sender_userid").equals(sharedPrefHelper.getUserId()))
+                                {
+                                    sender_userid=jobj.optString("sender_userid");
+                                    recipient_userid=jobj.optString("recipient_userid");
+                                }
+                                else
+                                {
+                                    recipient_userid=jobj.optString("sender_userid");
+                                    sender_userid=jobj.optString("recipient_userid");
+                                }
+
+//                                Str\][g recipient_userid = jobj.optString("recipient_userid");
+
+
                                 String message          = jobj.optString("message");
                                 String created_at       = jobj.optString("created_at");
                                 String username         = jobj.optString("username");
                                 String profile_pic      = jobj.optString("profile_pic");
 
-                                listMsg.add(new MsgDataModel(false,id, sender_userid, recipient_userid, message, created_at, username, profile_pic));
+                                listMsg.add(new MsgDataModel(false, id, sender_userid, recipient_userid, message, created_at, username, profile_pic));
                             }
 
-                            Collections.reverse(listMsg);
+//                            Collections.reverse(listMsg);
                             MessageAdapter msgAdapter = new MessageAdapter(getActivity(), listMsg);
                             recyclerList.setAdapter(msgAdapter);
 
@@ -217,7 +217,6 @@ public class MessageFragment extends BaseFragmentG implements View.OnClickListen
         getActivity().startActivity(intnt);
 
 
-
     }
 
     private class UpdateMessageListReceiver extends BroadcastReceiver
@@ -228,6 +227,7 @@ public class MessageFragment extends BaseFragmentG implements View.OnClickListen
         {
 
             hitWebserviceG();
+            sharedPrefHelper.SetbadgeCount(0);
         }
     }
 

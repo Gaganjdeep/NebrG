@@ -2,6 +2,7 @@ package gagan.com.communities.activites;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -19,6 +20,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import gagan.com.communities.R;
+import gagan.com.communities.utills.CallBackG;
 import gagan.com.communities.utills.GlobalConstants;
 import gagan.com.communities.utills.SharedPrefHelper;
 import gagan.com.communities.utills.Utills;
@@ -140,68 +142,22 @@ public class SettingsActivity extends BaseActivityG
             final CharSequence address = place.getAddress();
 
 
-            try
+            if (name.toString().contains("("))
             {
-
-
                 showProgressDialog();
-
-                JSONObject dataJ = new JSONObject();
-                dataJ.put("userid", sharedPrefHelper.getUserId());
-                dataJ.put("home_lat", place.getLatLng().latitude + "");
-                dataJ.put("home_long", place.getLatLng().longitude + "");
-
-                new SuperWebServiceG(GlobalConstants.URL + "editProfile", dataJ, new CallBackWebService()
+                Utills.getLocationName(SettingsActivity.this, place.getLatLng(), new CallBackG<String>()
                 {
                     @Override
-                    public void webOnFinish(String response)
+                    public void OnFinishG(String output)
                     {
-                        try
-                        {
-                            cancelDialog();
-
-                            JSONObject jsonMain = new JSONObject(response);
-
-                            JSONObject jsonMainResult = jsonMain.getJSONObject("result");
-
-                            if (jsonMainResult.getString("code").equals("200"))
-                            {
-
-                                if (!jsonMainResult.optString("pincode_status").equals("1"))
-                                {
-                                    Utills.show_dialog_msg(SettingsActivity.this, "We are yet to enable our service in your area, however you can the view posts", null);
-                                }
-
-                                String location;
-
-
-                                location=jsonMainResult.optString("pincode_society").equals("null") ?name.toString() :jsonMainResult.optString("pincode_society");
-
-
-                                sharedPrefHelper.setPincodeStatus(jsonMainResult.optString("pincode_status").equals("1"));
-                                sharedPrefHelper.setHomeLocation(location, place.getLatLng().latitude + "", place.getLatLng().longitude + "");
-
-                                tvCurrentLocation.setText(name);
-                            }
-                            else
-                            {
-                                Utills.showToast(jsonMainResult.optString("status"), SettingsActivity.this, true);
-                            }
-
-
-                        }
-                        catch (Exception e)
-                        {
-                            e.printStackTrace();
-                        }
-
+                        cancelDialog();
+                        changelocation(place, output);
                     }
-                }).execute();
-
+                });
             }
-            catch (Exception e)
+            else
             {
-                e.printStackTrace();
+                changelocation(place, name.toString());
             }
 
 
@@ -209,6 +165,74 @@ public class SettingsActivity extends BaseActivityG
         else
         {
             super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+
+    private void changelocation(final Place place, final String locName)
+    {
+        try
+        {
+
+
+            showProgressDialog();
+
+            JSONObject dataJ = new JSONObject();
+            dataJ.put("userid", sharedPrefHelper.getUserId());
+            dataJ.put("home_lat", place.getLatLng().latitude + "");
+            dataJ.put("home_long", place.getLatLng().longitude + "");
+
+            new SuperWebServiceG(GlobalConstants.URL + "editProfile", dataJ, new CallBackWebService()
+            {
+                @Override
+                public void webOnFinish(String response)
+                {
+                    try
+                    {
+                        cancelDialog();
+
+                        JSONObject jsonMain = new JSONObject(response);
+
+                        JSONObject jsonMainResult = jsonMain.getJSONObject("result");
+
+                        if (jsonMainResult.getString("code").equals("200"))
+                        {
+
+                            if (!jsonMainResult.optString("pincode_status").equals("1"))
+                            {
+                                Utills.show_dialog_msg(SettingsActivity.this, "We are yet to enable our service in your area, however you can the view posts", null);
+                            }
+
+                            String location;
+
+
+                            location = jsonMainResult.optString("pincode_society").equals("null") ? locName : jsonMainResult.optString("pincode_society");
+
+
+                            sharedPrefHelper.setPincodeStatus(jsonMainResult.optString("pincode_status").equals("1"));
+                            sharedPrefHelper.setHomeLocation(location, place.getLatLng().latitude + "", place.getLatLng().longitude + "");
+
+                            tvCurrentLocation.setText(location);
+                        }
+                        else
+                        {
+                            Utills.showToast(jsonMainResult.optString("status"), SettingsActivity.this, true);
+                        }
+
+
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+
+                }
+            }).execute();
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
         }
     }
 

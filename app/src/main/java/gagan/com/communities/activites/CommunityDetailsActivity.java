@@ -61,7 +61,7 @@ public class CommunityDetailsActivity extends BaseActivityG
     {
 
         Fragment f = getSupportFragmentManager().findFragmentByTag("my_post");
-        if (f==null)
+        if (f == null)
         {
             try
             {
@@ -123,18 +123,28 @@ public class CommunityDetailsActivity extends BaseActivityG
 
     private void setData(CommunitiesListModel communitiesListModel)
     {
-        tvMessage.setText(communitiesListModel.getC_description());
-        tvTitle.setText(communitiesListModel.getC_name());
-
-        tvFollow.setVisibility(View.GONE);
-        tvFollow.setOnClickListener(new View.OnClickListener()
+        try
         {
-            @Override
-            public void onClick(View v)
+
+            tvMessage.setText(communitiesListModel.getC_description());
+            tvTitle.setText(communitiesListModel.getC_name());
+
+            tvFollow.setVisibility(View.GONE);
+            tvFollow.setOnClickListener(new View.OnClickListener()
             {
-                follOw();
-            }
-        });
+                @Override
+                public void onClick(View v)
+                {
+                    follOw();
+                }
+            });
+
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
 

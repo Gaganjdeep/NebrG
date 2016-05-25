@@ -277,6 +277,7 @@ public class CommentsListActivity extends AppCompatActivity
                             if (HomeFragment.homeFragment != null)
                             {
                                 (HomeFragment.homeFragment).notifier(index, listData.size() + "");
+//                                (HomeFragment.homeFragment).notifier(0,"0");
                             }
 
                         }

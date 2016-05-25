@@ -242,6 +242,20 @@ public class SharedPrefHelper
     }
 
 
+    //    ============================
+    public void SetbadgeCount(int badgeCount)
+    {
+        SharedPreferences.Editor ed = sharedPreferences.edit();
+        ed.putInt("badgeCount", badgeCount);
+        ed.apply();
+    }
+
+    public int GetbadgeCount()
+    {
+        return sharedPreferences.getInt("badgeCount", 0);
+    }
+
+
     public void setPswd(String login)
     {
         SharedPreferences.Editor ed = sharedPreferences.edit();
@@ -266,7 +280,6 @@ public class SharedPrefHelper
     {
         return sharedPreferences.getString("devicetoken", "");
     }
-
 
 
     public void setEmailVerified(boolean emailVerified)

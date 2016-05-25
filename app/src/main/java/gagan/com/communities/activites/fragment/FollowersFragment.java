@@ -62,7 +62,38 @@ public class FollowersFragment extends BaseFragmentG
 
                 UserDataModel homemodel = new UserDataModel();
 
-                homemodel.setProfile_pic(jobj.optString("profile_pic"));
+
+                String profile = "";
+
+                if (jobj.optString("is_social_uploaded").equals("1"))
+                {
+                    profile = jobj.optString("profile_pic");
+                }
+                else
+                {
+                    if (jobj.optString("is_fb").equals("1"))
+                    {
+                        profile = jobj.optString("fb_profile_pic");
+                    }
+                    else if (jobj.optString("is_gp").equals("1"))
+                    {
+                        profile = jobj.optString("gp_profile_pic");
+                    }
+                    else
+                    {
+                        profile = jobj.optString("profile_pic");
+                    }
+                }
+
+                if (profile.isEmpty())
+                {
+                    profile = jobj.optString("profile_pic");
+                }
+
+
+                homemodel.setProfile_pic(profile);
+
+
                 homemodel.setuId(jobj.optString("uId"));
                 homemodel.setName(jobj.optString("name"));
                 homemodel.setProfession(jobj.optString("profession"));

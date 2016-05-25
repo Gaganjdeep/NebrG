@@ -23,6 +23,7 @@ import java.io.IOException;
 
 import gagan.com.communities.R;
 import gagan.com.communities.models.UserDataModel;
+import gagan.com.communities.utills.CallBackG;
 import gagan.com.communities.utills.CurrentLocActivityG;
 import gagan.com.communities.utills.GlobalConstants;
 import gagan.com.communities.utills.SharedPrefHelper;
@@ -36,11 +37,9 @@ public class SignUp extends CurrentLocActivityG
 
 
     final int REQUEST_PLACE_PICKER = 11;
-    TextView tvLocation;
-    EditText edFullNameS, edEmailS, edPasswordS, edHomeSociety, edprofession, edConfirmPasswordS;
+    private TextView tvLocation;
+    private EditText edFullNameS, edEmailS, edPasswordS, edHomeSociety, edprofession, edConfirmPasswordS;
     Button btnMaleS, btnFemaleS;
-
-
 
 
     String maleFemale = "male";
@@ -282,7 +281,24 @@ public class SignUp extends CurrentLocActivityG
 
             locationCurrentHome = place.getLatLng();
 
-            tvLocation.setText(name);
+            if (name.toString().contains("("))
+            {
+                showProgressDialog();
+                Utills.getLocationName(SignUp.this, place.getLatLng(), new CallBackG<String>()
+                {
+                    @Override
+                    public void OnFinishG(String output)
+                    {
+                        cancelDialog();
+                        tvLocation.setText(output);
+                    }
+                });
+            }
+            else
+            {
+                tvLocation.setText(name.toString());
+            }
+
 
         }
         else

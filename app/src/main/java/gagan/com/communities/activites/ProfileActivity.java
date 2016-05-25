@@ -18,6 +18,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.HashMap;
+
 import gagan.com.communities.R;
 import gagan.com.communities.activites.fragment.FollowersFragment;
 import gagan.com.communities.activites.fragment.HomeFragment;
@@ -97,7 +99,12 @@ public class ProfileActivity extends BaseActivityG
 
         tvUserName.setText(userData.getName());
         tvProfession.setText(userData.getProfession());
-        tvLocation.setText(userData.getLocation());
+
+
+        HashMap<String, String> currentLocData = sharedPrefHelper.getHomeLocation();
+
+
+        tvLocation.setText(currentLocData.get(SharedPrefHelper.HOMELOC_NAME));
 
 
         imgvProfilePic.setImageWithCallBack(ProfileActivity.this, userData.getProfile_pic(), new CallBackG<Bitmap>()
@@ -160,10 +167,9 @@ public class ProfileActivity extends BaseActivityG
         {
             case R.id.edit_profile:
 
-                Intent intent= new Intent(ProfileActivity.this, EditProfileActivity.class);
-                intent.putExtra("startmain",false);
+                Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
+                intent.putExtra("startmain", false);
                 startActivity(intent);
-
 
 
                 break;

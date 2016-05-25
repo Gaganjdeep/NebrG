@@ -25,14 +25,18 @@ import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Locale;
 
 import gagan.com.communities.R;
 import gagan.com.communities.activites.CurrentLocationPostActivity;
+import gagan.com.communities.webserviceG.WebServiceHelper;
 
 /**
  * Created by gagandeep on 22 Dec 2015.
@@ -399,18 +403,17 @@ public class Utills
                     }
                     else
                     {
-                        if (addresses.size() > 0)
-                        {
-                            return addresses.get(0).getLocality();
 
-                        }
+                        return addresses.get(0).getLocality();
+
                     }
                 }
                 catch (Exception e)
                 {
                     e.printStackTrace();
+                    return getLocationFromString(latLng);
                 }
-                return "Unknown Location";
+
             }
 
             @Override
@@ -423,6 +426,97 @@ public class Utills
         }.execute();
 
 
+    }
+
+    public static String getLocationFromString(LatLng addressssss)
+    {
+        String addrsssssName = "unknown location";
+        try
+        {
+
+            String URL = "http://maps.google.com/maps/api/geocode/json?latlng=" + URLEncoder.encode(addressssss.latitude + "," + addressssss.longitude, "UTF-8") + "&en&sensor=false";
+
+            JSONObject jsonObject = new JSONObject((new WebServiceHelper()).performGetCall(URL));
+
+            JSONArray results = jsonObject.getJSONArray("results");
+
+
+            if (results.length() > 0)
+            {
+
+//                l = new Latlng_data();
+//
+//                double lng = results.getJSONObject(j).getJSONObject("geometry").getJSONObject("location").getDouble("lng");
+//
+//                double lat = results.getJSONObject(j).getJSONObject("geometry").getJSONObject("location").getDouble("lat");
+
+
+
+
+                JSONObject zero = results.getJSONObject(0);
+                JSONArray address_components = zero.getJSONArray("address_components");
+
+                for (int i = 0; i < address_components.length(); i++)
+                {
+                    JSONObject zero2 = address_components.getJSONObject(i);
+                    String long_name = zero2.getString("long_name");
+                    JSONArray mtypes = zero2.getJSONArray("types");
+                    String Type = mtypes.getString(0);
+
+                    if (Type.equalsIgnoreCase("locality"))
+                    {
+                        return long_name;
+                    }
+                    else
+                    {
+                        if (Type.equalsIgnoreCase("administrative_area_level_1"))
+                        {
+                            return long_name;
+                        }
+//                        else if (Type.equalsIgnoreCase("administrative_area_level_1"))
+//                        {
+//                            State = long_name;
+//
+//                        }
+
+                    }
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                addrsssssName = results.getJSONObject(0).getString("formatted_address");
+                return addrsssssName != null ? addrsssssName : "";
+//                l.setAddress(addrsssssName != null ? addrsssssName : "");
+//
+//                l.setLat(lng);
+//                l.setLng(lat);
+//
+//                Ldata.add(l);
+            }
+
+        }
+        catch (Exception e)
+        {
+            return addrsssssName;
+        }
+        catch (Error e)
+        {
+            return addrsssssName;
+        }
+
+        return addrsssssName;
     }
 
 

@@ -26,12 +26,11 @@
                 android:id="@+id/txtvAddPost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/add_post"
                 android:gravity="center"
                 android:padding="5dp"
+                android:src="@mipmap/add_post"
                 android:textColor="@color/white"
                 android:textStyle="bold"
-
                 />
 
         </LinearLayout>
@@ -42,39 +41,56 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/lt_grey"
-        android:divider="@android:color/transparent"
         android:layout_gravity="center_vertical"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="@color/lt_grey"
+        android:divider="@android:color/transparent">
 
 
-    <com.costum.android.widget.PullAndLoadListView
-        android:id="@+id/listViewHomeList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/lt_grey"
-        android:divider="@android:color/transparent"
-        android:layout_gravity="center_vertical"
-        />
+        <com.costum.android.widget.PullAndLoadListView
+            android:id="@+id/listViewHomeList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:background="@color/lt_grey"
+            android:divider="@android:color/transparent"
+            />
 
 
         <ProgressBar
-            android:visibility="gone"
             android:id="@+id/progressBar"
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
 
 
         <TextView
-            android:visibility="gone"
-            android:textSize="26sp"
-            android:layout_gravity="center"
             android:id="@+id/tvNoPost"
-            android:text="No Posts available"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="No Posts available"
+            android:textSize="26sp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:visibility="gone"
+            android:drawablePadding="7dp"
+            android:drawableLeft="@mipmap/ic_up_arrow"
+            android:textSize="13sp"
+            android:id="@+id/tvNewPost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
+            android:background="@drawable/ic_newpost"
+            android:layout_marginTop="25dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="7dp"
+            android:paddingBottom="7dp"
+            android:text="New Post"
+            android:textColor="@color/white"/>
 
 
     </FrameLayout>

@@ -252,7 +252,8 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
 
                     HomeModel homemodel = new HomeModel();
                     homemodel.setId(jobj.optString("id"));
-                    homemodel.setLocation(jobj.optString("home_location"));
+                    homemodel.setLocation(jobj.optString("location"));
+
                     homemodel.setComments_count(jobj.optString("comments_count"));
                     homemodel.setCreate_date(jobj.optString("create_date"));
                     homemodel.setImage(jobj.optString("image"));
@@ -270,8 +271,8 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
                     homemodel.setAnon_user(jobj.optString("anon_user").equals("1"));
 
 
-                    double lat = Double.parseDouble(jobj.optString("lat"));
-                    double lng = Double.parseDouble(jobj.optString("lng"));
+                    double lat = Double.parseDouble(jobj.optString("tag_lat"));
+                    double lng = Double.parseDouble(jobj.optString("tag_long"));
                     homemodel.setLatLng(new LatLng(lat, lng));
 
                     setUpMap(jobj.optString("title"), jobj.optString("type"), new LatLng(lat, lng), homemodel);
