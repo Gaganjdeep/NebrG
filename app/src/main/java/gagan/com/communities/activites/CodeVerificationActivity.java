@@ -1,5 +1,6 @@
 package gagan.com.communities.activites;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -43,11 +44,11 @@ public class CodeVerificationActivity extends BaseActivityG
 
     }
 
-    @Override
+   /* @Override
     public void onBackPressed()
     {
 
-    }
+    }*/
 
     public void dOne(View view)
     {
@@ -89,6 +90,14 @@ public class CodeVerificationActivity extends BaseActivityG
 
                             startActivity(new Intent(CodeVerificationActivity.this, MainTabActivity.class));
                             finish();
+                            try
+                            {
+                                ((Activity) SignUp.context).finish();
+                            }
+                            catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
                         }
                         else
                         {

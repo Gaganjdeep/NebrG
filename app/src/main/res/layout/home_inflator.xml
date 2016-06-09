@@ -46,7 +46,7 @@
                     android:marqueeRepeatLimit="marquee_forever"
                     android:maxLength="20"
                     android:singleLine="true"
-                    android:text="Chennai"
+                    android:text=""
                     android:textColor="@color/greydefault"
                     android:textSize="12sp"
                     android:textStyle="bold"/>
@@ -65,7 +65,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Social"
+                    android:text=""
                     android:textColor="@color/greydefault"
                     android:textSize="12sp"/>
 
@@ -131,7 +131,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:text="UserName"
+                    android:text=""
                     android:textSize="15sp"
                     android:textStyle="bold"/>
 
@@ -147,7 +147,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
-                android:text="Dog Problem"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 android:textStyle="bold"/>
@@ -210,7 +210,7 @@
                     android:drawableLeft="@mipmap/ic_like"
                     android:gravity="center"
                     android:maxLines="2"
-                    android:text="123 useful"
+                    android:text="useful"
                     android:textSize="9sp"
                     />
 
@@ -233,7 +233,7 @@
                     android:drawableLeft="@mipmap/ic_dislike"
                     android:gravity="center"
                     android:maxLines="2"
-                    android:text="122 not useful"
+                    android:text="not useful"
                     android:textSize="9sp"
                     />
 
@@ -255,7 +255,7 @@
                     android:drawableLeft="@mipmap/ic_cmnt"
                     android:gravity="center"
                     android:maxLines="2"
-                    android:text="115 Comment"
+                    android:text="Comment"
                     android:textSize="9sp"/>
 
                 <View

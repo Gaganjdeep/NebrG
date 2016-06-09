@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -47,9 +48,25 @@ public class Utills
 
     public static Toast toast;
 
+    public static String capitalize(String s)
+    {
+        if (s == null) return null;
+        if (s.length() == 1)
+        {
+            return s.toUpperCase();
+        }
+        if (s.length() > 1)
+        {
+            return s.substring(0, 1).toUpperCase() + s.substring(1);
+        }
+        return "";
+    }
 
     public static void showToast(String msg, Context context, boolean center)
     {
+
+        msg = capitalize(msg);
+
         if (toast != null)
         {
             toast.cancel();
@@ -61,7 +78,6 @@ public class Utills
         }
 
         toast.show();
-
     }
 
 
@@ -78,6 +94,16 @@ public class Utills
                 .alpha(1f)
                 .setInterpolator(new AccelerateDecelerateInterpolator())
                 .start();
+    }
+
+
+    public static void hideKeyboard(Context context, View view)
+    {
+        if (view != null)
+        {
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
 
@@ -451,17 +477,15 @@ public class Utills
 //                double lat = results.getJSONObject(j).getJSONObject("geometry").getJSONObject("location").getDouble("lat");
 
 
-
-
-                JSONObject zero = results.getJSONObject(0);
-                JSONArray address_components = zero.getJSONArray("address_components");
+                JSONObject zero               = results.getJSONObject(0);
+                JSONArray  address_components = zero.getJSONArray("address_components");
 
                 for (int i = 0; i < address_components.length(); i++)
                 {
-                    JSONObject zero2 = address_components.getJSONObject(i);
-                    String long_name = zero2.getString("long_name");
-                    JSONArray mtypes = zero2.getJSONArray("types");
-                    String Type = mtypes.getString(0);
+                    JSONObject zero2     = address_components.getJSONObject(i);
+                    String     long_name = zero2.getString("long_name");
+                    JSONArray  mtypes    = zero2.getJSONArray("types");
+                    String     Type      = mtypes.getString(0);
 
                     if (Type.equalsIgnoreCase("locality"))
                     {
@@ -481,19 +505,6 @@ public class Utills
 
                     }
                 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
                 addrsssssName = results.getJSONObject(0).getString("formatted_address");

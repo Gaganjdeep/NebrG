@@ -227,7 +227,6 @@ public class MessageFragment extends BaseFragmentG implements View.OnClickListen
         {
 
             hitWebserviceG();
-            sharedPrefHelper.SetbadgeCount(0);
         }
     }
 

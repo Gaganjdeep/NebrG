@@ -73,7 +73,7 @@ public class HomeAdapter extends BaseAdapter
     public int getCount()
     {
 //        return DataList.size();
-        return DataList == null ? 7 : DataList.size();
+        return DataList.size();
     }
 
     @Override
@@ -498,8 +498,14 @@ public class HomeAdapter extends BaseAdapter
                             DataList.remove(homeModel);
 
                             notifyDataSetChanged();
+
+                            Utills.showToast("Post deleted successfully.", con, true);
                         }
-                        Utills.showToast(jsonMainResult.getString("status"), con, true);
+                        else
+                        {
+                            Utills.showToast(jsonMainResult.getString("status"), con, true);
+                        }
+
 
                     }
                     catch (Exception e)

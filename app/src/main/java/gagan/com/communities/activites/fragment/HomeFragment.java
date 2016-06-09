@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 
 import com.costum.android.widget.PullAndLoadListView;
 import com.costum.android.widget.PullToRefreshListView;
+import com.google.android.gms.internal.zzir;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -58,7 +60,7 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
     HomeAdapter         homeadapter;
     ProgressBar         progressBar;
 
-    TextView tvNoPost,tvNewPost;
+    TextView tvNoPost, tvNewPost;
     public static HomeFragment homeFragment;
 
     @Override
@@ -107,8 +109,6 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
             fetchHomeData(startId, limit);
 
 
-
-
             listViewNotiMsg.setOnLoadMoreListener(this);
             listViewNotiMsg.setOnRefreshListener(this);
 
@@ -132,9 +132,6 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
 
         super.onResume();
     }
-
-
-
 
 
     int limit = 10, startId = 0;
@@ -162,8 +159,6 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
                 @Override
                 public void webOnFinish(String output)
                 {
-
-
 
 
                     processOutput(output);
@@ -229,7 +224,8 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
                     HomeModel homemodel = new HomeModel();
                     homemodel.setId(jobj.optString("id"));
 
-                    homemodel.setLocation(jobj.optString("home_location"));
+//                    homemodel.setLocation(jobj.optString("home_location"));
+                    homemodel.setLocation(jobj.optString("post_location"));
 
                     homemodel.setComments_count(jobj.optString("comments_count"));
                     homemodel.setCreate_date(jobj.optString("create_date"));
@@ -479,39 +475,59 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
     }
 
     @Override
-    public void notifier(int indexg, String count)
+    public void notifier(final int indexg, final String count)
     {
-        if(count.equals("0"))
+        try
         {
-            if(tvNewPost!=null)
+            if (count.equals("0"))
             {
-                tvNewPost.setVisibility(View.VISIBLE);
-                tvNewPost.setOnClickListener(new View.OnClickListener()
+                final Handler UIHandler = new Handler(Looper.getMainLooper());
+                UIHandler.post(new Runnable()
                 {
                     @Override
-                    public void onClick(View v)
+                    public void run()
                     {
-                        tvNewPost.setVisibility(View.GONE);
-                        homeadapter = null;
-                        if (listHome != null)
+
+                        if (tvNewPost != null)
                         {
-                            listHome.clear();
+                            tvNewPost.setVisibility(View.VISIBLE);
+                            tvNewPost.setOnClickListener(new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    tvNewPost.setVisibility(View.GONE);
+                                    homeadapter = null;
+                                    if (listHome != null)
+                                    {
+                                        listHome.clear();
+                                    }
+                                    index = 0;
+                                    limit = 10;
+                                    startId = 0;
+                                    fetchHomeData(startId, limit);
+                                }
+                            });
                         }
-                        index = 0;
-                        limit = 10;
-                        startId = 0;
-                        fetchHomeData(startId, limit);
+
+
                     }
                 });
             }
-        }
-        else
-        {
-            if (listHome.size() >= indexg)
+            else
             {
-                listHome.get(indexg).setComments_count(count);
-                homeadapter.notifyDataSetChanged();
+                if (listHome.size() >= indexg)
+                {
+                    listHome.get(indexg).setComments_count(count);
+                    homeadapter.notifyDataSetChanged();
+                }
             }
+
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
         }
     }
 

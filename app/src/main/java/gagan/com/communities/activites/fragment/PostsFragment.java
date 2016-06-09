@@ -252,7 +252,8 @@ public class PostsFragment extends SupportMapFragment implements GoogleMap.OnMyL
 
                     HomeModel homemodel = new HomeModel();
                     homemodel.setId(jobj.optString("id"));
-                    homemodel.setLocation(jobj.optString("location"));
+
+                    homemodel.setLocation(jobj.optString("post_location"));
 
                     homemodel.setComments_count(jobj.optString("comments_count"));
                     homemodel.setCreate_date(jobj.optString("create_date"));

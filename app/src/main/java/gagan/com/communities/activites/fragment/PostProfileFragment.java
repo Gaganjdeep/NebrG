@@ -174,7 +174,12 @@ public class PostProfileFragment extends BaseFragmentG
 
                     HomeModel homemodel = new HomeModel();
                     homemodel.setId(jobj.optString("id"));
-                    homemodel.setLocation(jobj.optString("home_location"));
+
+                    homemodel.setLocation(jobj.optString("post_location"));
+//                    homemodel.setLocation(jobj.optString("home_location"));
+
+
+
                     homemodel.setComments_count(jobj.optString("comments_count"));
                     homemodel.setCreate_date(jobj.optString("create_date"));
                     homemodel.setImage(jobj.optString("image"));

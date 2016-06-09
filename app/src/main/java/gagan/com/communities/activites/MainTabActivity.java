@@ -1,5 +1,9 @@
 package gagan.com.communities.activites;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -21,6 +25,7 @@ import gagan.com.communities.activites.fragment.HomeFragment;
 import gagan.com.communities.activites.fragment.MapViewTab;
 import gagan.com.communities.activites.fragment.MoreFragment;
 import gagan.com.communities.activites.fragment.NotificationTabFragment;
+import gagan.com.communities.utills.GlobalConstants;
 import gagan.com.communities.utills.SharedPrefHelper;
 
 
@@ -102,6 +107,7 @@ public class MainTabActivity extends AppCompatActivity
     {
         if (tvBadgeCount != null)
         {
+
             if (sharedPrefHelper.GetbadgeCount() == 0)
             {
                 tvBadgeCount.setVisibility(View.GONE);
@@ -109,13 +115,13 @@ public class MainTabActivity extends AppCompatActivity
             else
             {
                 tvBadgeCount.setVisibility(View.VISIBLE);
-                tvBadgeCount.setText(sharedPrefHelper.GetbadgeCount()+"");
+                tvBadgeCount.setText(sharedPrefHelper.GetbadgeCount() + "");
             }
         }
     }
 
 
-    TextView tvBadgeCount;
+    private TextView tvBadgeCount;
 
     SharedPrefHelper sharedPrefHelper;
 
@@ -195,5 +201,51 @@ public class MainTabActivity extends AppCompatActivity
             return mFragmentTitles.get(position);
         }
     }
+
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if (!mIsReceiverRegistered)
+        {
+            if (mReceiver == null)
+                mReceiver = new UpdateBadgeReceiver();
+
+            registerReceiver(mReceiver, new IntentFilter(GlobalConstants.UPDATE_BADGE));
+            mIsReceiverRegistered = true;
+        }
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        if (mIsReceiverRegistered)
+        {
+            unregisterReceiver(mReceiver);
+            mReceiver = null;
+            mIsReceiverRegistered = false;
+        }
+        super.onDestroy();
+    }
+
+    // BROADCAST RECEIVER TO UPDATE MSG LIST.
+    UpdateBadgeReceiver mReceiver;
+    private boolean mIsReceiverRegistered = false;
+
+
+    private class UpdateBadgeReceiver extends BroadcastReceiver
+    {
+
+        @Override
+        public void onReceive(Context context, Intent intent)
+        {
+            if (viewPagerG.getCurrentItem() != 2)
+            {
+                setBAdge();
+            }
+        }
+    }
+
 
 }

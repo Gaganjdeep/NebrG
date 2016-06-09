@@ -1,6 +1,7 @@
 package gagan.com.communities.activites;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
@@ -48,6 +49,7 @@ public class SignUp extends CurrentLocActivityG
 
     LatLng locationCurrentHome = null;
 
+    public static Context context;
 
     @Override
     public void getCurrentLocationG(Location currentLocation)
@@ -60,6 +62,9 @@ public class SignUp extends CurrentLocActivityG
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+
+
+        context=this;
 
         findViewByID();
     }
@@ -194,7 +199,7 @@ public class SignUp extends CurrentLocActivityG
 
 
                 startActivity(new Intent(SignUp.this, CodeVerificationActivity.class));
-                finish();
+//                finish();
             }
 
 
@@ -329,9 +334,9 @@ public class SignUp extends CurrentLocActivityG
             edEmailS.setError("Enter a valid email");
             return false;
         }
-        else if (edPasswordS.getText().toString().trim().length() < 5)
+        else if (edPasswordS.getText().toString().trim().length() < 4)
         {
-            edPasswordS.setError("Password length should more than 5");
+            edPasswordS.setError("Password length should more than 4");
             return false;
         }
         else if (!edPasswordS.getText().toString().trim().equals(edConfirmPasswordS.getText().toString().trim()))

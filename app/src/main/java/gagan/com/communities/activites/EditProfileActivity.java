@@ -2,15 +2,20 @@ package gagan.com.communities.activites;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -91,9 +96,11 @@ public class EditProfileActivity extends BaseActivityG
     }
 
     RoundedCornersGaganImg imgvProfilePic;
-    private EditText edEmail, edLocation, edGender, edPhoneNumber, /*edHomeSociety,*/
+    private EditText  edLocation, edPhoneNumber, /*edHomeSociety,*/
             edprofession, edName;
     String Base64Image = "";
+
+    private TextView edGender,edEmail;
 
     LatLng selectedLocationLatlng;
 
@@ -110,12 +117,14 @@ public class EditProfileActivity extends BaseActivityG
 
         imgvProfilePic = (RoundedCornersGaganImg) findViewById(R.id.imgvProfilePic);
         edPhoneNumber = (EditText) findViewById(R.id.edPhoneNumber);
-        edEmail = (EditText) findViewById(R.id.edEmail);
+
+        edEmail = (TextView) findViewById(R.id.edEmail);
+
         edLocation = (EditText) findViewById(R.id.edLocation);
 //        edHomeSociety = (EditText) findViewById(R.id.edHomeSociety);
         edprofession = (EditText) findViewById(R.id.edprofession);
         edName = (EditText) findViewById(R.id.edName);
-        edGender = (EditText) findViewById(R.id.edGender);
+        edGender = (TextView) findViewById(R.id.edGender);
 
         setData();
     }
@@ -123,7 +132,6 @@ public class EditProfileActivity extends BaseActivityG
 
     private void setData()
     {
-
         edPhoneNumber.setText(sharedPrefHelper.getUserPhone());
         UserDataModel userData = SharedPrefHelper.read(EditProfileActivity.this);
         imgvProfilePic.setRadius(120);
@@ -159,6 +167,41 @@ public class EditProfileActivity extends BaseActivityG
             }
         });
 
+
+        edGender.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+
+                if (event.getAction() == MotionEvent.ACTION_UP)
+                {
+                    PopupMenu popup = new PopupMenu(EditProfileActivity.this, edGender);
+
+                    SpannableString s = new SpannableString("Male");
+                    s.setSpan(new ForegroundColorSpan(Color.BLACK), 0, s.length(), 0);
+                    popup.getMenu().add(s);
+
+                    SpannableString s2 = new SpannableString("Female");
+                    s2.setSpan(new ForegroundColorSpan(Color.BLACK), 0, s2.length(), 0);
+                    popup.getMenu().add(s2);
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
+                    {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item)
+                        {
+                            edGender.setText(item.getTitle());
+
+                            return false;
+                        }
+                    });
+                    popup.show();
+                }
+                return false;
+            }
+        });
+
+
     }
 
 
@@ -171,7 +214,6 @@ public class EditProfileActivity extends BaseActivityG
                     new PlacePicker.IntentBuilder();
             Intent intent = intentBuilder.build(EditProfileActivity.this);
             startActivityForResult(intent, 11);
-
         }
         catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e)
         {
@@ -188,11 +230,11 @@ public class EditProfileActivity extends BaseActivityG
             return false;
         }
 
-        else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(edEmail.getText().toString().trim()).matches())
+      /*  else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(edEmail.getText().toString().trim()).matches())
         {
             edEmail.setError("Enter a valid email");
             return false;
-        }
+        }*/
         else if (edLocation.getText().toString().trim().isEmpty())
         {
             edLocation.setError("Please enter location");
@@ -216,8 +258,6 @@ public class EditProfileActivity extends BaseActivityG
 
         try
         {
-
-
             showProgressDialog();
 
             JSONObject data = new JSONObject();
@@ -417,7 +457,6 @@ public class EditProfileActivity extends BaseActivityG
 
 //                imgvProfilePic.setImageUrl(EditProfileActivity.this, uri.toString());
 
-
                 Picasso.with(EditProfileActivity.this).load(uri.toString()).resize(200, 200).centerCrop().into(imgvProfilePic, new Callback()
                 {
                     @Override
@@ -432,8 +471,6 @@ public class EditProfileActivity extends BaseActivityG
 
                     }
                 });
-
-
 //                Base64Image = BitmapDecoderG.getBytesImage(EditProfileActivity.this, uri);
             }
 

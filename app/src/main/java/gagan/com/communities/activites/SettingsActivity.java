@@ -181,6 +181,9 @@ public class SettingsActivity extends BaseActivityG
             dataJ.put("userid", sharedPrefHelper.getUserId());
             dataJ.put("home_lat", place.getLatLng().latitude + "");
             dataJ.put("home_long", place.getLatLng().longitude + "");
+            dataJ.put("location", locName);
+
+
 
             new SuperWebServiceG(GlobalConstants.URL + "editProfile", dataJ, new CallBackWebService()
             {
@@ -261,9 +264,9 @@ public class SettingsActivity extends BaseActivityG
 
                     JSONObject dataJ = new JSONObject();
                     dataJ.put("userid", sharedPrefHelper.getUserId());
-                    dataJ.put("status", "0");
+                    //dataJ.put("status", "0");
 
-                    new SuperWebServiceG(GlobalConstants.URL + "editProfile", dataJ, new CallBackWebService()
+                    new SuperWebServiceG(GlobalConstants.URL + "deleteProfile", dataJ, new CallBackWebService()
                     {
                         @Override
                         public void webOnFinish(String response)

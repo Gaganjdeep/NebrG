@@ -279,7 +279,6 @@ public class AddPostActivity extends BaseActivityG
                 final CharSequence address = place.getAddress();
 
 
-
                 tvlocation.setVisibility(View.VISIBLE);
                 tvlocation.setText(name);
 
@@ -369,6 +368,15 @@ public class AddPostActivity extends BaseActivityG
 
     public void openSpinner(View view)
     {
+        try
+        {
+            Utills.hideKeyboard(AddPostActivity.this, getCurrentFocus());
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
         spinner.performClick();
     }
 

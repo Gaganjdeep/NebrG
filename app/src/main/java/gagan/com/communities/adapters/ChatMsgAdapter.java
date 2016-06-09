@@ -1,6 +1,7 @@
 package gagan.com.communities.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -213,10 +214,14 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MyViewHo
                         {
                             dataList.remove(cmntId);
                             notifyDataSetChanged();
+
+                            Intent intent = new Intent(GlobalConstants.UPDATE_MSG_FRAGMENT);
+                            con.sendBroadcast(intent);
+
                         }
                         else
                         {
-                            Utills.showToast("unable to delete comment", con, true);
+                            Utills.showToast("Unable to delete comment", con, true);
                         }
 
                     }

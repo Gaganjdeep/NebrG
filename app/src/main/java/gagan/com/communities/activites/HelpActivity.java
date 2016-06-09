@@ -23,6 +23,7 @@ import com.facebook.share.widget.ShareDialog;
 import com.google.android.gms.plus.PlusShare;
 
 import gagan.com.communities.R;
+import gagan.com.communities.utills.GlobalConstants;
 import gagan.com.communities.utills.Utills;
 
 public class HelpActivity extends AppCompatActivity
@@ -78,7 +79,7 @@ public class HelpActivity extends AppCompatActivity
 
             PackageInfo info = pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
             waIntent.setPackage("com.whatsapp");
-            waIntent.putExtra(Intent.EXTRA_TEXT, "Neibr");
+            waIntent.putExtra(Intent.EXTRA_TEXT, GlobalConstants.SHARE_MSG);
             startActivity(Intent.createChooser(waIntent, "Share with"));
 
         }
@@ -97,7 +98,7 @@ public class HelpActivity extends AppCompatActivity
     {
         Intent shareIntent = new PlusShare.Builder(this)
                 .setType("text/plain")
-                .setText("Welcome to the Google+ platform.")
+                .setText(GlobalConstants.SHARE_MSG)
                 .setContentUrl(Uri.parse("https://developers.google.com/+/"))
                 .getIntent();
 
@@ -108,7 +109,7 @@ public class HelpActivity extends AppCompatActivity
     {
 
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.putExtra("sms_body", "Neibr Neibr");
+        intent.putExtra("sms_body", GlobalConstants.SHARE_MSG);
         intent.setType("vnd.android-dir/mms-sms");
         startActivity(intent);
     }
@@ -139,7 +140,7 @@ public class HelpActivity extends AppCompatActivity
 
         if (ShareDialog.canShow(ShareLinkContent.class))
         {
-            ShareLinkContent linkContent = new ShareLinkContent.Builder().setContentTitle("Neibr").setContentDescription("Share an app.... ").setContentUrl(Uri.parse("http://www.Neibr.com/")).build();
+            ShareLinkContent linkContent = new ShareLinkContent.Builder().setContentTitle("Neibr").setContentDescription(GlobalConstants.SHARE_MSG).setContentUrl(Uri.parse("http://www.Neibr.com/")).build();
             dailog_share.show(linkContent);
         }
     }

@@ -14,6 +14,7 @@ import android.util.Log;
 import com.google.android.gcm.GCMBaseIntentService;
 
 import gagan.com.communities.activites.SplashActivity;
+import gagan.com.communities.activites.fragment.HomeFragment;
 import gagan.com.communities.utills.GlobalConstants;
 import gagan.com.communities.utills.SharedPrefHelper;
 
@@ -120,13 +121,45 @@ public class GCMIntentService extends GCMBaseIntentService
 //                    "title":"Post Liked","status":2,"vibrate":1,"sound":1,"post_id":"45"}
 
 //            JSONObject jobj = new JSONObject(message);
+            try
+            {
+                if (intent.getStringExtra("status").equals("9"))
+                {
+                    sendBroadcast(new Intent(GlobalConstants.UPDATE_CHAT));
+                    sendBroadcast(new Intent(GlobalConstants.UPDATE_MSG_FRAGMENT));
+                }
+                else if(intent.getStringExtra("status").equals("11"))
+                {
+                    if (HomeFragment.homeFragment!=null)
+                    {
+                        (HomeFragment.homeFragment).notifier(0,"0");
+                    }
+                }
 
 
-            showNotification(context, message);
+                if (!intent.getStringExtra("status").equals("11"))
+                {
+                    showNotification(context, message);
 
-            SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(context);
+                    SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(context);
 
-            sharedPrefHelper.SetbadgeCount(sharedPrefHelper.GetbadgeCount() + 1);
+                    sharedPrefHelper.SetbadgeCount(sharedPrefHelper.GetbadgeCount() + 1);
+
+                    sendBroadcast(new Intent(GlobalConstants.UPDATE_BADGE));
+
+                }
+
+
+
+
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
+
+
 
 
         }
@@ -135,19 +168,7 @@ public class GCMIntentService extends GCMBaseIntentService
             showNotification(context, "new notification");
             e.printStackTrace();
         }
-        try
-        {
-            if (intent.getStringExtra("title").equals("message recieved"))
-            {
-                sendBroadcast(new Intent(GlobalConstants.UPDATE_CHAT));
-                sendBroadcast(new Intent(GlobalConstants.UPDATE_MSG_FRAGMENT));
-            }
 
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
 
     }
 

@@ -222,19 +222,22 @@ public class ChatActivity extends BaseActivityG
                             {
                                 JSONObject jobj = jsonarrayData.optJSONObject(g);
 
-                                String id               = jobj.optString("id");
-                                String sender_userid    = jobj.optString("sender_userid");
-                                String recipient_userid = jobj.optString("recipient_userid");
-                                String message          = jobj.optString("message");
-                                String created_at       = jobj.optString("created_at");
-                                String username         = jobj.optString("username");
-
-
-                                String       profile_pic  = sender_userid.equals(userData.getuId()) ? userData.getProfile_pic() : profilePicOther;
-                                MsgDataModel msgDataModel = new MsgDataModel(false, id, sender_userid, recipient_userid, message, created_at, username, profile_pic);
-                                if (!listData.contains(msgDataModel))
+                                if (jobj.optString("sender_delete_status").equals("0"))
                                 {
-                                    listData.add(msgDataModel);
+                                    String id               = jobj.optString("id");
+                                    String sender_userid    = jobj.optString("sender_userid");
+                                    String recipient_userid = jobj.optString("recipient_userid");
+                                    String message          = jobj.optString("message");
+                                    String created_at       = jobj.optString("created_at");
+                                    String username         = jobj.optString("username");
+
+
+                                    String       profile_pic  = sender_userid.equals(userData.getuId()) ? userData.getProfile_pic() : profilePicOther;
+                                    MsgDataModel msgDataModel = new MsgDataModel(false, id, sender_userid, recipient_userid, message, created_at, username, profile_pic);
+                                    if (!listData.contains(msgDataModel))
+                                    {
+                                        listData.add(msgDataModel);
+                                    }
                                 }
 
                             }

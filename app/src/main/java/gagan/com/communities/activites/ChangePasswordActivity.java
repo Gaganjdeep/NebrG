@@ -1,6 +1,5 @@
 package gagan.com.communities.activites;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -88,9 +87,9 @@ public class ChangePasswordActivity extends BaseActivityG
 
     private boolean validation()
     {
-        if (edNewPswd.getText().toString().trim().isEmpty())
+        if (edNewPswd.getText().toString().trim().length() < 4)
         {
-            edNewPswd.setError("Please enter password");
+            edNewPswd.setError("Password length should more than 4");
             return false;
         }
 

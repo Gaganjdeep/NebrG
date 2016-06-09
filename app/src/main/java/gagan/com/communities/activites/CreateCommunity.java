@@ -54,7 +54,6 @@ public class CreateCommunity extends BaseActivityG
     String inviteUsers = "";
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -237,9 +236,14 @@ public class CreateCommunity extends BaseActivityG
 
                             if (jsonMainResult.getString("code").contains("200"))
                             {
+                                Utills.showToast("Community created successfully", CreateCommunity.this, true);
                                 finish();
                             }
-                            Utills.showToast(jsonMainResult.getString("status"), CreateCommunity.this, true);
+                            else
+                            {
+                                Utills.showToast("Please try later", CreateCommunity.this, true);
+                            }
+
                         }
                         catch (Exception e)
                         {
@@ -336,6 +340,15 @@ public class CreateCommunity extends BaseActivityG
 
     public void openSpinner(View view)
     {
+
+        try
+        {
+            Utills.hideKeyboard(CreateCommunity.this, getCurrentFocus());
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         spinner.performClick();
     }
 

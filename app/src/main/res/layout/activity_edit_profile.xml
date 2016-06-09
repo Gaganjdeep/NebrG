@@ -148,7 +148,7 @@
             android:layout_height="wrap_content"
             android:drawableLeft="@mipmap/location_icon"
             android:gravity="center_vertical"
-            android:hint="Location"
+            android:hint="Select home location"
             android:maxLines="1"/>
 
 
@@ -196,7 +196,8 @@
         android:paddingRight="15dp">
 
 
-        <EditText
+        <TextView
+            android:textSize="17sp"
             android:id="@+id/edEmail"
             android:inputType="textEmailAddress"
             android:textColor="@color/black"
@@ -236,7 +237,8 @@
             android:layout_height="1dp"
             android:background="@color/lt_grey"/>
 
-        <EditText
+        <TextView
+            android:textSize="16sp"
             android:id="@+id/edGender"
             android:inputType="text"
             android:textColor="@color/black"

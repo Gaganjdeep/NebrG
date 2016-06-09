@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,15 +37,29 @@ public class CommunityDetailsActivity extends BaseActivityG
         findViewByID();
 
 
-        dataModel = (CommunitiesListModel) getIntent().getSerializableExtra("data");
-        setData(dataModel);
-        hitWebserviceG();
+        try
+        {
+            dataModel = (CommunitiesListModel) getIntent().getSerializableExtra("data");
 
-        myPost = new PostProfileFragment();
-        Bundle bundlePost = new Bundle();
-        bundlePost.putString("userid", "g");
-        bundlePost.putString("c_id", dataModel.getCid());
-        myPost.setArguments(bundlePost);
+            if(dataModel==null)
+            {
+                finish();
+            }
+
+
+            setData(dataModel);
+            hitWebserviceG();
+
+            myPost = new PostProfileFragment();
+            Bundle bundlePost = new Bundle();
+            bundlePost.putString("userid", "g");
+            bundlePost.putString("c_id", dataModel.getCid());
+            myPost.setArguments(bundlePost);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
 
     }
@@ -352,9 +365,14 @@ public class CommunityDetailsActivity extends BaseActivityG
 
                                             if (jsonMainResult.getString("code").contains("200"))
                                             {
+                                                Utills.showToast("Community deleted", CommunityDetailsActivity.this, true);
                                                 finish();
                                             }
-                                            Utills.showToast(jsonMainResult.getString("status"), CommunityDetailsActivity.this, true);
+                                            else
+                                            {
+                                                Utills.showToast("Please try later", CommunityDetailsActivity.this, true);
+                                            }
+
                                         }
                                         catch (Exception e)
                                         {

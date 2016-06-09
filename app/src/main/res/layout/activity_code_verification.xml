@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Please enter 6 digit code ,sent to your email."
+        android:text="Please enter 6 digit code sent to your email."
         android:textColor="@color/white"
         android:textSize="21sp"/>
 
