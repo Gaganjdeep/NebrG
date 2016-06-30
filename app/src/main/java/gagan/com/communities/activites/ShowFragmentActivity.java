@@ -34,6 +34,7 @@ public class ShowFragmentActivity extends AppCompatActivity
 
         HashMap<String, Fragment> fragmentHashMap = new HashMap<>();
         fragmentHashMap.put("Communities", null);
+        fragmentHashMap.put("Communities ", new Communitiesfragment());
         fragmentHashMap.put("Posts", null);
         fragmentHashMap.put("Business Center", new BuisnessCenterMapFragment());
         fragmentHashMap.put("Personal Ads", new PersonalAdsMapFragment());

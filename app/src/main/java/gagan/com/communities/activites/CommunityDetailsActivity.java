@@ -12,13 +12,20 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import gagan.com.communities.R;
 import gagan.com.communities.activites.fragment.PostProfileFragment;
 import gagan.com.communities.models.CommunitiesListModel;
 import gagan.com.communities.utills.GlobalConstants;
+import gagan.com.communities.utills.SharedPrefHelper;
 import gagan.com.communities.utills.Utills;
 import gagan.com.communities.webserviceG.CallBackWebService;
 import gagan.com.communities.webserviceG.SuperWebServiceG;
@@ -41,7 +48,7 @@ public class CommunityDetailsActivity extends BaseActivityG
         {
             dataModel = (CommunitiesListModel) getIntent().getSerializableExtra("data");
 
-            if(dataModel==null)
+            if (dataModel == null)
             {
                 finish();
             }
@@ -148,7 +155,7 @@ public class CommunityDetailsActivity extends BaseActivityG
                 @Override
                 public void onClick(View v)
                 {
-                    follOw();
+                    follOw(sharedPrefHelper.getUserId());
                 }
             });
 
@@ -228,6 +235,7 @@ public class CommunityDetailsActivity extends BaseActivityG
                             showDelete = jobj.getString("user_id").equals(sharedPrefHelper.getUserId());
                             supportInvalidateOptionsMenu();
 
+
                         }
 //                        Utills.showToast(jsonMainResult.getString("status"), CommunityDetailsActivity.this, true);
                     }
@@ -245,6 +253,28 @@ public class CommunityDetailsActivity extends BaseActivityG
         }
     }
 
+    public static List<String> ListOfMembers;
+
+    public void membersList(String json)
+    {
+        ListOfMembers = new ArrayList<>();
+        try
+        {
+            JSONArray jsonarrayData = new JSONArray(json);
+            for (int g = 0; g < jsonarrayData.length(); g++)
+            {
+                JSONObject jobj = jsonarrayData.optJSONArray(g).getJSONObject(0);
+
+                ListOfMembers.add(jobj.optString("uId"));
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+
     public void maPview(View view)
     {
         Intent intnt = new Intent(CommunityDetailsActivity.this, ShowFragmentActivity.class);
@@ -253,7 +283,7 @@ public class CommunityDetailsActivity extends BaseActivityG
         startActivity(intnt);
     }
 
-    public void follOw()
+    public void follOw(String userslist)
     {
         try
         {
@@ -261,7 +291,7 @@ public class CommunityDetailsActivity extends BaseActivityG
             showProgressDialog();
 
             JSONObject data = new JSONObject();
-            data.put("invite_user_id", sharedPrefHelper.getUserId());
+            data.put("invite_user_id", userslist);
             data.put("c_id", dataModel.getCid());
 
             new SuperWebServiceG(GlobalConstants.URL + "addtocommunity", data, new CallBackWebService()
@@ -402,10 +432,50 @@ public class CommunityDetailsActivity extends BaseActivityG
                 break;
 
 
+            case R.id.add:
+
+
+                membersList(membersList);
+
+                startActivityForResult(new Intent(CommunityDetailsActivity.this, SelectUsersListActivity.class), 11);
+
+
+                break;
+
+
         }
 
         return super.onOptionsItemSelected(item);
 //        return true;
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        try
+        {
+
+            if (resultCode == RESULT_OK)
+            {
+
+                String inviteUsers = data.getStringExtra("data");
+
+
+                if (!inviteUsers.equals(""))
+                {
+                    follOw(inviteUsers);
+                }
+
+            }
+
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
 

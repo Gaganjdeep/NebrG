@@ -225,7 +225,23 @@ public class SelectUsersListActivity extends BaseActivityG
                     homemodel.setName(jobj.optString("name"));
 
 
-                    list.add(homemodel);
+                    if (CommunityDetailsActivity.ListOfMembers != null)
+                    {
+                        if (CommunityDetailsActivity.ListOfMembers.contains(jobj.optString("uId")))
+                        {
+
+                        }
+                        else
+                        {
+                            list.add(homemodel);
+                        }
+                    }
+                    else
+                    {
+                        list.add(homemodel);
+                    }
+
+
                 }
 
                 if (msgAdapter == null)

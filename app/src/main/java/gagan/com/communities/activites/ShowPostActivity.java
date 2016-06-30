@@ -67,6 +67,10 @@ public class ShowPostActivity extends AppCompatActivity
             TextView tvComments = (TextView) findViewById(R.id.tvComments);
 
             ImageView tvShowOnMap = (ImageView) findViewById(R.id.tvShowOnMap);
+
+
+            ImageView imgvShare = (ImageView) findViewById(R.id.imgvShare);
+
           /*  if (dataHome.getLatLng().longitude * dataHome.getLatLng().latitude != 0)
             {
                 tvShowOnMap.setVisibility(View.VISIBLE);
@@ -104,6 +108,29 @@ public class ShowPostActivity extends AppCompatActivity
 
             tvTitle.setText(dataHome.getTitle());
 
+            View.OnClickListener onclickShowProfile = new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    if (!(new SharedPrefHelper(ShowPostActivity.this).getUserId().equals(dataHome.getUserid())))
+                    {
+                        Intent intnt = new Intent(ShowPostActivity.this, OtherProfileActivity.class);
+                        intnt.putExtra("user_id", dataHome.getUserid());
+                        startActivity(intnt);
+                    }
+                }
+            };
+
+
+            tvUsername.setText(dataHome.getUsername());
+
+            imgUserPic.setOnClickListener(onclickShowProfile);
+            tvUsername.setOnClickListener(onclickShowProfile);
+
+
+
+
 
             try
             {
@@ -127,8 +154,11 @@ public class ShowPostActivity extends AppCompatActivity
                 e.printStackTrace();
             }
 
+
+
+
+
             tvGenre.setText(dataHome.getType());
-            tvUsername.setText(dataHome.getUsername());
             tvMessage.setText(dataHome.getMessage());
             tvComments.setText(dataHome.getComments_count() + " comments");
 
@@ -150,6 +180,14 @@ public class ShowPostActivity extends AppCompatActivity
                 }
             });
 
+            imgvShare.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    Utills.shareIntent(ShowPostActivity.this,dataHome.getMessage());
+                }
+            });
 
             if (dataHome.is_liked())
             {

@@ -284,7 +284,21 @@ public class SettingsActivity extends BaseActivityG
                                     cancelDialog();
 
                                     sharedPrefHelper.logOut();
-                                    startActivity(new Intent(SettingsActivity.this, LoginActivity.class));
+
+
+                                    try
+                                    {
+                                        MainTabActivity.mainTabActivity.finish();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        e.printStackTrace();
+                                    }
+
+                                    Intent intnt=new Intent(SettingsActivity.this, LoginActivity.class);
+                                    intnt.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intnt);
+
                                     finish();
 
                                 }

@@ -33,12 +33,18 @@ public class MainTabActivity extends AppCompatActivity
 {
 
 
+    public static MainTabActivity mainTabActivity;
+
+    public static int tabToOpen=0;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_tab);
 
+        mainTabActivity=this;
 
         sharedPrefHelper = new SharedPrefHelper(MainTabActivity.this);
 
@@ -58,6 +64,9 @@ public class MainTabActivity extends AppCompatActivity
         setupTabLayout(tabLayoutG, viewPagerG);
 
 
+        viewPagerG.setCurrentItem(tabToOpen);
+
+        tabToOpen=0;
     }
 
 

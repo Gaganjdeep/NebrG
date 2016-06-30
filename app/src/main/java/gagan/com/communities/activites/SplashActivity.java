@@ -22,7 +22,7 @@ public class SplashActivity extends AppCompatActivity
 
         final SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(SplashActivity.this);
 
-
+        MainTabActivity.tabToOpen = 0;
         new Handler().postDelayed(new Runnable()
         {
             @Override

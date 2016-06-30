@@ -116,13 +116,13 @@ public class NotificationFragment extends BaseFragmentG
 //                                    "created_at": "2016-04-08 22:29:40",
 //                                    "username": "Gagan Deep",
 //                                    "profile_pic": "http://orasisdata.com/Neiber/http://graph.facebook.com/1152850238072299/picture"
-                                String id               = jobj.optString("id");
-                                 String message          = jobj.optString("message");
-                                String created_at       = jobj.optString("created_at");
-                                String username         = jobj.optString("username");
-                                String profile_pic      = jobj.optString("profile_pic");
+                                String id          = jobj.optString("id");
+                                String message     = jobj.optString("message");
+                                String created_at  = jobj.optString("created_at");
+                                String username    = jobj.optString("username");
+                                String profile_pic = jobj.optString("profile_pic");
 
-                                listNOti.add(new NotificationModel(username,created_at,message,profile_pic));
+                                listNOti.add(new NotificationModel(username, created_at, message, profile_pic));
                             }
 
 //                            Collections.reverse(listNOti);

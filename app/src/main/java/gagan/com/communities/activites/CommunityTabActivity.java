@@ -103,7 +103,7 @@ public class CommunityTabActivity extends AppCompatActivity
 
         Intent intnt = new Intent(CommunityTabActivity.this, ShowFragmentActivity
                 .class);
-        intnt.putExtra("title", "Communities");
+        intnt.putExtra("title", "Communities ");
         startActivity(intnt);
     }
 }

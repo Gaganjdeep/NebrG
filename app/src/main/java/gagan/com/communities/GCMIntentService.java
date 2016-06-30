@@ -13,9 +13,13 @@ import android.util.Log;
 
 import com.google.android.gcm.GCMBaseIntentService;
 
+import gagan.com.communities.activites.MainTabActivity;
 import gagan.com.communities.activites.SplashActivity;
 import gagan.com.communities.activites.fragment.HomeFragment;
+import gagan.com.communities.activites.fragment.NotificationTabFragment;
+import gagan.com.communities.adapters.NotificationAdapter;
 import gagan.com.communities.utills.GlobalConstants;
+import gagan.com.communities.utills.Notification;
 import gagan.com.communities.utills.SharedPrefHelper;
 
 public class GCMIntentService extends GCMBaseIntentService
@@ -31,9 +35,22 @@ public class GCMIntentService extends GCMBaseIntentService
     }
 
 
-    private void showNotification(Context context, String message)
+    private void showNotification(Context context, String message, Intent intent)
     {
-        Intent notificationIntent = new Intent(context, SplashActivity.class);
+
+
+        Intent notificationIntent;
+
+        if (isLoggedIn(context))
+        {
+            notificationIntent = intent;
+        }
+        else
+        {
+            notificationIntent = new Intent(context, SplashActivity.class);
+        }
+
+
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -123,23 +140,52 @@ public class GCMIntentService extends GCMBaseIntentService
 //            JSONObject jobj = new JSONObject(message);
             try
             {
-                if (intent.getStringExtra("status").equals("9"))
+                if (intent.getStringExtra("status").equals(Notification.MessageRecieved.getValue() + ""))
                 {
                     sendBroadcast(new Intent(GlobalConstants.UPDATE_CHAT));
                     sendBroadcast(new Intent(GlobalConstants.UPDATE_MSG_FRAGMENT));
+
+                    MainTabActivity.tabToOpen = 2;
+                    NotificationTabFragment.msgTab=true;
+                    showNotification(context, message, new Intent(context, MainTabActivity.class));
+
                 }
-                else if(intent.getStringExtra("status").equals("11"))
+                else if (intent.getStringExtra("status").equals(Notification.PostAdded.getValue() + ""))
                 {
-                    if (HomeFragment.homeFragment!=null)
+                    if (HomeFragment.homeFragment != null)
                     {
-                        (HomeFragment.homeFragment).notifier(0,"0");
+                        (HomeFragment.homeFragment).notifier(0, "0");
                     }
+                }
+
+                else if (intent.getStringExtra("status").equals(Notification.PostLiked.getValue() + ""))
+                {
+                    NotificationAdapter.oneUnread=true;
+                    MainTabActivity.tabToOpen = 2;
+                    showNotification(context, message, new Intent(context, MainTabActivity.class));
+                }
+                else if (intent.getStringExtra("status").equals(Notification.CommentAdded.getValue() + ""))
+                {
+                    NotificationAdapter.oneUnread=true;
+                    MainTabActivity.tabToOpen = 2;
+                    showNotification(context, message, new Intent(context, MainTabActivity.class));
+                }
+                else if (intent.getStringExtra("status").equals(Notification.Userfollow.getValue() + ""))
+                {
+                    NotificationAdapter.oneUnread=true;
+                    MainTabActivity.tabToOpen = 2;
+                    showNotification(context, message, new Intent(context, MainTabActivity.class));
+                }
+                else if (intent.getStringExtra("status").equals(Notification.GroupInvitation.getValue() + ""))
+                {
+                    NotificationAdapter.oneUnread=true;
+                    MainTabActivity.tabToOpen = 2;
+                    showNotification(context, message, new Intent(context, MainTabActivity.class));
                 }
 
 
                 if (!intent.getStringExtra("status").equals("11"))
                 {
-                    showNotification(context, message);
 
                     SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(context);
 
@@ -150,8 +196,6 @@ public class GCMIntentService extends GCMBaseIntentService
                 }
 
 
-
-
             }
             catch (Exception e)
             {
@@ -159,17 +203,22 @@ public class GCMIntentService extends GCMBaseIntentService
             }
 
 
-
-
-
         }
         catch (Exception | Error e)
         {
-            showNotification(context, "new notification");
+            showNotification(context, "new notification", new Intent(context, SplashActivity.class));
             e.printStackTrace();
         }
 
 
+    }
+
+
+    private boolean isLoggedIn(Context context)
+    {
+        SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(context);
+
+        return sharedPrefHelper.isLoggedIn() && sharedPrefHelper.getEmailVerified();
     }
 
     @Override

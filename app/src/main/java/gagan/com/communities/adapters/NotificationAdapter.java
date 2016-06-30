@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -34,6 +35,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     private List<NotificationModel> dataList;
 
 
+    public static boolean oneUnread = false;
+
     public NotificationAdapter(Context context, List<NotificationModel> dList)
     {
 
@@ -59,7 +62,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         holder.tvmsg.setText(currentData.getMsg());
 
         holder.img_profilepic.setRadius(170);
-        holder.img_profilepic.setImageUrl(con,currentData.getImage());
+        holder.img_profilepic.setImageUrl(con, currentData.getImage());
 
 
         try
@@ -77,6 +80,17 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         }
 
 
+        if (oneUnread && position == 0)
+        {
+            holder.parentLayout.setBackgroundColor(con.getResources().getColor(R.color.lt_grey));
+            oneUnread=false;
+        }
+        else
+        {
+            holder.parentLayout.setBackgroundColor(con.getResources().getColor(R.color.white));
+        }
+
+
     }
 
 
@@ -87,21 +101,24 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     }
 
 
-
     class MyViewHolderG extends RecyclerView.ViewHolder
     {
-        TextView tvName, tvmsg,tvTime;
+        TextView tvName, tvmsg, tvTime;
         View                   view;
         RoundedCornersGaganImg img_profilepic;
+        LinearLayout           parentLayout;
 
         public MyViewHolderG(View itemView)
         {
             super(itemView);
 
-            tvTime= (TextView) itemView.findViewById(R.id.tvTime);
+            tvTime = (TextView) itemView.findViewById(R.id.tvTime);
             tvmsg = (TextView) itemView.findViewById(R.id.tvmsg);
             tvName = (TextView) itemView.findViewById(R.id.tvName);
-            img_profilepic= (RoundedCornersGaganImg) itemView.findViewById(R.id.img_profilepic);
+            img_profilepic = (RoundedCornersGaganImg) itemView.findViewById(R.id.img_profilepic);
+            parentLayout = (LinearLayout) itemView.findViewById(R.id.parentLayout);
+
+
             view = itemView;
         }
     }

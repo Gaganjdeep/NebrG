@@ -14,17 +14,22 @@ import gagan.com.communities.R;
 import gagan.com.communities.activites.MainTabActivity;
 
 
-public class NotificationTabFragment extends android.support.v4.app.Fragment {
+public class NotificationTabFragment extends android.support.v4.app.Fragment
+{
 
 
-    public NotificationTabFragment() {
+    public NotificationTabFragment()
+    {
         // Required empty public constructor
     }
 
     TextView tvTitle;
 
+    public static boolean msgTab = false;
 
-    private void setTitle(String title) {
+
+    private void setTitle(String title)
+    {
         tvTitle.setText(title);
     }
 
@@ -32,7 +37,8 @@ public class NotificationTabFragment extends android.support.v4.app.Fragment {
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
-    ) {
+    )
+    {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_notification, container, false);
 
@@ -40,11 +46,9 @@ public class NotificationTabFragment extends android.support.v4.app.Fragment {
         settingActionBar(v);
 
 
-
-
-
         viewPagerG = (ViewPager) v.findViewById(R.id.viewpager);
-        if (viewPagerG != null) {
+        if (viewPagerG != null)
+        {
             setupViewPager(viewPagerG);
         }
 
@@ -60,9 +64,14 @@ public class NotificationTabFragment extends android.support.v4.app.Fragment {
 
 //        setHasOptionsMenu(true);
 
+        if (msgTab)
+        {
+            viewPagerG.setCurrentItem(1);
+            msgTab = false;
+        }
+
         return v;
     }
-
 
 
     private void settingActionBar(View view)
@@ -75,32 +84,34 @@ public class NotificationTabFragment extends android.support.v4.app.Fragment {
     }
 
 
-
-
-
     TabLayout tabLayoutG;
     ViewPager viewPagerG;
 
-    private void setupViewPager(ViewPager viewPager) {
+    private void setupViewPager(ViewPager viewPager)
+    {
         MainTabActivity.Adapter adapter = new MainTabActivity.Adapter(getChildFragmentManager());
         adapter.addFragment(new NotificationFragment(), "Notifications");
         adapter.addFragment(new MessageFragment(), "Messages");
         viewPager.setAdapter(adapter);
 
         viewPager.addOnPageChangeListener(
-                new ViewPager.OnPageChangeListener() {
+                new ViewPager.OnPageChangeListener()
+                {
                     @Override
-                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
+                    {
 
                     }
 
                     @Override
-                    public void onPageSelected(int position) {
+                    public void onPageSelected(int position)
+                    {
                         setTitle(position == 0 ? "Notifications" : "Messages");
                     }
 
                     @Override
-                    public void onPageScrollStateChanged(int state) {
+                    public void onPageScrollStateChanged(int state)
+                    {
 
                     }
                 }
@@ -108,7 +119,8 @@ public class NotificationTabFragment extends android.support.v4.app.Fragment {
 
     }
 
-    public void setupTabLayout(TabLayout tabLayout, final ViewPager mViewpager) {
+    public void setupTabLayout(TabLayout tabLayout, final ViewPager mViewpager)
+    {
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
 //        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
         tabLayout.setupWithViewPager(mViewpager);
@@ -153,12 +165,6 @@ public class NotificationTabFragment extends android.support.v4.app.Fragment {
         return super.onOptionsItemSelected(item);
 //        return true;
     }*/
-
-
-
-
-
-
 
 
 }

@@ -10,6 +10,7 @@ import android.widget.EditText;
 import org.json.JSONObject;
 
 import gagan.com.communities.R;
+import gagan.com.communities.models.UserDataModel;
 import gagan.com.communities.utills.GlobalConstants;
 import gagan.com.communities.utills.SharedPrefHelper;
 import gagan.com.communities.utills.Utills;
@@ -78,9 +79,13 @@ public class ContactActivity extends BaseActivityG {
 
             showProgressDialog();
 
+            UserDataModel userDateModel=SharedPrefHelper.read(ContactActivity.this);
+
+
             JSONObject dataJ = new JSONObject();
-            dataJ.put("user_email", SharedPrefHelper.read(ContactActivity.this).getEmail());
-            dataJ.put("name", edSubject.getText().toString().trim());
+            dataJ.put("user_email", userDateModel.getEmail());
+            dataJ.put("name", userDateModel.getName());
+            dataJ.put("subject", edSubject.getText().toString().trim());
             dataJ.put("message", edMsg.getText().toString().trim());
 
             new SuperWebServiceG(GlobalConstants.URL + "contactus", dataJ, new CallBackWebService()
