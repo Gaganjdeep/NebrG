@@ -219,7 +219,20 @@ public class CommunityDetailsActivity extends BaseActivityG
                             JSONObject jobj = jsonarrayData.getJSONObject(0);
 
 
-                            if (jobj.getString("is_user_following").equals("1"))
+
+
+                            membersList = jobj.getString("userinfo");
+
+
+                            showDelete = jobj.getString("user_id").equals(sharedPrefHelper.getUserId());
+
+
+
+
+
+                            supportInvalidateOptionsMenu();
+
+                            if (jobj.optString("is_user_following").equals("1"))
                             {
                                 tvFollow.setVisibility(View.GONE);
                             }
@@ -227,14 +240,6 @@ public class CommunityDetailsActivity extends BaseActivityG
                             {
                                 tvFollow.setVisibility(View.VISIBLE);
                             }
-
-
-                            membersList = jobj.getString("userinfo");
-
-
-                            showDelete = jobj.getString("user_id").equals(sharedPrefHelper.getUserId());
-                            supportInvalidateOptionsMenu();
-
 
                         }
 //                        Utills.showToast(jsonMainResult.getString("status"), CommunityDetailsActivity.this, true);

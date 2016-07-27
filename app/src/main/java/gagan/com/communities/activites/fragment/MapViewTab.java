@@ -104,17 +104,38 @@ public class MapViewTab extends BaseFragmentG
 
         ImageView btnAddPost = (ImageView) toolbar.findViewById(R.id.btnAdd);
 
+
+
+
+
+
         btnAddPost.requestFocus();
         btnAddPost.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
+                if (classes[viewPagerG.getCurrentItem()]== AddPostActivity.class)
+                {
+                    if(sharedPrefHelper.getPincodeStatus())
+                    {
+                        Intent i = new Intent(getActivity(), classes[viewPagerG.getCurrentItem()]);
+                        i.putExtra("Cid", "");
+                        startActivity(i);
+                    }
+                    else
+                    {
+                        Utills.show_dialog_msg(getActivity(), "We are yet to launch in your location. Please change your home location in Settings to add post", null);
 
+                    }
 
-                Intent i = new Intent(getActivity(), classes[viewPagerG.getCurrentItem()]);
-                i.putExtra("Cid", "");
-                startActivity(i);
+                }
+                else
+                {
+                    Intent i = new Intent(getActivity(), classes[viewPagerG.getCurrentItem()]);
+                    i.putExtra("Cid", "");
+                    startActivity(i);
+                }
 
             }
         });

@@ -12,12 +12,22 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gcm.GCMBaseIntentService;
+import com.google.android.gms.maps.model.LatLng;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import gagan.com.communities.activites.ChatActivity;
+import gagan.com.communities.activites.CommunityDetailsActivity;
 import gagan.com.communities.activites.MainTabActivity;
+import gagan.com.communities.activites.OtherProfileActivity;
+import gagan.com.communities.activites.ShowPostActivity;
 import gagan.com.communities.activites.SplashActivity;
 import gagan.com.communities.activites.fragment.HomeFragment;
 import gagan.com.communities.activites.fragment.NotificationTabFragment;
 import gagan.com.communities.adapters.NotificationAdapter;
+import gagan.com.communities.models.CommunitiesListModel;
+import gagan.com.communities.models.HomeModel;
 import gagan.com.communities.utills.GlobalConstants;
 import gagan.com.communities.utills.Notification;
 import gagan.com.communities.utills.SharedPrefHelper;
@@ -48,10 +58,10 @@ public class GCMIntentService extends GCMBaseIntentService
         else
         {
             notificationIntent = new Intent(context, SplashActivity.class);
+            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         }
 
 
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
@@ -142,12 +152,26 @@ public class GCMIntentService extends GCMBaseIntentService
             {
                 if (intent.getStringExtra("status").equals(Notification.MessageRecieved.getValue() + ""))
                 {
-                    sendBroadcast(new Intent(GlobalConstants.UPDATE_CHAT));
+
+//                    MainTabActivity.tabToOpen = 2;
+
+                    Intent intnt = new Intent(context, ChatActivity
+                            .class);
+                    intnt.putExtra("id", intent.getStringExtra("senderID"));
+                    intnt.putExtra("pic", intent.getStringExtra("image"));
+                    intnt.putExtra("name", intent.getStringExtra("name"));
+
+                    showNotification(context, message, intnt);
+
+
+                    Intent intentBroadcasst = new Intent(GlobalConstants.UPDATE_CHAT);
+                    intentBroadcasst.putExtra("id", intent.getStringExtra("senderID"));
+                    intentBroadcasst.putExtra("msg", intent.getStringExtra("content"));
+                    intentBroadcasst.putExtra("message_id", intent.getStringExtra("message_id"));
+                    sendBroadcast(intentBroadcasst);
+
                     sendBroadcast(new Intent(GlobalConstants.UPDATE_MSG_FRAGMENT));
 
-                    MainTabActivity.tabToOpen = 2;
-                    NotificationTabFragment.msgTab=true;
-                    showNotification(context, message, new Intent(context, MainTabActivity.class));
 
                 }
                 else if (intent.getStringExtra("status").equals(Notification.PostAdded.getValue() + ""))
@@ -160,39 +184,93 @@ public class GCMIntentService extends GCMBaseIntentService
 
                 else if (intent.getStringExtra("status").equals(Notification.PostLiked.getValue() + ""))
                 {
-                    NotificationAdapter.oneUnread=true;
-                    MainTabActivity.tabToOpen = 2;
-                    showNotification(context, message, new Intent(context, MainTabActivity.class));
+                 
+
+                    HomeModel homemodel = parsePOStjson(intent.getStringExtra("post"));
+
+
+                    Intent intnt = new Intent(context, ShowPostActivity.class);
+                    intnt.putExtra("data", homemodel);
+
+                    showNotification(context, message, intnt);
+
+
+                    sendBroadcast(new Intent(GlobalConstants.UPDATE_NOTI_FRAGMENT));
+
                 }
                 else if (intent.getStringExtra("status").equals(Notification.CommentAdded.getValue() + ""))
                 {
-                    NotificationAdapter.oneUnread=true;
-                    MainTabActivity.tabToOpen = 2;
-                    showNotification(context, message, new Intent(context, MainTabActivity.class));
+                 
+
+//                    "{"image":"","lng":"80.2195","post_location":"saidapet","tag_lat":"0","title":"Saidapet","message":"Testing","type":"Ask a Question","userid":"12","tag_pincode":"0","path":"","tag_long":"0","post_pincode":"600015","anon_user":"0","c_id":"0","location":"saidapet","id":"57","tag_status":"0","create_date":"2016-06-29 23:19:26","lat":"13.0224","status":"0"}"
+//                    JSONObject jobj      = new JSONObject(intent.getStringExtra("post"));
+                    HomeModel homemodel = parsePOStjson(intent.getStringExtra("post"));
+
+
+                    Intent intnt = new Intent(context, ShowPostActivity.class);
+                    intnt.putExtra("data", homemodel);
+
+                    showNotification(context, message, intnt);
+                    sendBroadcast(new Intent(GlobalConstants.UPDATE_NOTI_FRAGMENT));
+
                 }
                 else if (intent.getStringExtra("status").equals(Notification.Userfollow.getValue() + ""))
                 {
-                    NotificationAdapter.oneUnread=true;
-                    MainTabActivity.tabToOpen = 2;
-                    showNotification(context, message, new Intent(context, MainTabActivity.class));
+                 
+
+
+                    Intent intnt = new Intent(context, OtherProfileActivity.class);
+                    intnt.putExtra("user_id", intent.getStringExtra("user_id"));
+
+
+                    showNotification(context, message, intnt);
+                    sendBroadcast(new Intent(GlobalConstants.UPDATE_NOTI_FRAGMENT));
+
                 }
                 else if (intent.getStringExtra("status").equals(Notification.GroupInvitation.getValue() + ""))
                 {
-                    NotificationAdapter.oneUnread=true;
-                    MainTabActivity.tabToOpen = 2;
-                    showNotification(context, message, new Intent(context, MainTabActivity.class));
-                }
+//                 
 
+
+                    JSONObject           jobj = new JSONArray(intent.getStringExtra("comunity")).getJSONObject(0);
+                    CommunitiesListModel data = new CommunitiesListModel();
+
+                    data.setCid(jobj.optString("cid"));
+                    data.setC_description(jobj.optString("c_description"));
+                    data.setC_genre(jobj.optString("c_genre"));
+                    data.setC_name(jobj.optString("c_name"));
+                    data.setCreated_at(jobj.optString("created_at"));
+                    try
+                    {
+                        LatLng latlng = new LatLng(Double.parseDouble(jobj.optString("c_lat")), Double.parseDouble(jobj.optString("c_long")));
+                        data.setLatLng(latlng);
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+
+
+                    data.setOwner_id(jobj.optString("owner_id"));
+                    data.setUser_id(jobj.optString("user_id"));
+                    data.setMyCommunity(true);
+
+                    Intent intnt = new Intent(context, CommunityDetailsActivity.class);
+                    intnt.putExtra("data", data);
+
+                    showNotification(context, message, intnt);
+                    sendBroadcast(new Intent(GlobalConstants.UPDATE_NOTI_FRAGMENT));
+
+
+                }
 
                 if (!intent.getStringExtra("status").equals("11"))
                 {
-
                     SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(context);
 
                     sharedPrefHelper.SetbadgeCount(sharedPrefHelper.GetbadgeCount() + 1);
 
                     sendBroadcast(new Intent(GlobalConstants.UPDATE_BADGE));
-
                 }
 
 
@@ -211,6 +289,50 @@ public class GCMIntentService extends GCMBaseIntentService
         }
 
 
+    }
+
+
+    private HomeModel parsePOStjson(String postJson)
+    {
+        try
+        {
+
+
+            JSONObject jobj      = new JSONObject(postJson);
+            HomeModel  homemodel = new HomeModel();
+            homemodel.setId(jobj.optString("id"));
+            homemodel.setLocation(jobj.optString("post_location"));
+            homemodel.setComments_count(jobj.optString("comments_count"));
+            homemodel.setCreate_date(jobj.optString("create_date"));
+            homemodel.setImage(jobj.optString("image"));
+            homemodel.setMessage(jobj.optString("message"));
+            homemodel.setUserid(jobj.optString("userid"));
+            homemodel.setTitle(jobj.optString("title"));
+            homemodel.setType(jobj.optString("type"));
+            homemodel.setLike_count(jobj.optString("like_count"));
+            homemodel.setDislike_count(jobj.optString("dislike_count"));
+            homemodel.setUsername(jobj.optString("username"));
+            homemodel.setProfile_pic(jobj.optString("profile_pic"));
+
+            homemodel.setIs_liked(jobj.optString("is_liked").equals("1"));
+            homemodel.setIs_disliked(jobj.optString("is_disliked").equals("1"));
+            homemodel.setAnon_user(jobj.optString("anon_user").equals("1"));
+
+
+            double lat = Double.parseDouble(jobj.optString("tag_lat"));
+            double lng = Double.parseDouble(jobj.optString("tag_long"));
+            homemodel.setLatLng(new LatLng(lat, lng));
+
+            return homemodel;
+
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+
+        }
     }
 
 

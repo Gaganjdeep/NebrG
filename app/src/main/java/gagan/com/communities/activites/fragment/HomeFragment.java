@@ -2,12 +2,12 @@ package gagan.com.communities.activites.fragment;
 
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -21,9 +21,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.costum.android.widget.PullAndLoadListView;
-import com.costum.android.widget.PullToRefreshListView;
-import com.google.android.gms.internal.zzir;
+import com.costum.android.widget.LoadMoreListView;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -47,7 +45,7 @@ import gagan.com.communities.webserviceG.SuperWebServiceG;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome, SearchView.OnQueryTextListener, PullAndLoadListView.OnLoadMoreListener, PullToRefreshListView.OnRefreshListener, CallBackG
+public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome, SearchView.OnQueryTextListener, CallBackG, SwipeRefreshLayout.OnRefreshListener, LoadMoreListView.OnLoadMoreListener
 {
 
 
@@ -56,12 +54,14 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
         // Required empty public constructor
     }
 
-    PullAndLoadListView listViewNotiMsg;
-    HomeAdapter         homeadapter;
-    ProgressBar         progressBar;
+    LoadMoreListView listViewNotiMsg;
+    HomeAdapter      homeadapter;
+    ProgressBar      progressBar;
 
     TextView tvNoPost, tvNewPost;
     public static HomeFragment homeFragment;
+
+    SwipeRefreshLayout swipeRefresh;
 
     @Override
     public View onCreateView(
@@ -79,6 +79,7 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
             settingActionBar(v);
 
             homeFragment = this;
+            swipeRefresh = (SwipeRefreshLayout) v.findViewById(R.id.swipeRefresh);
 
             tvNoPost = (TextView) v.findViewById(R.id.tvNoPost);
 
@@ -86,7 +87,7 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
 
             progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
             progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.button_pink), PorterDuff.Mode.MULTIPLY);
-            listViewNotiMsg = (PullAndLoadListView) v.findViewById(R.id.listViewHomeList);
+            listViewNotiMsg = (LoadMoreListView) v.findViewById(R.id.listViewHomeList);
 
 
             if (listHome != null)
@@ -110,8 +111,9 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
 
 
             listViewNotiMsg.setOnLoadMoreListener(this);
-            listViewNotiMsg.setOnRefreshListener(this);
+//            listViewNotiMsg.setOnRefreshListener(this);
 
+            swipeRefresh.setOnRefreshListener(this);
 
             setHasOptionsMenu(true);
             return v;
@@ -166,7 +168,7 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
 
                     listViewNotiMsg.onLoadMoreComplete();
 
-                    listViewNotiMsg.onRefreshComplete();
+                    swipeRefresh.setRefreshing(false);
 
 
                     if (progressBar.getVisibility() == View.VISIBLE)
@@ -473,6 +475,19 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
         startId = 0;
         fetchHomeData(startId, limit);
     }
+//    @Override
+//    public void onRefresh()
+//    {
+//        homeadapter = null;
+//        if (listHome != null)
+//        {
+//            listHome.clear();
+//        }
+//        index = 0;
+//        limit = 10;
+//        startId = 0;
+//        fetchHomeData(startId, limit);
+//    }
 
     @Override
     public void notifier(final int indexg, final String count)
@@ -544,4 +559,6 @@ public class HomeFragment extends BaseFragmentG implements CallBackNotifierHome,
         startId = 0;
         fetchHomeData(startId, limit);
     }
+
+
 }

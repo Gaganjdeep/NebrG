@@ -35,7 +35,7 @@ public class MainTabActivity extends AppCompatActivity
 
     public static MainTabActivity mainTabActivity;
 
-    public static int tabToOpen=0;
+//    public static int tabToOpen=0;
 
 
     @Override
@@ -64,9 +64,9 @@ public class MainTabActivity extends AppCompatActivity
         setupTabLayout(tabLayoutG, viewPagerG);
 
 
-        viewPagerG.setCurrentItem(tabToOpen);
-
-        tabToOpen=0;
+//        viewPagerG.setCurrentItem(tabToOpen);
+//
+//        tabToOpen=0;
     }
 
 

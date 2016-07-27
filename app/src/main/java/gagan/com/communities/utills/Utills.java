@@ -429,8 +429,35 @@ public class Utills
                     }
                     else
                     {
+                        if (addresses.get(0).getSubLocality() != null)
+                        {
+                            return addresses.get(0).getSubLocality();
+                        }
+                        else
+                        {
+                            if (addresses.get(0).getSubAdminArea() != null)
+                            {
+                                return addresses.get(0).getSubAdminArea();
+                            }
+                            else
+                            {
+                                if (addresses.get(0).getFeatureName() != null)
+                                {
+                                    return addresses.get(0).getFeatureName();
+                                }
+                               else if (addresses.get(0).getLocality() != null)
+                                {
+                                    return addresses.get(0).getLocality();
+                                }
+                                else
+                                {
+                                    return addresses.get(0).getAddressLine(0);
+                                }
+                            }
 
-                        return addresses.get(0).getLocality();
+
+                        }
+
 
                     }
                 }
@@ -485,25 +512,33 @@ public class Utills
                     JSONObject zero2     = address_components.getJSONObject(i);
                     String     long_name = zero2.getString("long_name");
                     JSONArray  mtypes    = zero2.getJSONArray("types");
-                    String     Type      = mtypes.getString(0);
+                    String     Type      = mtypes.toString();
 
-                    if (Type.equalsIgnoreCase("locality"))
+                    if (Type.contains("sublocality"))
                     {
-                        return long_name;
-                    }
-                    else
-                    {
-                        if (Type.equalsIgnoreCase("administrative_area_level_1"))
+                        if (Type.contains("sublocality_level_1"))
                         {
                             return long_name;
                         }
-//                        else if (Type.equalsIgnoreCase("administrative_area_level_1"))
-//                        {
-//                            State = long_name;
-//
-//                        }
 
                     }
+                    else if(Type.contains("political"))
+                    {
+                        return long_name;
+                    }
+                 /*   else
+                    {
+                        if (Type.contains("administrative_area_level"))
+                        {
+                            return long_name;
+                        }
+                        else if (Type.contains("locality"))
+                        {
+                            return long_name;
+
+                        }
+
+                    }*/
                 }
 
 

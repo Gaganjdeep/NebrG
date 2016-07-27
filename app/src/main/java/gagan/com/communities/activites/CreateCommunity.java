@@ -1,9 +1,7 @@
 package gagan.com.communities.activites;
 
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -18,18 +16,12 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONObject;
 
 import gagan.com.communities.R;
-import gagan.com.communities.utills.CurrentLocActivityG;
 import gagan.com.communities.utills.GlobalConstants;
 import gagan.com.communities.utills.Utills;
 import gagan.com.communities.webserviceG.CallBackWebService;

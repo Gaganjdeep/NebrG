@@ -169,6 +169,7 @@
                     android:text=""
                     android:textColor="@color/black"
                     android:textSize="14sp"
+                    android:autoLink="all"
 
                     />
 

@@ -122,8 +122,8 @@ public class MoreFragment extends BaseFragmentG implements View.OnClickListener
 
             case R.id.layoutProfile:
 
-                Utills.transitionToActivity(getActivity(), ProfileActivity.class, img_profilepic, "profilepic");
-
+//                Utills.transitionToActivity(getActivity(), ProfileActivity.class, img_profilepic, "profilepic");
+                startActivity(new Intent(getActivity(), ProfileActivity.class));
                 break;
 
 

@@ -72,6 +72,17 @@
                 android:text="Lorem ipsum is simply for dummy texr"
                 android:textSize="11sp"/>
 
+
+            <View
+                android:visibility="gone"
+                android:id="@+id/viewUnread"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/pink_circle"
+                android:layout_width="10dp"
+                android:layout_height="10dp"/>
+
+
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

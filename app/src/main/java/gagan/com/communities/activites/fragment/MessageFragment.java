@@ -113,31 +113,37 @@ public class MessageFragment extends BaseFragmentG implements View.OnClickListen
                             {
                                 JSONObject jobj = jsonarrayData.optJSONObject(g);
 
-                                String id               = jobj.optString("id");
+                                String id = jobj.optString("id");
 
                                 String sender_userid;
                                 String recipient_userid;
 
-                                if(jobj.optString("sender_userid").equals(sharedPrefHelper.getUserId()))
+                                boolean unread = false;
+
+                                if (jobj.optString("sender_userid").equals(sharedPrefHelper.getUserId()))
                                 {
-                                    sender_userid=jobj.optString("sender_userid");
-                                    recipient_userid=jobj.optString("recipient_userid");
+                                    sender_userid = jobj.optString("sender_userid");
+                                    recipient_userid = jobj.optString("recipient_userid");
                                 }
                                 else
                                 {
-                                    recipient_userid=jobj.optString("sender_userid");
-                                    sender_userid=jobj.optString("recipient_userid");
+                                    recipient_userid = jobj.optString("sender_userid");
+                                    sender_userid = jobj.optString("recipient_userid");
+
+
+                                    unread = jobj.optString("status").equals("0");
                                 }
 
 //                                Str\][g recipient_userid = jobj.optString("recipient_userid");
 
 
-                                String message          = jobj.optString("message");
-                                String created_at       = jobj.optString("created_at");
-                                String username         = jobj.optString("username");
-                                String profile_pic      = jobj.optString("profile_pic");
+                                String message     = jobj.optString("message");
+                                String created_at  = jobj.optString("created_at");
+                                String username    = jobj.optString("username");
+                                String profile_pic = jobj.optString("profile_pic");
 
-                                listMsg.add(new MsgDataModel(false, id, sender_userid, recipient_userid, message, created_at, username, profile_pic));
+
+                                listMsg.add(new MsgDataModel(unread, id, sender_userid, recipient_userid, message, created_at, username, profile_pic));
                             }
 
 //                            Collections.reverse(listMsg);

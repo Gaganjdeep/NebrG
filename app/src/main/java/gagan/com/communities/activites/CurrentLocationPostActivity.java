@@ -3,13 +3,14 @@ package gagan.com.communities.activites;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.costum.android.widget.PullAndLoadListView;
+import com.costum.android.widget.LoadMoreListView;
 import com.costum.android.widget.PullToRefreshListView;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -29,7 +30,7 @@ import gagan.com.communities.utills.Utills;
 import gagan.com.communities.webserviceG.CallBackWebService;
 import gagan.com.communities.webserviceG.SuperWebServiceG;
 
-public class CurrentLocationPostActivity extends CurrentLocActivityG implements PullAndLoadListView.OnLoadMoreListener, PullToRefreshListView.OnRefreshListener, CallBackG
+public class CurrentLocationPostActivity extends CurrentLocActivityG implements  PullToRefreshListView.OnRefreshListener, CallBackG, LoadMoreListView.OnLoadMoreListener, SwipeRefreshLayout.OnRefreshListener
 {
 
 
@@ -41,11 +42,11 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
         fetchHomeData(currentLocation);
     }
 
-    PullAndLoadListView listViewNotiMsg;
-    HomeAdapter         homeadapter;
+    LoadMoreListView listViewNotiMsg;
+    HomeAdapter      homeadapter;
 
-    TextView tvNoPost;
-
+    TextView         tvNoPost;
+    SwipeRefreshLayout swipeRefresh;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -53,9 +54,10 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
         setContentView(R.layout.activity_current_location_post);
         settingActionBar();
 
+        swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipeRefresh);
 
         tvNoPost = (TextView) findViewById(R.id.tvNoPost);
-        listViewNotiMsg = (PullAndLoadListView) findViewById(R.id.listViewHomeList);
+        listViewNotiMsg = (LoadMoreListView) findViewById(R.id.listViewHomeList);
 
         if (listHome != null)
         {
@@ -68,7 +70,8 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
         listHome = new ArrayList<>();
         listHome.clear();
         listViewNotiMsg.setOnLoadMoreListener(this);
-        listViewNotiMsg.setOnRefreshListener(this);
+//        listViewNotiMsg.setOnRefreshListener(this);
+        swipeRefresh.setOnRefreshListener(this);
 
         limit = 10;
         startId = 0;
@@ -123,8 +126,8 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
 
 
                     listViewNotiMsg.onLoadMoreComplete();
-
-                    listViewNotiMsg.onRefreshComplete();
+                    swipeRefresh.setRefreshing(false);
+//                    listViewNotiMsg.onRefreshComplete();
                 }
             }).execute();
         }

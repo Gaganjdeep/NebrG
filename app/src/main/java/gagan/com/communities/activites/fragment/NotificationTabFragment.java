@@ -25,7 +25,7 @@ public class NotificationTabFragment extends android.support.v4.app.Fragment
 
     TextView tvTitle;
 
-    public static boolean msgTab = false;
+//    public static boolean msgTab = false;
 
 
     private void setTitle(String title)
@@ -64,11 +64,7 @@ public class NotificationTabFragment extends android.support.v4.app.Fragment
 
 //        setHasOptionsMenu(true);
 
-        if (msgTab)
-        {
-            viewPagerG.setCurrentItem(1);
-            msgTab = false;
-        }
+
 
         return v;
     }

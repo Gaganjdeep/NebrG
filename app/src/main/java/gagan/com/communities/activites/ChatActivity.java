@@ -121,7 +121,6 @@ public class ChatActivity extends BaseActivityG
     public boolean onOptionsItemSelected(MenuItem item)
     {
 
-
         finish();
 
 
@@ -222,8 +221,8 @@ public class ChatActivity extends BaseActivityG
                             {
                                 JSONObject jobj = jsonarrayData.optJSONObject(g);
 
-                                if (jobj.optString("sender_delete_status").equals("0"))
-                                {
+//                                if (jobj.optString("sender_delete_status").equals("0"))
+//                                {
                                     String id               = jobj.optString("id");
                                     String sender_userid    = jobj.optString("sender_userid");
                                     String recipient_userid = jobj.optString("recipient_userid");
@@ -238,7 +237,7 @@ public class ChatActivity extends BaseActivityG
                                     {
                                         listData.add(msgDataModel);
                                     }
-                                }
+//                                }
 
                             }
 
@@ -406,30 +405,33 @@ public class ChatActivity extends BaseActivityG
         {
 
 
-            start = 0;
-            limit = 15;
-            maxSize = 15;
-
-            hitWebserviceG();
+//            start = 0;
+//            limit = 15;
+//            maxSize = 15;
+//
+//            hitWebserviceG();
             sharedPrefHelper.SetbadgeCount(0);
 
-//            if (intent.getStringExtra("message_id").equals(otherUserID))
-//            {
-//                String id               = intent.getString("message_id");
-//                String sender_userid    = otherUserID;
-//                String recipient_userid = sharedPrefHelper.getUserId();
-//                String message          = intent.getString("message_id");
-//
-//                String created_at = sdf.format(new Date(System.currentTimeMillis()));
-//
-//
-//                String username = otherUserName;
-//
-//
-//                String profile_pic = profilePicOther;
-//
-//                listData.add(0, new MsgDataModel(true, id, sender_userid, recipient_userid, message, created_at, username, profile_pic));
-//            }
+
+            if (intent.getStringExtra("id").equals(otherUserID))
+            {
+                String id               = intent.getStringExtra("message_id");
+                String sender_userid    = otherUserID;
+                String recipient_userid = sharedPrefHelper.getUserId();
+                String message          = intent.getStringExtra("msg");
+
+                String created_at = sdf.format(new Date(System.currentTimeMillis()));
+
+
+                String username = otherUserName;
+
+
+                String profile_pic = profilePicOther;
+
+                listData.add(0, new MsgDataModel(true, id, sender_userid, recipient_userid, message, created_at, username, profile_pic));
+
+                chatMsgAdapter.notifyDataSetChanged();
+            }
 
             //         hitWebserviceG();
         }

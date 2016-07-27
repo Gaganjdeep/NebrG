@@ -129,11 +129,12 @@ public class EditProfileActivity extends BaseActivityG
         setData();
     }
 
-
     private void setData()
     {
         edPhoneNumber.setText(sharedPrefHelper.getUserPhone());
+
         UserDataModel userData = SharedPrefHelper.read(EditProfileActivity.this);
+
         imgvProfilePic.setRadius(120);
 
         imgvProfilePic.setImageUrl(EditProfileActivity.this, userData.getProfile_pic());
@@ -340,7 +341,23 @@ public class EditProfileActivity extends BaseActivityG
                 userDataModel.setLocation(jsonarrayData.getJSONObject(0).optString("location"));
                 userDataModel.setPassword(jsonarrayData.getJSONObject(0).optString("password"));
                 userDataModel.setProfession(jsonarrayData.getJSONObject(0).optString("profession"));
-                userDataModel.setProfile_pic(jsonarrayData.getJSONObject(0).optString("profile_pic"));
+
+
+
+                if (Base64Image.contains("."))
+                {
+                    userDataModel.setProfile_pic(Base64Image);
+                }
+                else
+                {
+                    userDataModel.setProfile_pic(jsonarrayData.getJSONObject(0).optString("profile_pic"));
+
+                }
+
+
+
+
+
                 userDataModel.setuId(jsonarrayData.getJSONObject(0).optString("uId"));
 
                 sharedPrefHelper.setUserId(jsonMainResult.optString("userId"));

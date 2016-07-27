@@ -92,6 +92,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
             }
         });
 
+
+
+            holder.viewUnread.setVisibility(currentData.isLastMsg() ? View.VISIBLE : View.GONE);
+
+
+
     }
 
 
@@ -108,6 +114,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
         TextView tvUserName, tvMessage, tvTime;
         View                   view;
         RoundedCornersGaganImg imgUserPic;
+        View viewUnread;
 
         public MyViewHolderG(View itemView)
         {
@@ -115,6 +122,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
             tvUserName = (TextView) itemView.findViewById(R.id.tvUserName);
             tvMessage = (TextView) itemView.findViewById(R.id.tvMessage);
             tvTime = (TextView) itemView.findViewById(R.id.tvTime);
+            viewUnread=(View) itemView.findViewById(R.id.viewUnread);
 
             imgUserPic = (RoundedCornersGaganImg) itemView.findViewById(R.id.imgUserPic);
             view = itemView;

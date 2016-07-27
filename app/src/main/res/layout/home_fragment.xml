@@ -46,16 +46,20 @@
         android:background="@color/lt_grey"
         android:divider="@android:color/transparent">
 
-
-        <com.costum.android.widget.PullAndLoadListView
-            android:id="@+id/listViewHomeList"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:background="@color/lt_grey"
-            android:divider="@android:color/transparent"
-            />
+            android:layout_height="match_parent">
 
+            <com.costum.android.widget.LoadMoreListView
+                android:id="@+id/listViewHomeList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:background="@color/lt_grey"
+                android:divider="@android:color/transparent"
+                />
+        </android.support.v4.widget.SwipeRefreshLayout>
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -75,22 +79,22 @@
             android:visibility="gone"/>
 
         <TextView
-            android:visibility="gone"
-            android:drawablePadding="7dp"
-            android:drawableLeft="@mipmap/ic_up_arrow"
-            android:textSize="13sp"
             android:id="@+id/tvNewPost"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|top"
-            android:background="@drawable/ic_newpost"
             android:layout_marginTop="25dp"
+            android:background="@drawable/ic_newpost"
+            android:drawableLeft="@mipmap/ic_up_arrow"
+            android:drawablePadding="7dp"
+            android:paddingBottom="7dp"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
             android:paddingTop="7dp"
-            android:paddingBottom="7dp"
             android:text="New Post"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:visibility="gone"/>
 
 
     </FrameLayout>

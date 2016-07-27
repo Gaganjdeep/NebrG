@@ -27,6 +27,7 @@ import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -391,6 +392,7 @@ public class LoginActivity extends BaseActivityG implements GoogleApiClient.Conn
                 if (sharedPrefHelper.getlogInFrom().equals(SharedPrefHelper.loginWith.manual.toString()))
                 {
                     userDataModel.setProfile_pic(jsonarrayData.getJSONObject(0).optString("profile_pic"));
+
                 }
                 else
                 {
@@ -405,6 +407,18 @@ public class LoginActivity extends BaseActivityG implements GoogleApiClient.Conn
                 }
 
                 userDataModel.setuId(jsonarrayData.getJSONObject(0).optString("uId"));
+
+
+                try
+                {
+//                TODO: badge count added here.
+                    sharedPrefHelper.SetbadgeCount(Integer.parseInt(jsonarrayData.getJSONObject(0).optString("badge")));
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
 
                 sharedPrefHelper.setUserId(jsonMainResult.optString("userId"));
                 sharedPrefHelper.setUserName(jsonarrayData.getJSONObject(0).optString("name"));

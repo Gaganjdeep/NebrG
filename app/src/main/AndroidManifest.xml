@@ -176,7 +176,9 @@
         </activity>
         <activity android:name=".activites.CommunityDetailsActivity">
         </activity>
-        <activity android:name=".activites.CodeVerificationActivity">
+        <activity
+            android:name=".activites.CodeVerificationActivity"
+            android:windowSoftInputMode="stateHidden">
         </activity>
     </application>
 

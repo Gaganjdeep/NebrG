@@ -46,7 +46,6 @@
                     android:src="@drawable/user_img"
                     android:scaleType="fitXY"
                     android:id="@+id/imgvProfilePic"
-                    android:elevation="4dp"
                     android:transitionName="profilepic"/>
 
 

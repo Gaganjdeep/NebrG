@@ -156,7 +156,7 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MyViewHo
             }
         });
 
-        if (currentData.isLastMsg())
+       /* if (currentData.isLastMsg())
         {
 //            holder.chatbubble.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
 //            holder.chatbubble.requestLayout();
@@ -165,7 +165,7 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MyViewHo
 //            animZoomin(holder.chatbubble);
 
             dataList.get(position).setLastMsg(false);
-        }
+        }*/
 //        else
 //        {
 //            holder.chatbubble.getLayoutParams().width = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -195,7 +195,9 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MyViewHo
 
             JSONObject data = new JSONObject();
             data.put("message_id", cmntId.getId());
-            data.put("sender_userid", cmntId.getSender_userid());
+            data.put("sender_userid", new SharedPrefHelper(con).getUserId());
+
+
 
             new SuperWebServiceG(GlobalConstants.URL + "deletemessage", data, new CallBackWebService()
             {

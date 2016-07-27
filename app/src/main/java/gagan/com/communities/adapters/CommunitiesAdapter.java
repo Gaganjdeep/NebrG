@@ -1,6 +1,5 @@
 package gagan.com.communities.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +12,6 @@ import java.util.List;
 
 import gagan.com.communities.R;
 import gagan.com.communities.activites.CommunityDetailsActivity;
-import gagan.com.communities.activites.ShowFragmentActivity;
 import gagan.com.communities.models.CommunitiesListModel;
 
 /**

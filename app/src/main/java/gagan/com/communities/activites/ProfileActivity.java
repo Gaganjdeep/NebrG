@@ -114,7 +114,6 @@ public class ProfileActivity extends BaseActivityG
             {
                 try
                 {
-
 //                    Drawable g = imgvProfilePic.getDrawable();
 //
 //                    appbar.setBackground(g);
