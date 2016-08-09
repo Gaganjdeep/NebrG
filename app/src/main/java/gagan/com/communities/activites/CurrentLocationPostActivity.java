@@ -118,6 +118,11 @@ public class CurrentLocationPostActivity extends CurrentLocActivityG implements 
                 @Override
                 public void webOnFinish(String output)
                 {
+                    if(startId==0)
+                    {
+                        listHome.clear();
+                    }
+
                     startId = limit;
                     limit = limit + 10;
 

@@ -184,7 +184,7 @@ public class GCMIntentService extends GCMBaseIntentService
 
                 else if (intent.getStringExtra("status").equals(Notification.PostLiked.getValue() + ""))
                 {
-                 
+
 
                     HomeModel homemodel = parsePOStjson(intent.getStringExtra("post"));
 
@@ -200,7 +200,7 @@ public class GCMIntentService extends GCMBaseIntentService
                 }
                 else if (intent.getStringExtra("status").equals(Notification.CommentAdded.getValue() + ""))
                 {
-                 
+
 
 //                    "{"image":"","lng":"80.2195","post_location":"saidapet","tag_lat":"0","title":"Saidapet","message":"Testing","type":"Ask a Question","userid":"12","tag_pincode":"0","path":"","tag_long":"0","post_pincode":"600015","anon_user":"0","c_id":"0","location":"saidapet","id":"57","tag_status":"0","create_date":"2016-06-29 23:19:26","lat":"13.0224","status":"0"}"
 //                    JSONObject jobj      = new JSONObject(intent.getStringExtra("post"));
@@ -216,7 +216,6 @@ public class GCMIntentService extends GCMBaseIntentService
                 }
                 else if (intent.getStringExtra("status").equals(Notification.Userfollow.getValue() + ""))
                 {
-                 
 
 
                     Intent intnt = new Intent(context, OtherProfileActivity.class);
@@ -233,6 +232,46 @@ public class GCMIntentService extends GCMBaseIntentService
 
 
                     JSONObject           jobj = new JSONArray(intent.getStringExtra("comunity")).getJSONObject(0);
+                    CommunitiesListModel data = new CommunitiesListModel();
+
+                    data.setCid(jobj.optString("cid"));
+                    data.setC_description(jobj.optString("c_description"));
+                    data.setC_genre(jobj.optString("c_genre"));
+                    data.setC_name(jobj.optString("c_name"));
+                    data.setCreated_at(jobj.optString("created_at"));
+                    try
+                    {
+                        LatLng latlng = new LatLng(Double.parseDouble(jobj.optString("c_lat")), Double.parseDouble(jobj.optString("c_long")));
+                        data.setLatLng(latlng);
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+
+
+                    data.setOwner_id(jobj.optString("owner_id"));
+                    data.setUser_id(jobj.optString("user_id"));
+                    data.setMyCommunity(true);
+
+                    Intent intnt = new Intent(context, CommunityDetailsActivity.class);
+                    intnt.putExtra("data", data);
+
+                    showNotification(context, message, intnt);
+                    sendBroadcast(new Intent(GlobalConstants.UPDATE_NOTI_FRAGMENT));
+
+
+                }
+                else if (intent.getStringExtra("status").equals("12"))
+                {
+
+
+                    if (HomeFragment.homeFragment != null)
+                    {
+                        (HomeFragment.homeFragment).notifier(0, "0");
+                    }
+
+                    JSONObject           jobj = new JSONArray(intent.getStringExtra("community")).getJSONObject(0);
                     CommunitiesListModel data = new CommunitiesListModel();
 
                     data.setCid(jobj.optString("cid"));

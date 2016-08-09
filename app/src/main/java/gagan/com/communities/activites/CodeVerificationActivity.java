@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import gagan.com.communities.R;
 import gagan.com.communities.entercode.CodeInput;
 import gagan.com.communities.utills.GlobalConstants;
+import gagan.com.communities.utills.SharedPrefHelper;
 import gagan.com.communities.utills.Utills;
 import gagan.com.communities.webserviceG.CallBackWebService;
 import gagan.com.communities.webserviceG.SuperWebServiceG;
@@ -87,6 +88,9 @@ public class CodeVerificationActivity extends BaseActivityG
                         {
 
                             sharedPrefHelper.setEmailVerified(true);
+
+                            sharedPrefHelper.logInWith(SharedPrefHelper.loginWith.manual.toString());
+
 
                             startActivity(new Intent(CodeVerificationActivity.this, MainTabActivity.class));
                             finish();

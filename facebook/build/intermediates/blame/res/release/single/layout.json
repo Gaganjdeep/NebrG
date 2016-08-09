@@ -12,12 +12,12 @@
         "source": "F:\\PROJECTS\\Communities\\facebook\\res\\layout\\messenger_button_send_white_large.xml"
     },
     {
-        "merged": "F:\\PROJECTS\\Communities\\facebook\\build\\intermediates\\res\\merged\\release\\layout\\com_facebook_activity_layout.xml",
-        "source": "F:\\PROJECTS\\Communities\\facebook\\res\\layout\\com_facebook_activity_layout.xml"
-    },
-    {
         "merged": "F:\\PROJECTS\\Communities\\facebook\\build\\intermediates\\res\\merged\\release\\layout\\messenger_button_send_blue_round.xml",
         "source": "F:\\PROJECTS\\Communities\\facebook\\res\\layout\\messenger_button_send_blue_round.xml"
+    },
+    {
+        "merged": "F:\\PROJECTS\\Communities\\facebook\\build\\intermediates\\res\\merged\\release\\layout\\com_facebook_activity_layout.xml",
+        "source": "F:\\PROJECTS\\Communities\\facebook\\res\\layout\\com_facebook_activity_layout.xml"
     },
     {
         "merged": "F:\\PROJECTS\\Communities\\facebook\\build\\intermediates\\res\\merged\\release\\layout\\messenger_button_send_white_small.xml",

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Neibr</string>
+    <string name="app_name">Neibr Connect</string>
 
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
@@ -43,5 +43,19 @@
         <item>General</item>
     </string-array>
     <string name="title_activity_chat">ChatActivity</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </resources>

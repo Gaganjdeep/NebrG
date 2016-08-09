@@ -78,7 +78,10 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyChsv3T2TiKOl2oW9RmW80xDwtZxKz69Yk"/>
+            android:value="AIzaSyBtxq5Um6E8K_XPzGH6KE6uFKcApmbXL_4"/>
+      <!--  <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyChsv3T2TiKOl2oW9RmW80xDwtZxKz69Yk"/>-->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/app_id"/>
@@ -179,6 +182,8 @@
         <activity
             android:name=".activites.CodeVerificationActivity"
             android:windowSoftInputMode="stateHidden">
+        </activity>
+        <activity android:name=".activites.ShowTextActivity">
         </activity>
     </application>
 

@@ -7,6 +7,14 @@ public class GlobalConstants
 {
 
     public static final String URL       = "http://orasisdata.com/Neiber/webservices/";
+
+
+    public static final String termsURL       = "http://orasisdata.com/Neiber/terms.html";
+    public static final String aboutusURL       = "http://orasisdata.com/Neiber/about_us.html";
+    public static final String faqURL       = "http://orasisdata.com/Neiber/faq.html";
+
+
+
     public static final String SENDER_ID = "679103909775";
 
     public static final String UPDATE_MSG_FRAGMENT = "com.j.gagan.msgFragment";
@@ -20,7 +28,7 @@ public class GlobalConstants
 
 
 
-    public static final String SHARE_MSG = "Check out Neibr Connect for your smartphone. Download it today from XXXXXXXXXXX";
+    public static final String SHARE_MSG = "Check out Neibr Connect for your smartphone. Download it today from - https://play.google.com/store/apps/details?id=gagan.com.communities&hl=en";
 
 
 

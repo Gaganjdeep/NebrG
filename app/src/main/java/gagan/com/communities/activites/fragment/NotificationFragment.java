@@ -126,12 +126,12 @@ public class NotificationFragment extends BaseFragmentG
 //                                    "created_at": "2016-04-08 22:29:40",
 //                                    "username": "Gagan Deep",
 //                                    "profile_pic": "http://orasisdata.com/Neiber/http://graph.facebook.com/1152850238072299/picture"
-                                String id          = jobj.optString("id");
-                                String message     = jobj.optString("message");
-                                String created_at  = jobj.optString("created_at");
-                                String username    = jobj.optString("username");
-                                String profile_pic = jobj.optString("profile_pic");
-                                boolean status = jobj.optString("status").equals("1");
+                                String  id          = jobj.optString("id");
+                                String  message     = jobj.optString("message");
+                                String  created_at  = jobj.optString("created_at");
+                                String  username    = jobj.optString("username");
+                                String  profile_pic = jobj.optString("profile_pic");
+                                boolean status      = jobj.optString("status").equals("1");
 
 
                                 Notification      notification      = null;
@@ -149,10 +149,26 @@ public class NotificationFragment extends BaseFragmentG
                                 }
                                 else if (jobj.optString("messageType").equals("2"))
                                 {
-                                    notificationModel = new NotificationModel<HomeModel>();
+//                                    notificationModel = new NotificationModel<HomeModel>();
+//
+//                                    notification = Notification.PostAdded;
+//                                    notificationModel.setObject(parsePOStjson((jobj.getJSONArray("postinfo")).get(0).toString()));
 
-                                    notification = Notification.PostAdded;
-                                    notificationModel.setObject(parsePOStjson((jobj.getJSONArray("postinfo")).get(0).toString()));
+
+
+
+
+                                    notificationModel = new NotificationModel<CommunitiesListModel>();
+
+                                    notification = Notification.GroupInvitation;
+                                    notificationModel.setObject(parseCommunityData(jobj.optString("postinfo")));
+
+
+
+
+
+
+
                                 }
                                 else if (jobj.optString("messageType").equals("3"))
                                 {

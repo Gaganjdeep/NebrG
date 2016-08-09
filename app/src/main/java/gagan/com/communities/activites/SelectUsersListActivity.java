@@ -26,7 +26,9 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import gagan.com.communities.R;
 import gagan.com.communities.adapters.FollowerFollowingAdapter;
@@ -50,7 +52,7 @@ public class SelectUsersListActivity extends BaseActivityG
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_users_list);
 
-
+        addedList=new ArrayList<>();
         settingActionBar();
         findViewByID();
 
@@ -80,6 +82,11 @@ public class SelectUsersListActivity extends BaseActivityG
 
         if (list != null)
         {
+
+            selectedList=new ArrayList<>();
+            selectedList.clear();
+
+
             Intent resultIntent = new Intent();
 
             StringBuilder sb = new StringBuilder();
@@ -97,7 +104,11 @@ public class SelectUsersListActivity extends BaseActivityG
                     {
                         sb.append(",").append(userData.getUserid());
                     }
+
+                    selectedList.add(userData.getUserid());
                 }
+
+
             }
 
 
@@ -172,7 +183,9 @@ public class SelectUsersListActivity extends BaseActivityG
     }
 
 
-    List<SelectedUser> list;
+   private List<SelectedUser> list;
+    private List<String> addedList;
+    private static List<String> selectedList;
 
     private void processOutput(String output, String status)
     {
@@ -224,6 +237,12 @@ public class SelectUsersListActivity extends BaseActivityG
                     homemodel.setUserid(jobj.optString("uId"));
                     homemodel.setName(jobj.optString("name"));
 
+                    if(selectedList!=null)
+                    {
+                        homemodel.setSelected(selectedList.contains(jobj.optString("uId")));
+                    }
+
+
 
                     if (CommunityDetailsActivity.ListOfMembers != null)
                     {
@@ -233,12 +252,20 @@ public class SelectUsersListActivity extends BaseActivityG
                         }
                         else
                         {
-                            list.add(homemodel);
+                            if (!addedList.contains(jobj.optString("uId")))
+                            {
+                                list.add(homemodel);
+                                addedList.add(jobj.optString("uId"));
+                            }
                         }
                     }
                     else
                     {
-                        list.add(homemodel);
+                        if (!addedList.contains(jobj.optString("uId")))
+                        {
+                            list.add(homemodel);
+                            addedList.add(jobj.optString("uId"));
+                        }
                     }
 
 
@@ -246,6 +273,7 @@ public class SelectUsersListActivity extends BaseActivityG
 
                 if (msgAdapter == null)
                 {
+
                     msgAdapter = new ContactsAdapter(SelectUsersListActivity.this, list);
 
                     listview.setAdapter(msgAdapter);

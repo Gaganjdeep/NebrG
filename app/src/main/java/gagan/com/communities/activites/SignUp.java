@@ -286,8 +286,8 @@ public class SignUp extends CurrentLocActivityG
 
             locationCurrentHome = place.getLatLng();
 
-            if (name.toString().contains("("))
-            {
+//            if (name.toString().contains("("))
+//            {
                 showProgressDialog();
                 Utills.getLocationName(SignUp.this, place.getLatLng(), new CallBackG<String>()
                 {
@@ -298,11 +298,11 @@ public class SignUp extends CurrentLocActivityG
                         tvLocation.setText(output);
                     }
                 });
-            }
-            else
-            {
-                tvLocation.setText(name.toString());
-            }
+//            }
+//            else
+//            {
+//                tvLocation.setText(name.toString());
+//            }
 
 
         }

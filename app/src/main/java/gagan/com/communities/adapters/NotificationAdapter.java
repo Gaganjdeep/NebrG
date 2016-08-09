@@ -149,7 +149,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 break;
         }
 
-        intnt.putExtra("id", currentData.getId());
+        intnt.putExtra("noti_id", currentData.getId());
         intnt.putExtra("position", position);
 
         holder.view.setTag(intnt);
@@ -162,10 +162,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 {
                     Intent intent=(Intent) v.getTag();
 
-
                     JSONObject data = new JSONObject();
 
-                    data.put("notificationid", intent.getStringExtra("id"));
+                    data.put("notificationid", intent.getStringExtra("noti_id"));
 
                     new SuperWebServiceG(GlobalConstants.URL + "readnotification", data, new CallBackWebService()
                     {
@@ -176,8 +175,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
                         }
                     }).execute();
-
-
 
                     con.startActivity(intent);
 

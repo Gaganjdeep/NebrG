@@ -315,6 +315,8 @@ public class CommunityDetailsActivity extends BaseActivityG
                         if (jsonMainResult.getString("code").contains("200"))
                         {
                             tvFollow.setVisibility(View.GONE);
+
+                            hitWebserviceG();
                         }
                         Utills.showToast(jsonMainResult.getString("status"), CommunityDetailsActivity.this, true);
                     }

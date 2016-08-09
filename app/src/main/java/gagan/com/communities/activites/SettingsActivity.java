@@ -142,8 +142,8 @@ public class SettingsActivity extends BaseActivityG
             final CharSequence address = place.getAddress();
 
 
-            if (name.toString().contains("("))
-            {
+//            if (name.toString().contains("(") || name.toString().contains("°"))
+//            {
                 showProgressDialog();
                 Utills.getLocationName(SettingsActivity.this, place.getLatLng(), new CallBackG<String>()
                 {
@@ -154,11 +154,11 @@ public class SettingsActivity extends BaseActivityG
                         changelocation(place, output);
                     }
                 });
-            }
-            else
-            {
-                changelocation(place, name.toString());
-            }
+//            }
+//            else
+//            {
+//                changelocation(place, name.toString());
+//            }
 
 
         }
@@ -203,7 +203,7 @@ public class SettingsActivity extends BaseActivityG
 
                             if (!jsonMainResult.optString("pincode_status").equals("1"))
                             {
-                                Utills.show_dialog_msg(SettingsActivity.this, "We are yet to enable our service in your area, however you can the view posts", null);
+                                Utills.show_dialog_msg(SettingsActivity.this, "We are yet to enable our service in your area, however you can view the posts", null);
                             }
 
                             String location;

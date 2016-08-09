@@ -21,7 +21,8 @@ import gagan.com.communities.R;
  * Created by sony on 06-03-2016.
  */
 public abstract class CurrentLocActivityG extends AppCompatActivity implements
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
+{
 
 
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 60000;
@@ -30,7 +31,7 @@ public abstract class CurrentLocActivityG extends AppCompatActivity implements
     // Location updates intervals in sec
     private static int UPDATE_INTERVAL = 30000; // 30 sec
     private static int FATEST_INTERVAL = 5000; // 5 sec
-    private static int DISPLACEMENT = 50; // 50 meters
+    private static int DISPLACEMENT    = 50; // 50 meters
     public static Location mLastLocation;
 
     public SharedPrefHelper sharedPrefHelper;
@@ -39,27 +40,30 @@ public abstract class CurrentLocActivityG extends AppCompatActivity implements
     public abstract void getCurrentLocationG(Location currentLocation);
 
 
-
     Dialog dialog;
 
-    public void showProgressDialog() {
+    public void showProgressDialog()
+    {
         dialog = new Dialog(this, R.style.Theme_Dialog);
         dialog.setContentView(R.layout.progress_dialog);
         dialog.show();
 
     }
 
-    public void cancelDialog() {
-        if (dialog != null) {
+    public void cancelDialog()
+    {
+        if (dialog != null)
+        {
             dialog.cancel();
         }
     }
 
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        if (checkPlayServices()) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        if (checkPlayServices())
+        {
             // Building the GoogleApi client
             buildGoogleApiClient();
             createLocationRequest();
@@ -69,24 +73,29 @@ public abstract class CurrentLocActivityG extends AppCompatActivity implements
     }
 
     @Override
-    protected void onStart() {
+    protected void onStart()
+    {
         super.onStart();
-        if (mGoogleApiClient != null) {
+        if (mGoogleApiClient != null)
+        {
             mGoogleApiClient.connect();
         }
     }
 
 
     @Override
-    protected void onStop() {
+    protected void onStop()
+    {
         super.onStop();
-        if (mGoogleApiClient.isConnected()) {
+        if (mGoogleApiClient.isConnected())
+        {
             mGoogleApiClient.disconnect();
         }
     }
 
 
-    public synchronized void buildGoogleApiClient() {
+    public synchronized void buildGoogleApiClient()
+    {
         mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -97,7 +106,8 @@ public abstract class CurrentLocActivityG extends AppCompatActivity implements
     /**
      * Creating location request object
      */
-    public void createLocationRequest() {
+    public void createLocationRequest()
+    {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(UPDATE_INTERVAL);
         mLocationRequest.setFastestInterval(FATEST_INTERVAL);
@@ -109,15 +119,19 @@ public abstract class CurrentLocActivityG extends AppCompatActivity implements
     /**
      * Method to verify google play services on the device
      */
-    public boolean checkPlayServices() {
+    public boolean checkPlayServices()
+    {
         int resultCode = GooglePlayServicesUtil
                 .isGooglePlayServicesAvailable(getApplicationContext());
-        if (resultCode != ConnectionResult.SUCCESS) {
-            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+        if (resultCode != ConnectionResult.SUCCESS)
+        {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode))
+            {
                 GooglePlayServicesUtil.getErrorDialog(resultCode, (Activity)
                         getApplicationContext(), PLAY_SERVICES_RESOLUTION_REQUEST).show();
             }
-            else {
+            else
+            {
 
                 ((Activity) this).finish();
             }
@@ -130,42 +144,73 @@ public abstract class CurrentLocActivityG extends AppCompatActivity implements
     /**
      * Method to display the location on main UI
      */
-    public Location displayLocation() {
+    public Location displayLocation()
+    {
+        try
+        {
+            if (mLastLocation != null)
+            {
+                getCurrentLocationG(mLastLocation);
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            getCurrentLocationG(mLastLocation);
-            return mLastLocation;
+            }
+
+
+            if (!mGoogleApiClient.isConnected())
+            {
+                mGoogleApiClient.connect();
+            }
+
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+    //            getCurrentLocationG(mLastLocation);
+
+            }
+
+            mLastLocation = LocationServices.FusedLocationApi.
+                    getLastLocation(mGoogleApiClient);
+            if (mLastLocation != null)
+            {
+                getCurrentLocationG(mLastLocation);
+
+            }
+
+            if (mGoogleApiClient.isConnected())
+            {
+                mGoogleApiClient.disconnect();
+            }
         }
-        mLastLocation = LocationServices.FusedLocationApi.
-                getLastLocation(mGoogleApiClient);
-        if (mLastLocation != null) {
-            getCurrentLocationG(mLastLocation);
-            return mLastLocation;
+        catch (Exception e)
+        {
+            e.printStackTrace();
         }
 
-        return null;
+
+        return mLastLocation;
     }
 
 
     @Override
-    public void onConnected(Bundle bundle) {
+    public void onConnected(Bundle bundle)
+    {
         displayLocation();
     }
 
     @Override
-    public void onConnectionSuspended(int i) {
+    public void onConnectionSuspended(int i)
+    {
         //handler connection suspended here..
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
+    public void onConnectionFailed(ConnectionResult connectionResult)
+    {
         //handler connection failed here..
     }
 }

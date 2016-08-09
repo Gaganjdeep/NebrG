@@ -419,8 +419,8 @@ public class Utills
             {
                 try
                 {
-
-                    Geocoder      geo       = new Geocoder(context, Locale.getDefault());
+                    return getLocationFromString(latLng);
+                  /*  Geocoder      geo       = new Geocoder(context, Locale.getDefault());
                     List<Address> addresses = geo.getFromLocation(latLng.latitude, latLng.longitude, 1);
                     if (addresses.isEmpty())
                     {
@@ -459,7 +459,7 @@ public class Utills
                         }
 
 
-                    }
+                    }*/
                 }
                 catch (Exception e)
                 {
@@ -483,7 +483,7 @@ public class Utills
 
     public static String getLocationFromString(LatLng addressssss)
     {
-        String addrsssssName = "unknown location";
+        String addrsssssName = "Unknown Location";
         try
         {
 
@@ -507,6 +507,7 @@ public class Utills
                 JSONObject zero               = results.getJSONObject(0);
                 JSONArray  address_components = zero.getJSONArray("address_components");
 
+
                 for (int i = 0; i < address_components.length(); i++)
                 {
                     JSONObject zero2     = address_components.getJSONObject(i);
@@ -522,9 +523,12 @@ public class Utills
                         }
 
                     }
-                    else if(Type.contains("political"))
+                    else if (Type.contains("political"))
                     {
-                        return long_name;
+                        if (addrsssssName.equals("Unknown Location"))
+                        {
+                            addrsssssName = long_name;
+                        }
                     }
                  /*   else
                     {
@@ -541,9 +545,8 @@ public class Utills
                     }*/
                 }
 
-
-                addrsssssName = results.getJSONObject(0).getString("formatted_address");
-                return addrsssssName != null ? addrsssssName : "";
+//                addrsssssName = results.getJSONObject(0).getString("formatted_address");
+//                return addrsssssName != null ? addrsssssName : "";
 //                l.setAddress(addrsssssName != null ? addrsssssName : "");
 //
 //                l.setLat(lng);

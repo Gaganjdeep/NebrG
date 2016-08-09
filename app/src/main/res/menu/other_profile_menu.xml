@@ -7,5 +7,11 @@
         android:title="Follow"
         android:visible="true"
         gagan:showAsAction="never"/>
+    <item
+        android:id="@+id/chat"
+        android:title=""
+        android:visible="true"
+        android:icon="@android:drawable/stat_notify_chat"
+        gagan:showAsAction="always"/>
 
 </menu>

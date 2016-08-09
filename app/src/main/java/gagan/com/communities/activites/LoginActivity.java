@@ -94,6 +94,22 @@ public class LoginActivity extends BaseActivityG implements GoogleApiClient.Conn
 
 
         //******************************************Facebook*******************************************
+
+
+        try
+        {
+            LoginManager.getInstance().logOut();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+
+
+
+
+
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>()
         {
             @Override

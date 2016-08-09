@@ -48,6 +48,7 @@
 
 
         <LinearLayout
+            android:onClick="fAq"
             android:id="@+id/layoutSettings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -84,6 +85,7 @@
 
 
         <LinearLayout
+            android:onClick="aboutUs"
             android:id="@+id/layoutInvite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -119,6 +121,7 @@
 
 
         <LinearLayout
+            android:onClick="termAndConditions"
             android:id="@+id/layoutHelp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

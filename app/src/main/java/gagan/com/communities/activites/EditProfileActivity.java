@@ -280,6 +280,8 @@ public class EditProfileActivity extends BaseActivityG
                     data.put("is_social_uploaded", "1");
                 }
             }
+
+
             if (selectedLocationLatlng == null)
             {
                 HashMap<String, String> loc = sharedPrefHelper.getHomeLocation();
@@ -446,8 +448,8 @@ public class EditProfileActivity extends BaseActivityG
                 selectedLocationLatlng = place.getLatLng();
 
 
-                if (name.toString().contains("("))
-                {
+//                if (name.toString().contains("("))
+//                {
                     showProgressDialog();
                     Utills.getLocationName(EditProfileActivity.this, place.getLatLng(), new CallBackG<String>()
                     {
@@ -458,11 +460,11 @@ public class EditProfileActivity extends BaseActivityG
                             edLocation.setText(output);
                         }
                     });
-                }
-                else
-                {
-                    edLocation.setText(name.toString());
-                }
+//                }
+//                else
+//                {
+//                    edLocation.setText(name.toString());
+//                }
 
 
             }

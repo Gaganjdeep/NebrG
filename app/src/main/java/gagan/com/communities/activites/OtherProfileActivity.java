@@ -3,35 +3,27 @@ package gagan.com.communities.activites;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gagan.com.communities.R;
 import gagan.com.communities.activites.fragment.FollowersFragment;
-import gagan.com.communities.activites.fragment.MessageFragment;
 import gagan.com.communities.activites.fragment.PostProfileFragment;
-import gagan.com.communities.adapters.FollowerFollowingAdapter;
 import gagan.com.communities.models.UserDataModel;
 import gagan.com.communities.utills.CallBackG;
 import gagan.com.communities.utills.GlobalConstants;
 import gagan.com.communities.utills.RoundedCornersGaganImg;
-import gagan.com.communities.utills.SharedPrefHelper;
 import gagan.com.communities.utills.Utills;
 import gagan.com.communities.webserviceG.CallBackWebService;
 import gagan.com.communities.webserviceG.SuperWebServiceG;
@@ -146,12 +138,12 @@ public class OtherProfileActivity extends BaseActivityG
 //                                homemodel.setName(jobj.optString("name"));
 //                                homemodel.setProfession(jobj.optString("profession"));
 
-                                if(user_id.equals(jobj.optString("uId")))
+                                if (user_id.equals(jobj.optString("uId")))
                                 {
-                                    FOLLOW="Un Follow";
-                                    FOLLOW_UNFOLLOW="1";
+                                    FOLLOW = "Un Follow";
+                                    FOLLOW_UNFOLLOW = "1";
                                     supportInvalidateOptionsMenu();
-                                   break;
+                                    break;
                                 }
                             }
 
@@ -172,6 +164,7 @@ public class OtherProfileActivity extends BaseActivityG
         }
     }
 
+    UserDataModel userDataModel;
 
     @Override
     void hitWebserviceG()
@@ -205,7 +198,7 @@ public class OtherProfileActivity extends BaseActivityG
 
                             JSONObject jsonarrayData = jsonMainResult.getJSONObject("userinfo");
 
-                            UserDataModel userDataModel = new UserDataModel();
+                            userDataModel = new UserDataModel();
                             userDataModel.setEmail(jsonarrayData.optString("email"));
                             userDataModel.setName(jsonarrayData.optString("name"));
                             userDataModel.setGender(jsonarrayData.optString("gender"));
@@ -277,6 +270,7 @@ public class OtherProfileActivity extends BaseActivityG
         getMenuInflater().inflate(R.menu.other_profile_menu, menu);
 
         menu.findItem(R.id.follow).setTitle(Html.fromHtml("<font color='#0000'>" + FOLLOW + "</font>"));
+//        menu.findItem(R.id.chat).setTitle(Html.fromHtml("<font color='#0000'>" + "Chat" + "</font>"));
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -356,6 +350,18 @@ public class OtherProfileActivity extends BaseActivityG
 
                 break;
 
+            case R.id.chat:
+                if (userDataModel != null)
+                {
+                    Intent intnt = new Intent(OtherProfileActivity.this, ChatActivity
+                            .class);
+                    intnt.putExtra("id", user_id);
+                    intnt.putExtra("pic", userDataModel.getProfile_pic());
+                    intnt.putExtra("name", userDataModel.getName());
+                    startActivity(intnt);
+                }
+
+                break;
 
         }
 
